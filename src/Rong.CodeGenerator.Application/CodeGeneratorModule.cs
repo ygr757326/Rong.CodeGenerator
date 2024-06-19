@@ -1,12 +1,11 @@
 using Microsoft.CodeAnalysis;
+
 //using Microsoft.Extensions.WebEncoders;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 using Volo.Abp.Modularity;
 using Volo.Abp.TextTemplating.Razor;
 using Volo.Abp.VirtualFileSystem;
 
-namespace Rong.CodeGenerator
+namespace Rong.Volo.Abp.CodeGenerator
 {
     /// <summary>
     /// Ä£°åÄ£¿é
@@ -34,7 +33,7 @@ namespace Rong.CodeGenerator
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<CodeGeneratorModule>("Rong.CodeGenerator");
+                options.FileSets.AddEmbedded<CodeGeneratorModule>("Rong.Volo.Abp.CodeGenerator");
             });
         }
     }

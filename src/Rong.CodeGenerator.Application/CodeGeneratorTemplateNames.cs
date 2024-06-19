@@ -1,4 +1,4 @@
-﻿namespace Rong.CodeGenerator
+﻿namespace Rong.Volo.Abp.CodeGenerator
 {
     /// <summary>
     /// 模板名称

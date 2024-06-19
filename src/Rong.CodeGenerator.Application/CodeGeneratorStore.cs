@@ -9,7 +9,7 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Reflection;
 using Volo.Abp.TextTemplating;
 
-namespace Rong.CodeGenerator
+namespace Rong.Volo.Abp.CodeGenerator
 {
     /// <summary>
     /// 代码生成器帮助器

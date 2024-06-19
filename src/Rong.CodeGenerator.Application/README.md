@@ -1,7 +1,4 @@
-﻿# 使用时需要修改以下几点：
-
-
-
+﻿
  ## 1.在你的 AbpModule 中 依赖 CodeGeneratorModule 模块
 
 ```
@@ -40,11 +37,12 @@ public class CodeController : AbpController
     {
         List<TemplateModel> list = new List<TemplateModel>()
         {
-            new ("Test", "测试"),
+             //new ("表名", "表名称"),
+              new ("User", "用户"),
         };
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, false, "HuiKeXingBack.SaasService");
+        await _codeGeneratorStore.StartAsync(list, false, "命名空间名称");
 
         return Content("ok");
     }

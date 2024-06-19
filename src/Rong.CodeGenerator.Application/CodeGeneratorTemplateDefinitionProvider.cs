@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.TextTemplating;
 using Volo.Abp.TextTemplating.Razor;
 
-namespace Rong.CodeGenerator
+namespace Rong.Volo.Abp.CodeGenerator
 {
     /// <summary>
     /// 模板定义
@@ -19,7 +19,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                           $"/CodeGenerator/Templates/Application/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                           $"/Templates/Application/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.Application/App/xxxs")
@@ -35,7 +35,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                            $"/CodeGenerator/Templates/Application.Contracts/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                            $"/Templates/Application.Contracts/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.Application.Contracts/App/xxxs")
@@ -51,7 +51,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                            $"/CodeGenerator/Templates/Application.Contracts/Dto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                            $"/Templates/Application.Contracts/Dto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.Application.Contracts/App/xxxs/Dto")
@@ -68,7 +68,7 @@ namespace Rong.CodeGenerator
                 var definition = new TemplateDefinition(item) //模板名称
                     .WithRazorEngine()
                     .WithVirtualFilePath(
-                        $"/CodeGenerator/Templates/Domain/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                        $"/Templates/Domain/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                         isInlineLocalized: true
                     );
 
@@ -96,7 +96,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                            $"/CodeGenerator/Templates/Domain/DomainService/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                            $"/Templates/Domain/DomainService/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.Domain/App/xxxs/DomainService")
@@ -112,7 +112,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                            $"/CodeGenerator/Templates/Domain.Shared/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                            $"/Templates/Domain.Shared/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.Domain.Shared/App/xxxs")
@@ -129,7 +129,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                            $"/CodeGenerator/Templates/Domain.Shared/Eto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                            $"/Templates/Domain.Shared/Eto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.Domain.Shared/App/xxxs/Eto")
@@ -146,7 +146,7 @@ namespace Rong.CodeGenerator
                     new TemplateDefinition(item) //模板名称
                         .WithRazorEngine()
                         .WithVirtualFilePath(
-                            $"/CodeGenerator/Templates/EntityFrameworkCore/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                            $"/Templates/EntityFrameworkCore/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
                         .WithProperty("path", "../$namespace.EntityFrameworkCore/App/xxxs")
@@ -162,7 +162,7 @@ namespace Rong.CodeGenerator
                 var definition = new TemplateDefinition(item) //模板名称
                     .WithRazorEngine()
                     .WithVirtualFilePath(
-                        $"/CodeGenerator/Templates/HttpApi/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
+                        $"/Templates/HttpApi/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                         isInlineLocalized: true
                     );
 
