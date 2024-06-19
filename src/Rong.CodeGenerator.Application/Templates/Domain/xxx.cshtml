@@ -1,0 +1,30 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Volo.Abp.Domain.Entities.Auditing;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+{
+    /// <summary>
+    /// @{@Model.EntityName} 表
+    /// </summary>
+    [Table("@{@Model.Entity}")]
+    public class @{@Model.Entity} : FullAuditedAggregateRoot<Guid>
+    {
+        /// <summary>
+        /// 构造
+        /// </summary>
+        public @{@Model.Entity}()
+        {
+        }
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="id"></param>
+        public @{@Model.Entity}(Guid id) : base(id)
+        {
+        }
+
+    }
+}

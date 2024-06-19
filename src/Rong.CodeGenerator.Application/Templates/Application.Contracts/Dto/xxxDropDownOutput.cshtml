@@ -1,0 +1,29 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using System;
+using Volo.Abp;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto
+{
+    /// <summary>
+    /// @{@Model.EntityName} - 下拉输出
+    /// </summary>
+    public class @{@Model.Entity}DropDownOutput : NameValue<Guid>
+    {
+        /// <summary>
+        /// 构造
+        /// </summary>
+        public @{@Model.Entity}DropDownOutput()
+        {
+        }
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="value">值</param>
+        public @{@Model.Entity}DropDownOutput(string name, Guid value) : base(name, value)
+        {
+
+        }
+    }
+}

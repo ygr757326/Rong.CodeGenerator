@@ -1,0 +1,14 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto;
+using System;
+using Volo.Abp.Application.Services;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+{
+    /// <summary>
+    /// @{@Model.EntityName} - 接口
+    /// </summary>
+    public interface I@{@Model.Entity}AppService : ICrudAppService<@{@Model.Entity}DetailOutput, @{@Model.Entity}PageOutput, Guid, @{@Model.Entity}PageSearchInput, @{@Model.Entity}CreateInput, @{@Model.Entity}UpdateInput>
+    {
+    }
+}

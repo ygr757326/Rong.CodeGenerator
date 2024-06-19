@@ -1,0 +1,16 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+{
+    /// <summary>
+    /// @{@Model.Entity} - @{@Model.EntityName} - 实体配置
+    /// </summary>
+    public class @{@Model.Entity}EntityTypeConfiguration : IEntityTypeConfiguration<@{@Model.Entity}>
+    {
+        public void Configure(EntityTypeBuilder<@{@Model.Entity}> builder)
+        {
+        }
+    }
+}

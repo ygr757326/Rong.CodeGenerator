@@ -1,0 +1,34 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using @{@Model.NameSpace}.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+{
+    /// <summary>
+    /// @{@Model.Entity} - @{@Model.EntityName} - 自定义仓储实现
+    /// </summary>
+    public class @{@Model.Entity}Repository : EfCoreRepository<@{@Model.Project}DbContext, @{@Model.Entity}, Guid>, I@{@Model.Entity}Repository
+    {
+        /// <summary>
+        /// 构造
+        /// </summary>
+        public @{@Model.Entity}Repository(IDbContextProvider<@{@Model.Project}DbContext> dbContextProvider) : base(dbContextProvider)
+        {
+        }
+
+        /// <summary>
+        /// 重写详情
+        /// </summary>
+        /// <returns></returns>
+        public override Task<IQueryable<@{@Model.Entity}>> WithDetailsAsync()
+        {
+            return base.WithDetailsAsync();
+            //  return (await GetQueryableAsync()).Include(a => a.@{@Model.Entity});
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto
+{
+    /// <summary>
+    /// @{@Model.EntityName} - 修改/创建输入基类
+    /// <para>该类提供需要同时进行 修改和创建 的字段</para>
+    /// </summary>
+    public abstract class @{@Model.Entity}CreateOrUpdateInputBase : IValidatableObject
+    {
+        /// <summary>
+        /// 验证、归一化输入值
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            yield break;
+        }
+    }
+}

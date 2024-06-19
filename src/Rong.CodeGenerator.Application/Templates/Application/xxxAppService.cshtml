@@ -1,0 +1,56 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto;
+using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Volo.Abp.Application.Services;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+{
+    /// <summary>
+    /// @Model.EntityName 管理
+    /// </summary>
+    [Authorize(@{@Model.Entity}Permissions.Permissions.Default)]
+    public class @{@Model.Entity}AppService : CrudAppService<@Model.Entity, @{@Model.Entity}DetailOutput, @{@Model.Entity}PageOutput, Guid, @{@Model.Entity}PageSearchInput, @{@Model.Entity}CreateInput, @{@Model.Entity}UpdateInput>, I@{@Model.Entity}AppService
+    {
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        public @{@Model.Entity}AppService(I@{@Model.Entity}Repository rep) : base(rep)
+        {
+            CreatePolicyName = @{@Model.Entity}Permissions.Permissions.Create;
+            DeletePolicyName = @{@Model.Entity}Permissions.Permissions.Delete;
+            UpdatePolicyName = @{@Model.Entity}Permissions.Permissions.Update;
+        }
+
+        #region 增删改查
+
+        /// <summary>
+        /// 重写获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        protected override Task<@{@Model.Entity}> GetEntityByIdAsync(Guid id)
+        {
+            return base.GetEntityByIdAsync(id);
+        }
+
+
+        /// <summary>
+        /// 重写查询
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        protected override Task<IQueryable<@{@Model.Entity}>> CreateFilteredQueryAsync(@{@Model.Entity}PageSearchInput input)
+        {
+            return base.CreateFilteredQueryAsync(input);
+            //return (await base.CreateFilteredQueryAsync(input))
+            // .WhereIf(!string.IsNullOrWhiteSpace(input.x), a => a.CorpCode.Contains(input.x));
+        }
+
+        #endregion
+
+    }
+}

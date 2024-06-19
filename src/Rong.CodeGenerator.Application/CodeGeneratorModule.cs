@@ -1,0 +1,41 @@
+using Microsoft.CodeAnalysis;
+//using Microsoft.Extensions.WebEncoders;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Volo.Abp.Modularity;
+using Volo.Abp.TextTemplating.Razor;
+using Volo.Abp.VirtualFileSystem;
+
+namespace Rong.CodeGenerator
+{
+    /// <summary>
+    /// 模板模块
+    /// </summary>
+    [DependsOn(
+        //Razor模板
+        typeof(AbpTextTemplatingRazorModule)
+    )]
+    public class CodeGeneratorModule : AbpModule
+    {
+        public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            //配置Razor页面的文本编码（当前用途：代码生成器编译cshtml时，汉字会被编码）
+            //Configure<WebEncoderOptions>(options =>
+            //{
+            //    options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
+            //});
+
+            Configure<AbpRazorTemplateCSharpCompilerOptions>(options =>
+            {
+                options.References.Add(
+                    MetadataReference.CreateFromFile(typeof(CodeGeneratorModule).Assembly.Location));
+            });
+
+
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<CodeGeneratorModule>("Rong.CodeGenerator");
+            });
+        }
+    }
+}

@@ -1,0 +1,20 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+using Volo.Abp.Domain.Entities;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto
+{
+    /// <summary>
+    /// @{@Model.EntityName} - 详情输出
+    /// </summary>
+    public class @{@Model.Entity}DetailOutput : @{@Model.Entity}PageOutput, IHasConcurrencyStamp
+    {
+        /// <summary>
+        /// 并发标记
+        /// </summary>
+        [Display(Name = "并发标记")]
+        public string? ConcurrencyStamp { get; set; }
+
+    }
+}

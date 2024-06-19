@@ -1,0 +1,14 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.CodeGenerator.TemplateModel>
+using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Domain.Entities;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto
+{
+    /// <summary>
+    /// @{@Model.EntityName} - 分页输出
+    /// </summary>
+    public class @{@Model.Entity}PageOutput : @{@Model.Entity}BaseOutput
+    {
+
+    }
+}
