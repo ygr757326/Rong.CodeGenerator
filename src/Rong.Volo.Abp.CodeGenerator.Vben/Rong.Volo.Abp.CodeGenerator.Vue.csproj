@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\common.props" />
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net7.0;net8.0;</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Rong.Volo.Abp.CodeGenerator.Vue</RootNamespace>
+		<Description>abp vnext 7.4.0以上的代码生成器。本人为了快速开发而写的代码生成器。</Description>
+		<Version>0.2.3</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.TextTemplating.Razor" Version="8.1.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Templates\**" />
+	</ItemGroup>
+</Project>
