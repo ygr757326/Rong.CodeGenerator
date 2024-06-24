@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\common.props" />
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Rong.CodeGenerator</RootNamespace>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.1.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Rong.CodeGenerator.Domain\Rong.CodeGenerator.Domain.csproj" />
+		<ProjectReference Include="..\Rong.CodeGenerator.Application.Contracts\Rong.CodeGenerator.Application.Contracts.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+{
+  "systemManage": "系统管理",
+  "dictionaryManage": "字典管理",
+  "systemConfig": "系统配置",
+  "logManage": "日志管理",
+  "systemLog": "系统日志",
+  "externalApiLog": "外部api请求",
+  "smsLog": "短信发送",
+  "staffManage": "账号管理",
+  "user": "用户管理",
+  "role": "角色管理",
+  "basicService": "基本信息",
+  "sms": "短信配置",
+  "area": "区域信息管理",
+  "app": "app更新管理"
+}

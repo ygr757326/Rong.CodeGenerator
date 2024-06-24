@@ -1,0 +1,90 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueModifyModel>
+@{
+
+}
+@* <template>
+<a-drawer v-model:visible="visible" :title="title" width="800px">
+  <template #extra>
+    <a-button @@click="visible = false">取消</a-button>
+    <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
+  </template>
+  <div ref="modifyFormRef">
+    <BasicForm @@register="Register">
+      <template #logo="{ model, field }">
+        <GzUploadFile v-model="model[field]" />
+      </template>
+    </BasicForm>
+  </div>
+</a-drawer>
+</template>
+
+<script lang="ts" setup>
+import { nextTick, ref } from 'vue';
+import { @{@Model.Entity}Get, @{@Model.Entity}Update } from '@@/api';
+import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
+import { useLoading } from '@@/components/Loading';
+import { GzUploadFile } from '@@/components/GzUploadFile';
+
+const modifyFormRef = ref(null);
+
+const [openWrapLoading, closeWrapLoading] = useLoading({
+  target: modifyFormRef,
+  props: {
+    absolute: true,
+  },
+});
+
+const visible = ref<boolean>(false);
+const title = ref<string>('编辑');
+const $emit = defineEmits(['success']);
+function open(data) {
+  visible.value = true;
+  nextTick(() => {
+    resetFields();
+  });
+  openWrapLoading();
+  title.value = '编辑';
+  getData({ id: data.id });
+}
+/**
+ * 提交表单 - 修改
+ */
+async function handleSubmit() {
+  await validateFields();
+  const data: any = getFieldsValue();
+  await @{@Model.Entity}Update(data.id, data);
+  visible.value = false;
+  $emit('success');
+}
+
+/*
+* 获取详情
+/*/
+async function getData(data) {
+  @{@Model.Entity}Get(data)
+    .then((res) => {
+      setFieldsValue(res);
+    })
+    .finally(() => {
+      closeWrapLoading();
+    });
+}
+
+/**
+ * 表单配置
+ */
+const schemas: FormSchema[] = [
+  ${schemas.join(',')}
+];
+const [Register, { validateFields, getFieldsValue, setFieldsValue, resetFields }] = useForm({
+  labelWidth: 120,
+  schemas,
+  actionColOptions: {
+    span: 12,
+  },
+  // 隐藏操作按钮
+  showActionButtonGroup: false,
+});
+defineExpose({ open });
+</script> *@

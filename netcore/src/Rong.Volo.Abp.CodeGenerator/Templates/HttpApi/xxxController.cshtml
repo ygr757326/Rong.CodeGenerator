@@ -1,0 +1,81 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
+using System;
+using System.Threading.Tasks;
+using @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto;
+using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.Application.Dtos;
+@{
+    string appService = $"{Model.EntityCase}AppService";
+}
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+{
+
+    /// <summary>
+    ///  @{@Model.EntityName} 管理
+    /// </summary>
+    public class @{@Model.Entity}Controller : @{@Model.Project}ControllerBase, I@{@Model.Entity}AppService
+    {
+        private readonly I@{@Model.Entity}AppService _@{@appService};
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        public @{@Model.Entity}Controller(I@{@Model.Entity}AppService @{@appService})
+        {
+            _@{@appService} = @{@appService};
+        }
+
+        /// <summary>
+        /// 创建
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public Task<@{@Model.Entity}DetailOutput> CreateAsync(@{@Model.Entity}CreateInput input)
+        {
+            return _@{@appService}.CreateAsync(input);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task DeleteAsync(Guid id)
+        {
+            return _@{@appService}.DeleteAsync(id);
+        }
+
+        /// <summary>
+        /// 获取详情 - 通过id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<@{@Model.Entity}DetailOutput> GetAsync(Guid id)
+        {
+            return await _@{@appService}.GetAsync(id);
+        }
+
+        /// <summary>
+        /// 获取分页
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public Task<PagedResultDto<@{@Model.Entity}PageOutput>> GetListAsync(@{@Model.Entity}PageSearchInput input)
+        {
+            return _@{@appService}.GetListAsync(input);
+        }
+
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public Task<@{@Model.Entity}DetailOutput> UpdateAsync(Guid id, @{@Model.Entity}UpdateInput input)
+        {
+            return _@{@appService}.UpdateAsync(id, input);
+        }
+    }
+}

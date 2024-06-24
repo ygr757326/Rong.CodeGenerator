@@ -1,0 +1,35 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
+using System;
+
+namespace @{@Model.NameSpace}.Permissions
+{
+    /// <summary>
+    /// 权限是否启用。默认true
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field)]
+    public class PermissionAttribute : Attribute
+    {
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool IsEnable { get; }
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        public PermissionAttribute()
+        {
+            IsEnable = true;
+        }
+
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="isEnable">是否启用</param>
+        public PermissionAttribute(bool isEnable)
+        {
+            IsEnable = isEnable;
+        }
+    }
+}
+

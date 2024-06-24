@@ -1,0 +1,29 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Application.Dtos;
+
+namespace @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto
+{
+    /// <summary>
+    /// @{@Model.EntityName} - 分页查询输入
+    /// </summary>
+    public class @{@Model.Entity}PageSearchInput : PagedAndSortedResultRequestDto
+    {
+
+        /// <summary>
+        /// 验证、归一化输入值
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrWhiteSpace(Sorting))
+            {
+                Sorting = "Id DESC";
+            }
+
+            return base.Validate(validationContext);
+        }
+
+    }
+}

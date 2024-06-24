@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Rong.CodeGenerator</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\Rong.CodeGenerator.Domain.Shared\Rong.CodeGenerator.Domain.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="8.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Volo.Abp.Emailing" Version="8.1.4" />
+	  <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="8.1.4" />
+  </ItemGroup>
+
+</Project>

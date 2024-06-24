@@ -1,0 +1,80 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueApiModel>
+@{
+
+}
+
+ //import { @{@Model.Entity}GetListItem, ${titleCase(folderName)}GetListParams, ${titleCase(folderName)}GetListResult } from './model/@{@Model.Entity}Model';
+import { commonParams } from './model/identityModel';
+import { defHttp } from '@@/utils/http/axios';
+
+import enum @{@Model.Entity}Api {
+
+/**
+* 获取 @{@Model.EntityName} 列表 - 分页
+*/
+GetList = '/api/@{@Model.Project}/@{@Model.EntityCase}/getList',
+
+/**
+* 获取 @{@Model.EntityName} 详情 - 通过id
+*/
+Get = '/api/@{@Model.Project}/@{@Model.EntityCase}/get?id=',
+
+/**
+* 修改 @{@Model.EntityName} - 
+*/
+Update ='/api/@{@Model.Project}/@{@Model.EntityCase}/update?id=',
+
+/**
+* 删除 @{@Model.EntityName} - 
+*/
+Delete = '/api/@{@Model.Project}/@{@Model.EntityCase}/delete?id=',
+
+/**
+* 创建 @{@Model.EntityName} - 
+*/
+Create = '/api/@{@Model.Project}/@{@Model.EntityCase}/create'
+}
+
+/*
+* 获取 @{@Model.EntityName} 列表 - 分页
+*/
+export const @{@Model.Entity}GetList = (params) =>
+  defHttp.get({
+    url: @{@Model.Entity}Api.GetList,
+    params,
+});
+
+/*
+* 获取 @{@Model.EntityName} 详情 - 通过id
+*/
+export const @{@Model.Entity}Get = (id) =>
+  defHttp.get({
+    url: @{@Model.Entity}Api.Get + id,
+});
+
+/*
+* 修改 @{@Model.EntityName}  - 
+*/
+export const @{@Model.Entity}Update = (id, data) =>
+  defHttp.put({
+    url: @{@Model.Entity}Api.Update + id,
+    data,
+});
+
+/*
+* 删除 @{@Model.EntityName}  - 
+*/
+export const @{@Model.Entity}Delete = (id) =>
+  defHttp.delete({
+    url: @{@Model.Entity}Api.Delete + id,
+});
+
+/*
+* 创建 @{@Model.EntityName}  - 
+*/
+export const @{@Model.Entity}Create = (data) =>
+  defHttp.post({
+    url: @{@Model.Entity}Api.Create,
+    data,
+  }); 

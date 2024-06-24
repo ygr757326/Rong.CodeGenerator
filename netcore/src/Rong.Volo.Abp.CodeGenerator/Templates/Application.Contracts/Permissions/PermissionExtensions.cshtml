@@ -1,0 +1,212 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using Namotion.Reflection;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
+using Volo.Abp.Authorization.Permissions;
+using Volo.Abp.Localization;
+using Volo.Abp.MultiTenancy;
+
+namespace @{@Model.NameSpace}.Permissions
+{
+    /// <summary>
+    /// 权限扩展
+    /// <para>在使用：在 @{@Model.Project}PermissionDefinitionProvider.Define 中 添加代码 context.CreateAllPermission&lt;@{@Model.Project}Resource&gt;(typeof(@{@Model.Project}ApplicationContractsModule)) </para>
+    /// </summary>
+    public static class PermissionExtensions
+    {
+
+        /// <summary>
+        /// 创建所有定义的 IPermissions的 权限
+        /// </summary>
+        public static void CreateAllPermission<TResource>(this IPermissionDefinitionContext context, Type module)
+        {
+            foreach (var permission in GetPermissions(module))
+            {
+                CreatePermission<TResource>(context, permission);
+            }
+        }
+
+        /// <summary>
+        /// 创建某页面操作权限
+        /// </summary>
+        /// <typeparam name="T">IPermissions</typeparam>
+        public static void CreatePermission<TResource, T>(this IPermissionDefinitionContext context)
+        {
+            CreatePermission<TResource>(context, typeof(T));
+        }
+
+        #region 私有
+
+        /// <summary>
+        /// 创建各页面操作权限
+        /// </summary>
+        /// <param name="context">IPermissionDefinitionContext context</param>
+        /// <param name="type">类</param>
+        private static void CreatePermission<TResource>(IPermissionDefinitionContext context, Type type)
+        {
+            //权限字段
+            FieldInfo[] fieldInfos = GetPublicConstantsRecursivelyFieldInfo(type);
+
+            var side = MultiTenancySides.Both;
+
+            PermissionGroupDefinition? group = null;
+            PermissionDefinition? page = null;
+
+            //创建各字段权限
+            foreach (FieldInfo filedInfo in fieldInfos)
+            {
+                string permission = filedInfo.GetValue(null)?.ToString() ?? "";
+
+                LocalizableString localizableString = L<TResource>(GetPermissionDisplayName<TResource>(context, filedInfo, permission));
+
+                var side1 = filedInfo.GetCustomAttribute<PermissionMultiTenancySideAttribute>()?.Side ?? side;
+
+                switch (filedInfo.Name)
+                {
+                    case "GroupName":
+
+                        group = context.GetGroupOrNull(permission) ?? context.AddGroup(permission, localizableString);
+                        break;
+                    case "Default":
+                        if (group != null)
+                        {
+                            page = group.GetPermissionOrNull(permission) ?? group.AddPermission(permission, localizableString, side1);
+                        }
+                        break;
+                    default:
+                        {
+                            if (page != null && page.Children.All(p => p.Name != permission))
+                            {
+                                page.AddChild(permission, localizableString, side1);
+                            }
+                            break;
+                        }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 本地化
+        /// </summary>
+        /// <param name="name">本地化名称</param>
+        /// <returns></returns>
+        private static LocalizableString L<TResource>(string name)
+        {
+            return LocalizableString.Create<TResource>(name);
+        }
+
+        /// <summary>
+        /// 获取有<see cref="PermissionAttribute"/>的所有类
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<Type> GetPermissions(Type module)
+        {
+            return module.Assembly.GetTypes()
+                .Where(item => item.GetCustomAttributes<PermissionAttribute>().Any());
+        }
+
+
+        /// <summary>
+        /// 获取权限显示名称
+        /// </summary>
+        /// <param name="field">字段</param>
+        /// <param name="permission">权限</param>
+        /// <returns></returns>
+        private static string GetPermissionDisplayName<TResource>(IPermissionDefinitionContext context, MemberInfo field, string permission)
+        {
+
+            if (string.IsNullOrWhiteSpace(permission))
+            {
+                return permission;
+            }
+
+            var stringLocalizer = context.ServiceProvider.GetService<IStringLocalizer<TResource>>();
+
+            LocalizedString? localizedString = stringLocalizer?.GetString($"Permission:{permission}");
+
+            //有本地化
+            if (localizedString != null && !localizedString.ResourceNotFound)
+            {
+                return localizedString.Value;
+            }
+
+            if (field.Name == "GroupName")
+            {
+                var p1 = GetPublicConstantsRecursivelyFieldInfo(typeof(@{@Model.Project}Permissions))
+                    .FirstOrDefault(a => permission == a.GetValue(null).ToString());
+
+                return p1?.GetAttrName() ?? permission;
+            }
+            //无，则使用 Display 特性
+            var attrName = field?.GetAttrName();
+
+            if (!string.IsNullOrWhiteSpace(attrName))
+            {
+                return attrName;
+            }
+
+            var p = GetPublicConstantsRecursivelyFieldInfo(typeof(PermissionConsts))
+                .FirstOrDefault(a => permission.EndsWith(a.GetValue(null).ToString()));
+
+            return p?.GetAttrName() ?? permission;
+
+        }
+
+        /// <summary>
+        /// 获取权限显示名称
+        /// </summary>
+        /// <param name="field">字段</param>
+        /// <returns></returns>
+        private static string? GetAttrName(this MemberInfo field)
+        {
+            //GetXmlDocsSummary 请安装NuGet依赖包 Namotion.Reflection
+            var sum = field.GetXmlDocsSummary();
+            return field.GetCustomAttribute<DisplayAttribute>()?.Name
+                   ?? field.GetCustomAttribute<DescriptionAttribute>()?.Description
+                   ?? (sum.IsNullOrWhiteSpace() ? field.Name : sum);
+        }
+
+        /// <summary>
+        /// 递归获取公共常量字段信息
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static FieldInfo[] GetPublicConstantsRecursivelyFieldInfo(this Type type)
+        {
+            const int maxRecursiveParameterValidationDepth = 8;
+
+            var publicConstants = new List<FieldInfo>();
+
+            void Recursively(List<FieldInfo> constants, Type targetType, int currentDepth)
+            {
+                if (currentDepth > maxRecursiveParameterValidationDepth)
+                {
+                    return;
+                }
+
+                constants.AddRange(targetType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                    .Where(x => x.IsLiteral && !x.IsInitOnly)
+                    .Select(x => x));
+
+                var nestedTypes = targetType.GetNestedTypes(BindingFlags.Public);
+
+                foreach (var nestedType in nestedTypes)
+                {
+                    Recursively(constants, nestedType, currentDepth + 1);
+                }
+            }
+
+            Recursively(publicConstants, type, 1);
+
+            return publicConstants.ToArray();
+        }
+        #endregion
+    }
+}

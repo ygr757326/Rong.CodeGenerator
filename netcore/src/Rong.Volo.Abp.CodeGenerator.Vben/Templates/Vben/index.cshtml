@@ -1,0 +1,137 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueIndexModel>
+@{
+    var indexAuth= @Model.Entity;
+    var createAuth= @Model.Entity+".Create";
+    var updateAuth= @Model.Entity+".Update";
+    var deleteAuth= @Model.Entity+".Delete";
+}
+<template>
+  <PageWrapper contentFullHeight>
+      <BasicTable @@register="register">
+      <template #toolbar>
+                <a-button auth="@createAuth" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
+      </template>
+       <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              auth:'@updateAuth',
+              label: '编辑',
+              onClick: handleEdit.bind(null, record),
+            },
+            { 
+              auth:'@indexAuth',
+              label: '查看',
+              onClick: handleDetail.bind(null, record),
+            },
+          ]"
+          :dropDownActions="[
+            {
+              auth:'@deleteAuth',
+              label: '删除',
+              popConfirm: {
+                title: '是否删除？',
+                confirm: handleDelete.bind(null, record),
+              },
+            },
+          ]"
+        />
+      </template> 
+    </BasicTable>
+    <!-- 新增 -->
+        <Add ref="addRef" @@success="handleSuccess"></Add>
+    <!-- 编辑 -->
+        <Modify ref="modifyRef" @@success="handleSuccess" />
+    <!-- 查看 -->
+    <Drawer ref="drawerRef" />
+  </PageWrapper>
+</template>
+
+<script lang="ts" setup>
+  import { Tag } from 'ant-design-vue';
+  import { ref } from 'vue';
+  import Add from './components/add.vue';
+  import Modify from './components/modify.vue';
+  import Drawer from './components/drawer.vue';
+  import { GzImagePreview } from '@@/components/GzImage';
+  import { AbsViewModal } from '#/common';
+  import { @{@Model.Entity}Api , @{@Model.Entity}Delete } from '@@/api';
+  import { PageWrapper } from '@@/components/Page';
+  import { BasicColumn, BasicTable, TableAction, useTable } from '@@/components/Table';
+  import { useGrid } from '@@/hooks/manageCenter/useGrid';
+
+  const addRef = ref<AbsViewModal | null>(null);
+  const modifyRef = ref<AbsViewModal | null>(null);
+  const drawerRef = ref<AbsViewModal | null>(null);
+
+  // 编辑或新增成功
+  function handleSuccess() {
+    reload();
+  }
+
+  /**
+   *删除
+   */
+  async function handleDelete(record: Recordable) {
+    await @{@Model.Entity}Delete(record.id);
+    reload();
+  }
+
+  // 表格表头
+  const columns: BasicColumn[] = [
+
+  ];
+  const [register, { reload }] = useTable({
+    api: @{@Model.Entity}Api.GetList,
+    columns,
+    tableSetting: {
+      redo: true,
+      size: true,
+      setting: true,
+      fullScreen: true,
+    },
+    useSearchForm: true,
+    actionColumn: {
+      width: 160,
+      title: '操作',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+      fixed: 'right',
+    },
+    showTableSetting: true,
+    formConfig: {
+      labelWidth: 120,
+      ...useGrid(),
+      schemas: [
+        ${schemas.join(",")}
+      ],
+    },
+  });
+
+  /**
+   * 点击编辑
+   */
+  function handleEdit(record: Recordable) {
+    modifyRef.value?.open({
+      id: record.id,
+    });
+  }
+  /**
+   * 点击添加
+   */
+  function handleCreate() {
+    addRef.value?.open();
+  }
+
+  /**
+   * 点击查看详情
+   */
+  function handleDetail(record: Recordable) {
+    drawerRef.value?.open({
+      id: record.id,
+    });
+  }
+</script>
+
+<style lang="less" scoped></style>
