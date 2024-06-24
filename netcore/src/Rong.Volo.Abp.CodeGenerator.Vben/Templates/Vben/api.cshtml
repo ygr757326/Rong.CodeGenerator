@@ -5,10 +5,9 @@
 }
 
  //import { @{@Model.Entity}GetListItem, ${titleCase(folderName)}GetListParams, ${titleCase(folderName)}GetListResult } from './model/@{@Model.Entity}Model';
-import { commonParams } from './model/identityModel';
-import { defHttp } from '@@/utils/http/axios';
+import { defHttp } from '@@/utils/http/axios/index';
 
-import enum @{@Model.Entity}Api {
+export enum @{@Model.Entity}Api {
 
 /**
 * 获取 @{@Model.EntityName} 列表 - 分页
@@ -36,42 +35,53 @@ Delete = '/api/@{@Model.Project}/@{@Model.EntityCase}/delete?id=',
 Create = '/api/@{@Model.Project}/@{@Model.EntityCase}/create'
 }
 
-/*
-* 获取 @{@Model.EntityName} 列表 - 分页
-*/
+/**
+ * 获取 @{@Model.EntityName} 列表 - 分页
+ * @@param id
+ * @@returns
+ */
 export const @{@Model.Entity}GetList = (params) =>
   defHttp.get({
     url: @{@Model.Entity}Api.GetList,
     params,
 });
 
-/*
+/**
 * 获取 @{@Model.EntityName} 详情 - 通过id
+ * @@param id
+ * @@returns
 */
 export const @{@Model.Entity}Get = (id) =>
   defHttp.get({
     url: @{@Model.Entity}Api.Get + id,
 });
 
-/*
-* 修改 @{@Model.EntityName}  - 
-*/
+/**
+ * 修改 @{@Model.EntityName} - 
+ * @@param id
+ * @@param data
+ * @@returns
+ */
 export const @{@Model.Entity}Update = (id, data) =>
   defHttp.put({
     url: @{@Model.Entity}Api.Update + id,
     data,
 });
 
-/*
-* 删除 @{@Model.EntityName}  - 
-*/
+/**
+ * 删除 @{@Model.EntityName} - 
+ * @@param id
+ * @@returns
+ */
 export const @{@Model.Entity}Delete = (id) =>
   defHttp.delete({
     url: @{@Model.Entity}Api.Delete + id,
 });
 
-/*
-* 创建 @{@Model.EntityName}  - 
+/**
+* 创建 @{@Model.EntityName} - 
+* @@param data
+* @@returns
 */
 export const @{@Model.Entity}Create = (data) =>
   defHttp.post({

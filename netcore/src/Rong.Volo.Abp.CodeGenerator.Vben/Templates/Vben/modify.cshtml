@@ -1,9 +1,13 @@
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueModifyModel>
 @{
-
+    string schemas = null;
+    foreach (var item in Model.Form)
+    {
+        schemas += $"{{label: '{@item.DisplayName}', field: '{@item.PropertyCase}', component: 'Input', required: {char.ToLowerInvariant(item.IsRequired.ToString()[0]) + item.IsRequired.ToString().Substring(1)}, }},\r\n";
+    }
 }
-@* <template>
+<template>
 <a-drawer v-model:visible="visible" :title="title" width="800px">
   <template #extra>
     <a-button @@click="visible = false">取消</a-button>
@@ -20,11 +24,11 @@
 </template>
 
 <script lang="ts" setup>
+
 import { nextTick, ref } from 'vue';
-import { @{@Model.Entity}Get, @{@Model.Entity}Update } from '@@/api';
+import { @{@Model.Entity}Get, @{@Model.Entity}Update } from 'api';
 import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
 import { useLoading } from '@@/components/Loading';
-import { GzUploadFile } from '@@/components/GzUploadFile';
 
 const modifyFormRef = ref(null);
 
@@ -38,15 +42,28 @@ const [openWrapLoading, closeWrapLoading] = useLoading({
 const visible = ref<boolean>(false);
 const title = ref<string>('编辑');
 const $emit = defineEmits(['success']);
-function open(data) {
-  visible.value = true;
-  nextTick(() => {
-    resetFields();
-  });
-  openWrapLoading();
-  title.value = '编辑';
-  getData({ id: data.id });
-}
+
+/**
+ * 表单
+ */
+const schemas: FormSchema[] = [
+    @schemas
+];
+
+/**
+ * 表单配置
+ */
+const [Register, { validateFields, getFieldsValue, setFieldsValue, resetFields }] = useForm({
+  labelWidth: 120,
+  schemas,
+  actionColOptions: {
+    span: 12,
+  },
+  // 是否显示操作按钮
+  showActionButtonGroup: false,
+});
+
+
 /**
  * 提交表单 - 修改
  */
@@ -62,7 +79,7 @@ async function handleSubmit() {
 * 获取详情
 /*/
 async function getData(data) {
-  @{@Model.Entity}Get(data)
+  @{@Model.Entity}Get(data.id)
     .then((res) => {
       setFieldsValue(res);
     })
@@ -72,19 +89,17 @@ async function getData(data) {
 }
 
 /**
- * 表单配置
+ * 弹框
  */
-const schemas: FormSchema[] = [
-  ${schemas.join(',')}
-];
-const [Register, { validateFields, getFieldsValue, setFieldsValue, resetFields }] = useForm({
-  labelWidth: 120,
-  schemas,
-  actionColOptions: {
-    span: 12,
-  },
-  // 隐藏操作按钮
-  showActionButtonGroup: false,
-});
+function open(data) {
+  visible.value = true;
+  nextTick(() => {
+    resetFields();
+  });
+  openWrapLoading();
+  title.value = '编辑';
+  getData({ id: data.id });
+}
 defineExpose({ open });
-</script> *@
+
+</script>

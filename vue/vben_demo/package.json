@@ -94,6 +94,7 @@
     "path-to-regexp": "^6.2.2",
     "pinia": "2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "pnpm": "^9.4.0",
     "print-js": "^1.6.0",
     "qrcode": "^1.5.3",
     "qs": "^6.12.1",

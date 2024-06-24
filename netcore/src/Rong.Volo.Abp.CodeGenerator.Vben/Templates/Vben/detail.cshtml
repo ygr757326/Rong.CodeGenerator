@@ -1,23 +1,26 @@
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueDetailModel>
 @{
-
 }
-@* <template>
+<template>
   <!--  详情页面 -->
   <div class="detail" ref="detailContentRef">
     <a-descriptions bordered :column="props.column" size="small" :labelStyle="width">
-      ${schemas.join("\r")}
+     @foreach(var item in Model.View)
+     {
+      <a-descriptions-item label="@item.DisplayName"> {{ detailData?.@item.PropertyCase}} </a-descriptions-item>
+     }
     </a-descriptions>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { @{@Model.Entity}Get } from '@@/api';
+
+  import { @{@Model.Entity}Get } from 'api';
   import { ref, nextTick } from 'vue';
   import { useI18n } from '@@/hooks/web/useI18n';
   import { useLoading } from '@@/components/Loading';
-  import { GzImagePreview } from '@@/components/GzImage';
+
   const detailContentRef = ref(null);
   const { t } = useI18n();
   const [openWrapLoading, closeWrapLoading] = useLoading({
@@ -37,8 +40,12 @@
   };
 
   let detailData: any = ref({});
+
+  /**
+   * 获取详情
+   */
   function getData(data) {
-    get@{@Model.Entity}Get(data)
+    @{@Model.Entity}Get(data.id)
       .then((res) => {
         detailData.value = res;
       })
@@ -51,9 +58,10 @@
       openWrapLoading();
     });
     detailData.value = {};
-    getData({ id: data.id });
+    getData(data);
   }
   defineExpose({ init });
+
 </script>
 
 <style lang="less" scoped>
@@ -68,4 +76,4 @@
     padding: 10px;
     border: 1px solid #ccc;
   }
-</style> *@
+</style>

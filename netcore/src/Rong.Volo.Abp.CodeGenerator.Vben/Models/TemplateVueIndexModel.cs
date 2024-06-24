@@ -10,12 +10,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// <summary>
         /// Table 列表数据
         /// </summary>
-        public List<TemplateVueModelData>? Table { get; set; }
+        public List<TemplateVueModelData>? Table { get; set; } = new List<TemplateVueModelData>();
 
         /// <summary>
         /// 查询数据
         /// </summary>
-        public List<TemplateVueModelData>? Search { get; set; }
+        public List<TemplateVueModelData>? Search { get; set; } = new List<TemplateVueModelData>();
 
     }
 }

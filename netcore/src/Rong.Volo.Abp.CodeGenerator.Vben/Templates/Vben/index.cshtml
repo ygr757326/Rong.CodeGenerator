@@ -2,15 +2,27 @@
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueIndexModel>
 @{
     var indexAuth= @Model.Entity;
-    var createAuth= @Model.Entity+".Create";
-    var updateAuth= @Model.Entity+".Update";
-    var deleteAuth= @Model.Entity+".Delete";
-}
+    var createAuth = @indexAuth + ".Create";
+    var updateAuth = @indexAuth + ".Update";
+    var deleteAuth = @indexAuth + ".Delete";
+
+    string tableColumns = null;
+    foreach(var item in Model.Table)
+    {
+        tableColumns += $"{{title: '{@item.DisplayName}', dataIndex: '{@item.PropertyCase}' }},\r\n";
+    }
+
+    string searchSchemas = null;
+    foreach (var item in Model.Search)
+    {
+        searchSchemas += $"{{label: '{@item.DisplayName}', field: '{@item.Property}', component: 'Input' }},\r\n";
+    }
+ }
 <template>
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
       <template #toolbar>
-                <a-button auth="@createAuth" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
+        <a-button auth="@createAuth" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
        <template #action="{ record }">
         <TableAction
@@ -40,9 +52,9 @@
       </template> 
     </BasicTable>
     <!-- 新增 -->
-        <Add ref="addRef" @@success="handleSuccess"></Add>
+    <Add ref="addRef" @@success="handleSuccess"></Add>
     <!-- 编辑 -->
-        <Modify ref="modifyRef" @@success="handleSuccess" />
+    <Modify ref="modifyRef" @@success="handleSuccess" />
     <!-- 查看 -->
     <Drawer ref="drawerRef" />
   </PageWrapper>
@@ -54,9 +66,8 @@
   import Add from './components/add.vue';
   import Modify from './components/modify.vue';
   import Drawer from './components/drawer.vue';
-  import { GzImagePreview } from '@@/components/GzImage';
   import { AbsViewModal } from '#/common';
-  import { @{@Model.Entity}Api , @{@Model.Entity}Delete } from '@@/api';
+  import { @{@Model.Entity}Api , @{@Model.Entity}Delete } from 'api';
   import { PageWrapper } from '@@/components/Page';
   import { BasicColumn, BasicTable, TableAction, useTable } from '@@/components/Table';
   import { useGrid } from '@@/hooks/manageCenter/useGrid';
@@ -78,10 +89,16 @@
     reload();
   }
 
-  // 表格表头
+  /**
+    * 表头
+   */
   const columns: BasicColumn[] = [
+    @tableColumns
+    ];
 
-  ];
+  /**
+   * 表头配置
+   */
   const [register, { reload }] = useTable({
     api: @{@Model.Entity}Api.GetList,
     columns,
@@ -104,7 +121,7 @@
       labelWidth: 120,
       ...useGrid(),
       schemas: [
-        ${schemas.join(",")}
+        @searchSchemas
       ],
     },
   });

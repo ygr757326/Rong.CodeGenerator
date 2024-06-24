@@ -110,7 +110,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
                         TemplateVueIndexModel data = new TemplateVueIndexModel
                         {
-                            Table = GetPropertyInfo(page),
+                            Table = GetPropertyInfo(page).Where(a => !a.Property.Equals("concurrencyStamp", StringComparison.CurrentCultureIgnoreCase)).ToList(),
                             Search = GetPropertyInfo(search, true)
                         };
                         return data;
@@ -168,7 +168,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         {
             if (type == null)
             {
-                return null;
+                return new List<TemplateVueModelData>();
             }
 
             List<TemplateVueModelData> data = new List<TemplateVueModelData>();
@@ -181,7 +181,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 {
                     Property = propertyInfo.Name,
                     PropertyType = propertyInfo.PropertyType,
-                    DisplayName = propertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name,
+                    DisplayName = propertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? propertyInfo.Name,
                     IsRequired = propertyInfo.IsDefined(typeof(RequiredAttribute), true),
                 };
 

@@ -27,11 +27,11 @@ public class CodeVueController : AbpController
     {
         List<TemplateVueModel> list = new List<TemplateVueModel>()
         {
-            new ("App", "Vue测试"),
+            new ("App", "应用"),
         };
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator", "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator", "F:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
 
         return Content("ok");
 
