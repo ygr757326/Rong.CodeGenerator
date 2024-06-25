@@ -1,16 +1,13 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueDetailModel>
 @{
 }
 <template>
   <!--  详情页面 -->
   <div class="detail" ref="detailContentRef">
-    <a-descriptions bordered :column="props.column" size="small" :labelStyle="width">
-     @foreach(var item in Model.View)
-     {
-      <a-descriptions-item label="@item.DisplayName"> {{ detailData?.@item.PropertyCase}} </a-descriptions-item>
-     }
-    </a-descriptions>
+      <a-descriptions bordered :column="props.column" size="small" :labelStyle="width">
+          @Model.ViewString
+      </a-descriptions>
   </div>
 </template>
 
@@ -20,7 +17,12 @@
   import { ref, nextTick } from 'vue';
   import { useI18n } from '@@/hooks/web/useI18n';
   import { useLoading } from '@@/components/Loading';
+  import { formatToDate } from '@@/utils/dateUtil';
+  import { useDictStore } from '@@/store/modules/dict';
+  import { useEnumStore } from '@@/store/modules/enum';
 
+  const dictStore = useDictStore();
+  const enumStore = useEnumStore();
   const detailContentRef = ref(null);
   const { t } = useI18n();
   const [openWrapLoading, closeWrapLoading] = useLoading({
@@ -45,14 +47,17 @@
    * 获取详情
    */
   function getData(data) {
-    @{@Model.Entity}Get(data.id)
-      .then((res) => {
+      @{@Model.Entity}Get(data.id).then((res) => {
         detailData.value = res;
       })
       .finally(() => {
         closeWrapLoading();
       });
   }
+
+  /**
+   * 初始化
+   */
   function init(data) {
     nextTick(() => {
       openWrapLoading();

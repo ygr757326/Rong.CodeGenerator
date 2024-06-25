@@ -32,9 +32,9 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <param name="entities">实体集合</param>
         /// <param name="applicationAsController">统一是否应用层作为控制器，如果 <see cref="TemplateModel.ApplicationAsController"/> 为空则使用 <paramref name="applicationAsController"/>，否则使用 <see cref="TemplateModel.ApplicationAsController"/>，如果 <see cref="TemplateModel.ApplicationAsController"/> 也为空，则默认true（true：不生成HttpApi,默认不生成）</param>
         /// <param name="nameSpace">统一命名空间，如果 <see cref="TemplateModel.NameSpace"/> 为空则使用 <paramref name="nameSpace"/>，否则使用 <see cref="TemplateModel.NameSpace"/></param>
+        /// <param name="project">项目，若为空，则取 <paramref name="nameSpace"/>.Split('.')[1] </param>
         /// <returns></returns>
-        public async Task StartAsync(List<TemplateModel> entities, bool? applicationAsController = null,
-            string? nameSpace = null)
+        public async Task StartAsync(List<TemplateModel> entities, bool? applicationAsController = null, string? nameSpace = null, string? project = null)
         {
             Check.NotNull(entities, nameof(entities));
 
@@ -51,13 +51,17 @@ namespace Rong.Volo.Abp.CodeGenerator
 
             foreach (var item in entities)
             {
+                item.EntityCase = item.Entity.ToCamelCase();
                 item.NameSpace ??= nameSpace;
+                item.Project ??= project;
                 item.ApplicationAsController ??= applicationAsController ?? true;
+
+                item.SetProject();
 
                 tasks.Add(Task.Run(async () => { await GenerateForEntityAsync(item); }));
             }
 
-            tasks.Add(Task.Run(async () => { await GenerateForBaseAsync(nameSpace); }));
+            tasks.Add(Task.Run(async () => { await GenerateForBaseAsync(nameSpace, project); }));
 
             //等待任务执行完毕
             await Task.WhenAll(tasks);
@@ -108,16 +112,19 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// 生成基类
         /// </summary>
         /// <returns></returns>
-        private async Task GenerateForBaseAsync(string? nameSpace)
+        private async Task GenerateForBaseAsync(string? nameSpace, string? project)
         {
             var model = new TemplateModel
             {
-                NameSpace = nameSpace
+                NameSpace = nameSpace,
+                Project = project
             };
+
+            model.SetProject();
 
             string[] templates = new[]
             {
-                CodeGeneratorTemplateNames.Domain_DomainServiceBase, 
+                CodeGeneratorTemplateNames.Domain_DomainServiceBase,
                 CodeGeneratorTemplateNames.HttpApi_ControllerBase,
                 CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionAttribute,
                 CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionConsts,

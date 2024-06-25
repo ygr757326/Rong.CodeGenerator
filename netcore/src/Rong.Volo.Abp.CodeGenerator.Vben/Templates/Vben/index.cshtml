@@ -1,22 +1,23 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueIndexModel>
 @{
-    var indexAuth= @Model.Entity;
+    var permissionGroup = string.IsNullOrWhiteSpace(@Model.PermissionGroup) ? null : (@Model.PermissionGroup + ".");
+    var indexAuth = permissionGroup + @Model.Entity;
     var createAuth = @indexAuth + ".Create";
     var updateAuth = @indexAuth + ".Update";
     var deleteAuth = @indexAuth + ".Delete";
 
-    string tableColumns = null;
-    foreach(var item in Model.Table)
-    {
-        tableColumns += $"{{title: '{@item.DisplayName}', dataIndex: '{@item.PropertyCase}' }},\r\n";
-    }
+    // string tableColumns = null;
+    // foreach(var item in Model.Table)
+    // {
+    //     tableColumns += $"  {{title: '{@item.DisplayName}', dataIndex: '{@item.PropertyCase}' }},\r\n  ";
+    // }
 
-    string searchSchemas = null;
-    foreach (var item in Model.Search)
-    {
-        searchSchemas += $"{{label: '{@item.DisplayName}', field: '{@item.Property}', component: 'Input' }},\r\n";
-    }
+    // string searchSchemas = null;
+    // foreach (var item in Model.Search)
+    // {
+    //     searchSchemas += $"  {{label: '{@item.DisplayName}', field: '{@item.Property}', component: 'Input' }},\r\n      ";
+    // }
  }
 <template>
   <PageWrapper contentFullHeight>
@@ -71,7 +72,12 @@
   import { PageWrapper } from '@@/components/Page';
   import { BasicColumn, BasicTable, TableAction, useTable } from '@@/components/Table';
   import { useGrid } from '@@/hooks/manageCenter/useGrid';
+  import { formatToDate } from '@@/utils/dateUtil';
+  import { useDictStore } from '@@/store/modules/dict';
+  import { useEnumStore } from '@@/store/modules/enum';
 
+  const dictStore = useDictStore();
+  const enumStore = useEnumStore();
   const addRef = ref<AbsViewModal | null>(null);
   const modifyRef = ref<AbsViewModal | null>(null);
   const drawerRef = ref<AbsViewModal | null>(null);
@@ -93,8 +99,8 @@
     * 表头
    */
   const columns: BasicColumn[] = [
-    @tableColumns
-    ];
+@Model.TableString
+  ];
 
   /**
    * 表头配置
@@ -121,7 +127,7 @@
       labelWidth: 120,
       ...useGrid(),
       schemas: [
-        @searchSchemas
+@Model.SearchString
       ],
     },
   });

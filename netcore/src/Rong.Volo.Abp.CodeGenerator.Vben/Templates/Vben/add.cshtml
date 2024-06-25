@@ -1,11 +1,12 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueAddModel>
+
 @{
-    string schemas = null;
-    foreach (var item in Model.Form)
-    {
-        schemas += $"{{label: '{@item.DisplayName}', field: '{@item.PropertyCase}', component: 'Input', required: {char.ToLowerInvariant(item.IsRequired.ToString()[0]) + item.IsRequired.ToString().Substring(1)}, }},\r\n";
-    }
+    // string schemas = null;
+    // foreach (var item in Model.Form)
+    // {
+    //     schemas += $"  {{label: '{@item.DisplayName}', field: '{@item.PropertyCase}', component: 'Input', required: {char.ToLowerInvariant(item.IsRequired.ToString()[0]) + item.IsRequired.ToString().Substring(1)}, }},\r\n  ";
+    // }
 }
 <template>
   <a-drawer v-model:visible="visible" :title="title" width="800px">
@@ -14,11 +15,9 @@
       <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
     </template>
     <div>
-      <BasicForm @@register="Register">
-        <template #healthAttachs="{ model, field }">
-          <GzUploadFile v-model="model[field]" :multiple="true" listType="text"></GzUploadFile>
-        </template>
-      </BasicForm>
+        <BasicForm @@register="Register">
+            <!-- <template #healthAttachs="{ model, field }"></template> -->
+        </BasicForm>
     </div>
   </a-drawer>
 </template>
@@ -27,7 +26,11 @@
   import { nextTick, ref } from 'vue';
   import { @{@Model.Entity}Create } from 'api';
   import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
+  import { useDictStore } from '@@/store/modules/dict';
+  import { useEnumStore } from '@@/store/modules/enum';
 
+  const dictStore = useDictStore();
+  const enumStore = useEnumStore();
   const visible = ref<Boolean>(false);
   const title = ref<string>('新增');
   const $emit = defineEmits(['success']);
@@ -36,7 +39,7 @@
    * 表单
    */
   const schemas: FormSchema[] = [
-    @schemas
+  @Model.FormString
   ];
 
   /**
@@ -48,6 +51,9 @@
     actionColOptions: {
       span: 12,
     },
+    baseColProps: {
+      span: 24,
+    },
     // 是否显示操作按钮
     showActionButtonGroup: false,
   });
@@ -56,9 +62,13 @@
   * 提交表单
   */
   async function handleSubmit() {
+    //验证
     await validateFields();
+    //获取
     const data: any = getFieldsValue();
+    //创建
     await @{@Model.Entity}Create(data);
+
     visible.value = false;
     $emit('success');
   }

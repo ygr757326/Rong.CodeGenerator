@@ -31,7 +31,7 @@ public class CodeVueController : AbpController
         };
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator", "F:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+        await _codeGeneratorStore.StartAsync(list, "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo\\", "Rong.CodeGenerator");
 
         return Content("ok");
 

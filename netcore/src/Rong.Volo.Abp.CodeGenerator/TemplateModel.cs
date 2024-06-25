@@ -20,7 +20,7 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <summary>
         /// 实体小写
         /// </summary>
-        public string? EntityCase => Entity.IsNullOrWhiteSpace() ? null : $"{char.ToLowerInvariant(Entity[0]) + Entity.Substring(1)}";
+        public string? EntityCase { get; internal set; }
 
         /// <summary>
         /// 实体名称
@@ -36,23 +36,7 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <summary>
         /// 项目名称
         /// </summary>
-        public string? Project
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(NameSpace))
-                {
-                    return NameSpace;
-                }
-                string[] s = NameSpace.Split('.');
-
-                if (s.Length == 0 || s.Length == 1)
-                {
-                    return NameSpace;
-                }
-                return s[1];
-            }
-        }
+        public string? Project { get; set; }
 
         /// <summary>
         /// 构造
@@ -67,13 +51,49 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <param name="entity"></param>
         /// <param name="entityName"></param>
         /// <param name="nameSpace"></param>
+        /// <param name="project"></param>
         /// <param name="applicationAsController"></param>
-        public TemplateModel(string entity, string entityName, string? nameSpace = null, bool? applicationAsController = null)
+        public TemplateModel(string entity, string entityName, string? nameSpace = null, string? project = null, bool? applicationAsController = null)
         {
             Entity = entity;
             EntityName = entityName;
             NameSpace = nameSpace;
+            Project = project;
             ApplicationAsController = applicationAsController;
+        }
+
+        /// <summary>
+        /// 获取项目
+        /// </summary>
+        /// <returns></returns>
+        public void SetProject()
+        {
+            if (!string.IsNullOrWhiteSpace(Project))
+            {
+                return;
+            }
+
+            Project = GetProject(NameSpace);
+        }
+
+        /// <summary>
+        /// 获取项目
+        /// </summary>
+        /// <returns></returns>
+        public static string? GetProject(string? nameSpace)
+        {
+            if (string.IsNullOrWhiteSpace(nameSpace))
+            {
+                return nameSpace;
+            }
+
+            string[] s = nameSpace.Split('.');
+
+            if (s.Length == 0 || s.Length == 1)
+            {
+                return nameSpace;
+            }
+            return s[1];
         }
     }
 }

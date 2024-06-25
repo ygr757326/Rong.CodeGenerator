@@ -11,5 +11,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// 表单数据
         /// </summary>
         public List<TemplateVueModelData>? Form { get; set; } = new List<TemplateVueModelData>();
+
+        /// <summary>
+        /// 表单数据字符串
+        /// </summary>
+        public string? FormString { get; set; }
     }
 }

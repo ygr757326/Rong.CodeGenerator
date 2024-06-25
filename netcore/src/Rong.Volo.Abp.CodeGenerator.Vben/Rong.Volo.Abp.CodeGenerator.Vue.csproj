@@ -5,6 +5,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net7.0;net8.0;</TargetFrameworks>
 		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Rong.Volo.Abp.CodeGenerator.Vue</RootNamespace>
 		<Description>abp vnext 7.4.0以上的代码生成器。本人为了快速开发而写的代码生成器。</Description>
 		<Version>0.2.3</Version>

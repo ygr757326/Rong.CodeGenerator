@@ -1,11 +1,6 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueModifyModel>
 @{
-    string schemas = null;
-    foreach (var item in Model.Form)
-    {
-        schemas += $"{{label: '{@item.DisplayName}', field: '{@item.PropertyCase}', component: 'Input', required: {char.ToLowerInvariant(item.IsRequired.ToString()[0]) + item.IsRequired.ToString().Substring(1)}, }},\r\n";
-    }
 }
 <template>
 <a-drawer v-model:visible="visible" :title="title" width="800px">
@@ -29,6 +24,11 @@ import { nextTick, ref } from 'vue';
 import { @{@Model.Entity}Get, @{@Model.Entity}Update } from 'api';
 import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
 import { useLoading } from '@@/components/Loading';
+import { useDictStore } from '@@/store/modules/dict';
+import { useEnumStore } from '@@/store/modules/enum';
+
+const dictStore = useDictStore();
+const enumStore = useEnumStore();
 
 const modifyFormRef = ref(null);
 
@@ -47,7 +47,7 @@ const $emit = defineEmits(['success']);
  * 表单
  */
 const schemas: FormSchema[] = [
-    @schemas
+@Model.FormString
 ];
 
 /**
@@ -59,6 +59,9 @@ const [Register, { validateFields, getFieldsValue, setFieldsValue, resetFields }
   actionColOptions: {
     span: 12,
   },
+  baseColProps: {
+    span: 24,
+  },
   // 是否显示操作按钮
   showActionButtonGroup: false,
 });
@@ -68,9 +71,13 @@ const [Register, { validateFields, getFieldsValue, setFieldsValue, resetFields }
  * 提交表单 - 修改
  */
 async function handleSubmit() {
+  //验证
   await validateFields();
+  //获取
   const data: any = getFieldsValue();
+  //修改
   await @{@Model.Entity}Update(data.id, data);
+
   visible.value = false;
   $emit('success');
 }
@@ -79,11 +86,10 @@ async function handleSubmit() {
 * 获取详情
 /*/
 async function getData(data) {
-  @{@Model.Entity}Get(data.id)
-    .then((res) => {
+  @{@Model.Entity}Get(data.id).then((res) => {
       setFieldsValue(res);
-    })
-    .finally(() => {
+  })
+  .finally(() => {
       closeWrapLoading();
     });
 }

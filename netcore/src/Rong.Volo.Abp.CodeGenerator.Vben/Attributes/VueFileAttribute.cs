@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
+
+namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
+{
+    /// <summary>
+    /// vue 文件枚举特性
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class VueFileAttribute : Attribute
+    {
+        /// <summary>
+        /// 是否多文件
+        /// </summary>
+        public bool Multiple { get; set; }
+
+        public VueFileAttribute(bool multiple = false)
+        {
+            Multiple = multiple;
+        }
+    }
+}

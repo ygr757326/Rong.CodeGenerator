@@ -29,8 +29,6 @@
     <ProjectReference Include="..\..\src\Rong.CodeGenerator.HttpApi\Rong.CodeGenerator.HttpApi.csproj" />
     <ProjectReference Include="..\..\src\Rong.CodeGenerator.Application\Rong.CodeGenerator.Application.csproj" />
     <ProjectReference Include="..\..\src\Rong.CodeGenerator.EntityFrameworkCore\Rong.CodeGenerator.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Rong.Volo.Abp.CodeGenerator.Vben\Rong.Volo.Abp.CodeGenerator.Vue.csproj" />
-    <ProjectReference Include="..\Rong.Volo.Abp.CodeGenerator\Rong.Volo.Abp.CodeGenerator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

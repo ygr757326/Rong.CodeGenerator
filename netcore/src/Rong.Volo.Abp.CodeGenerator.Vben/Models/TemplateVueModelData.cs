@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
 {
@@ -21,7 +22,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// <summary>
         /// 属性小写
         /// </summary>
-        public string PropertyCase => Property.IsNullOrWhiteSpace() ? null : $"{char.ToLowerInvariant(Property[0]) + Property.Substring(1)}";
+        public string PropertyCase { get; internal set; }
 
         /// <summary>
         /// 是否必须
@@ -31,6 +32,41 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// <summary>
         /// 属性值类型
         /// </summary>
-        public Type? PropertyType { get; set; }
+        public Type PropertyType { get; set; }
+
+        /// <summary>
+        /// 是否是字典
+        /// </summary>
+        public bool IsDictionary { get; set; }
+
+        /// <summary>
+        /// 字典编码
+        /// </summary>
+        public string? DictionaryCode { get; set; }
+
+        /// <summary>
+        /// 是否是枚举
+        /// </summary>
+        public bool IsEnum { get; set; }
+
+        /// <summary>
+        /// 选择模式
+        /// </summary>
+        public VueSelectModeEnum? SelectMode { get; set; }
+
+        /// <summary>
+        /// 表格是否排序
+        /// </summary>
+        public bool TableSorter { get; set; }
+
+        /// <summary>
+        /// 是否是文件
+        /// </summary>
+        public bool IsFile { get; set; }
+
+        /// <summary>
+        /// 是否是多文件
+        /// </summary>
+        public bool MultipleFile { get; set; }
     }
 }

@@ -29,7 +29,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     MetadataReference.CreateFromFile(typeof(CodeGeneratorVueModule).Assembly.Location));
             });
 
-
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
                 options.FileSets.AddEmbedded<CodeGeneratorVueModule>("Rong.Volo.Abp.CodeGenerator.Vue");
