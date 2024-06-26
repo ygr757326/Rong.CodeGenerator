@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Reflection;
@@ -20,12 +21,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// </summary>
     public class CodeGeneratorVueStore : ITransientDependency
     {
-        private readonly CodeGeneratorModelStore _codeGeneratorModelStore;
+        private readonly CodeGeneratorVueModelStore _codeGeneratorModelStore;
         private readonly ITemplateDefinitionManager _templateDefinitionManager;
         private readonly ITemplateRenderer _templateRenderer;
 
         public CodeGeneratorVueStore(
-            CodeGeneratorModelStore codeGeneratorModelStore,
+            CodeGeneratorVueModelStore codeGeneratorModelStore,
             ITemplateDefinitionManager templateDefinitionManager,
             ITemplateRenderer templateRenderer)
         {
@@ -37,12 +38,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 开始代码生成
         /// </summary>
+        /// <param name="serviceName">服务名称</param>
         /// <param name="entities">实体集合</param>
         /// <param name="saveRootPath">要保存到的根目录</param>
-        /// <param name="nameSpace">命名空间</param>
-        /// <param name="project">项目</param>
         /// <returns></returns>
-        public virtual async Task StartAsync(List<TemplateVueModel> entities, string saveRootPath, string? nameSpace, string? project = null)
+        public virtual async Task StartAsync(List<TemplateVueModel> entities, string serviceName, string saveRootPath)
         {
             Check.NotNull(entities, nameof(entities));
             Check.NotNullOrWhiteSpace(saveRootPath, nameof(saveRootPath));
@@ -61,10 +61,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             foreach (var item in entities)
             {
                 item.EntityCase = item.Entity.ToCamelCase();
-                item.NameSpace ??= nameSpace;
-                item.Project ??= project;
-
-                item.SetProject();
+                item.ServiceName ??= serviceName;
 
                 tasks.Add(Task.Run(async () => { await GenerateForEntityAsync(item, saveRootPath); }));
             }
@@ -81,7 +78,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <returns></returns>
         protected virtual async Task GenerateForEntityAsync(TemplateVueModel entity, string saveRootPath)
         {
-            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorVbenTemplateNames));
+            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorVueVbenTemplateNames));
 
             foreach (var template in templates)
             {
@@ -92,8 +89,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     continue;
                 }
 
-                string name = temp.Properties["name"].ToString().Replace("xxx", entity.Entity);
-                string path = temp.Properties["path"].ToString().Replace("xxx", entity.Entity)
+                string name = temp.Properties["name"].ToString().Replace("xxx", entity.EntityCase);
+                string path = temp.Properties["path"].ToString().Replace("xxx", entity.EntityCase)
                     .Replace("$rootPath", saveRootPath?.TrimEnd('\\', '/'));
 
                 //获取模值

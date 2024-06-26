@@ -2,20 +2,15 @@
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueAddModel>
 
 @{
-    // string schemas = null;
-    // foreach (var item in Model.Form)
-    // {
-    //     schemas += $"  {{label: '{@item.DisplayName}', field: '{@item.PropertyCase}', component: 'Input', required: {char.ToLowerInvariant(item.IsRequired.ToString()[0]) + item.IsRequired.ToString().Substring(1)}, }},\r\n  ";
-    // }
 }
 <template>
-  <a-drawer v-model:visible="visible" :title="title" width="800px">
+  <a-drawer v-model:visible="visible" title="新增 - @Model.EntityName" width="800px">
     <template #extra>
       <a-button @@click="visible = false">取消</a-button>
       <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
     </template>
     <div>
-        <BasicForm @@register="Register">
+            <BasicForm @@register="Register" v-if="visible">
             <!-- <template #healthAttachs="{ model, field }"></template> -->
         </BasicForm>
     </div>
@@ -24,7 +19,7 @@
 
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
-  import { @{@Model.Entity}Create } from 'api';
+  import { @{@Model.Entity}Create } from '../api';
   import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
   import { useDictStore } from '@@/store/modules/dict';
   import { useEnumStore } from '@@/store/modules/enum';
@@ -32,14 +27,13 @@
   const dictStore = useDictStore();
   const enumStore = useEnumStore();
   const visible = ref<Boolean>(false);
-  const title = ref<string>('新增');
   const $emit = defineEmits(['success']);
 
   /**
    * 表单
    */
   const schemas: FormSchema[] = [
-  @Model.FormString
+  @Model.FormTemplate
   ];
 
   /**

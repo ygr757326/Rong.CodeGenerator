@@ -15,41 +15,41 @@ import { defHttp } from '@/utils/http/axios';
 
 enum Api {
   // 获取系统配置列表
-  settingGetAllSettings = '/api/Shop/setting/getAllSettings',
+  settingGetAllSettings = '/api/Asset/setting/getAllSettings',
   // 修改系统配置
-  settingUpdateSetting = '/api/Shop/setting/updateSetting',
+  settingUpdateSetting = '/api/Asset/setting/updateSetting',
   // 添加字典
-  dictionaryCreate = '/api/Shop/dictionary/create',
+  dictionaryCreate = '/api/Asset/dictionary/create',
   // 获取字典详情
-  dictionaryGetList = '/api/Shop/dictionary/getList',
+  dictionaryGetList = '/api/Asset/dictionary/getList',
   // 修改字典
-  dictionaryUpdate = '/api/Shop/dictionary/update?id=',
+  dictionaryUpdate = '/api/Asset/dictionary/update?id=',
   // 删除字典
-  dictionaryDelete = '/api/Shop/dictionary/delete?id=',
+  dictionaryDelete = '/api/Asset/dictionary/delete?id=',
   //获取字典详情
-  dictionaryGet = '/api/Shop/dictionary/get',
+  dictionaryGet = '/api/Asset/dictionary/get',
   // 获取字典下拉
-  dictionaryGetDropDownList = '/api/Shop/dictionary/getDropDownList',
+  dictionaryGetDropDownList = '/api/Asset/dictionary/getDropDownList',
   // 启用字典
-  dictionaryEnable = '/api/Shop/dictionary/enable',
+  dictionaryEnable = '/api/Asset/dictionary/enable',
   // 禁用字典
-  dictionaryDisable = '/api/Shop/dictionary/disable',
+  dictionaryDisable = '/api/Asset/dictionary/disable',
   // 移除字典缓存
-  dictionaryRemoveCache = '/api/Shop/dictionary/removeCache',
+  dictionaryRemoveCache = '/api/Asset/dictionary/removeCache',
   // 获取所有枚举
-  enumGetValueList = '/api/Shop/enum/getValueList',
+  enumGetValueList = '/api/Asset/enum/getValueList',
   // 创建短信
-  smsCreate = '/api/Shop/smsTemplate/create',
+  smsCreate = '/api/Asset/smsTemplate/create',
   // 获取短信列表
-  smsGetList = '/api/Shop/smsTemplate/getList',
+  smsGetList = '/api/Asset/smsTemplate/getList',
   // 获取短信详情
-  smsGet = '/api/Shop/smsTemplate/get',
+  smsGet = '/api/Asset/smsTemplate/get',
   // 修改短信
-  smsUpdate = '/api/Shop/smsTemplate/update?id=',
+  smsUpdate = '/api/Asset/smsTemplate/update?id=',
   // 删除短信
-  smsDelete = '/api/Shop/smsTemplate/delete?id=',
+  smsDelete = '/api/Asset/smsTemplate/delete?id=',
   // 移除缓存
-  smsTemplateRemoveCache = '/api/Shop/smsTemplate/removeCache',
+  smsTemplateRemoveCache = '/api/Asset/smsTemplate/removeCache',
 }
 
 export const postDictionaryCreate = (data: DictionaryCreateParams) =>

@@ -1,5 +1,6 @@
 ﻿using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,14 +12,14 @@ using Volo.Abp.DependencyInjection;
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
     /// <summary>
-    /// 代码生成器帮助器
+    /// Vben代码生成器帮助器
     /// </summary>
-    public class CodeGeneratorModelStore : ISingletonDependency
+    public class CodeGeneratorVueModelStore : ISingletonDependency
     {
-        private readonly CodeGeneratorVueVbenHelper _codeGeneratorVueVbenHelper;
-        public CodeGeneratorModelStore(CodeGeneratorVueVbenHelper codeGeneratorVueVbenHelper)
+        private readonly CodeGeneratorVueVbenTemplate _vueTemplate;
+        public CodeGeneratorVueModelStore(CodeGeneratorVueVbenTemplate vueTemplate)
         {
-            _codeGeneratorVueVbenHelper = codeGeneratorVueVbenHelper;
+            _vueTemplate = vueTemplate;
         }
 
         /// <summary>
@@ -30,67 +31,60 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <exception cref="UserFriendlyException"></exception>
         public virtual object? GetModel(TemplateVueModel model, string template)
         {
-            var types = GetTypes(model.NameSpace);
-            object? data = null;
+            object data;
             switch (template)
             {
-                case CodeGeneratorVbenTemplateNames.Vben_index:
+                case CodeGeneratorVueVbenTemplateNames.Vben_index:
                     {
 
-                        var page = types.FirstOrDefault(a => a.Name == $"{model.Entity}PageOutput");
-                        var tableData = GetPropertyInfo(page, ignoreProperties: new[] { "id", "concurrencyStamp" }).Where(a =>
+                        var tableData = GetPropertyInfo(model.EntityType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })?.Where(a =>
                             !a.Property.Equals("concurrencyStamp", StringComparison.CurrentCultureIgnoreCase)).ToList();
 
-                        var search = types.FirstOrDefault(a => a.Name == $"{model.Entity}PageSearchInput");
-                        var searchData = GetPropertyInfo(search, true, new[] { "Sorting", "SkipCount", "MaxResultCount" });
+                        var searchData = GetPropertyInfo(model.EntityType.SearchType, true, new[] { "Sorting", "SkipCount", "MaxResultCount" });
 
                         data = new TemplateVueIndexModel
                         {
-                            Table = tableData,
-                            TableString = _codeGeneratorVueVbenHelper.GetVueTable(tableData, 4),
-                            Search = searchData,
-                            SearchString = _codeGeneratorVueVbenHelper.GetVueForm(searchData, 8),
+                            TableColumns = tableData,
+                            TableColumnsTemplate = _vueTemplate.GetTableColumnsTemplate(tableData, 4),
+                            TableColumnsSlotsTemplate = _vueTemplate.GetTableColumnsSlotsTemplate(tableData, 8),
+                            TableSchemas = searchData,
+                            TableSchemasTemplate = _vueTemplate.GetTableSchemasTemplate(searchData, 8),
                         };
 
                         break;
                     }
-                case CodeGeneratorVbenTemplateNames.Vben_add:
+                case CodeGeneratorVueVbenTemplateNames.Vben_add:
                     {
-                        var create = types.FirstOrDefault(a => a.Name == $"{model.Entity}CreateInput");
-
-                        var formData = GetPropertyInfo(create);
+                        var formData = GetPropertyInfo(model.EntityType.CreateType);
                         data = new TemplateVueAddModel
                         {
                             Form = formData,
-                            FormString = _codeGeneratorVueVbenHelper.GetVueForm(formData, 4),
+                            FormTemplate = _vueTemplate.GetFormTemplate(formData, 4),
                         };
                         break;
                     }
-                case CodeGeneratorVbenTemplateNames.Vben_modify:
+                case CodeGeneratorVueVbenTemplateNames.Vben_modify:
                     {
-                        var update = types.FirstOrDefault(a => a.Name == $"{model.Entity}UpdateInput");
-
-                        var formData = GetPropertyInfo(update);
+                        var formData = GetPropertyInfo(model.EntityType.UpdateType);
                         data = new TemplateVueModifyModel
                         {
                             Form = formData,
-                            FormString = _codeGeneratorVueVbenHelper.GetVueForm(formData, 4),
+                            FormTemplate = _vueTemplate.GetFormTemplate(formData, 4),
                         };
                         break;
                     }
-                case CodeGeneratorVbenTemplateNames.Vben_detail:
+                case CodeGeneratorVueVbenTemplateNames.Vben_detail:
                     {
-                        var detail = types.FirstOrDefault(a => a.Name == $"{model.Entity}DetailOutput");
-                        var viewData = GetPropertyInfo(detail, ignoreProperties: new[] { "id", "concurrencyStamp" });
+                        var viewData = GetPropertyInfo(model.EntityType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" });
                         data = new TemplateVueDetailModel
                         {
-                            View = viewData,
-                            ViewString = _codeGeneratorVueVbenHelper.GetVueDetail(viewData),
+                            Detail = viewData,
+                            DetailTemplate = _vueTemplate.GetDetailTemplate(viewData, 8),
                         };
                         break;
                     }
 
-                case CodeGeneratorVbenTemplateNames.Vben_api:
+                case CodeGeneratorVueVbenTemplateNames.Vben_api:
                     {
                         data = new TemplateVueApiModel()
                         {
@@ -98,17 +92,30 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                         };
                         break;
                     }
-                case CodeGeneratorVbenTemplateNames.Vben_detailDrawer:
+                case CodeGeneratorVueVbenTemplateNames.Vben_detailDrawer:
                     {
+                        data = new TemplateVueDetailDrawerModel()
+                        {
+
+                        };
                         break;
                     }
+                case CodeGeneratorVueVbenTemplateNames.Vben_router:
+                {
+                    data = new TemplateVueRouterModel()
+                    {
+
+                    };
+                    break;
+                }
                 default:
                     throw new UserFriendlyException($"模板【{template}】输出未实现");
             }
 
             if (data is TemplateVueModel m)
             {
-                m.NameSpace = model.NameSpace;
+                m.ServiceName = model.ServiceName;
+                m.EntityCase = model.EntityCase;
                 m.Entity = model.Entity;
                 m.EntityName = model.EntityName;
                 m.PermissionGroup = model.PermissionGroup;
@@ -139,6 +146,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             foreach (PropertyInfo propertyInfo in properties)
             {
+                var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
+
                 var dictAttr = propertyInfo.GetCustomAttribute<VueDictionaryAttribute>();
                 var enumAttr = propertyInfo.GetCustomAttribute<VueEnumAttribute>();
                 var fileAttr = propertyInfo.GetCustomAttribute<VueFileAttribute>();
@@ -170,22 +179,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 info.IsFile = fileAttr != null;
                 info.MultipleFile = fileAttr?.Multiple ?? false;
 
+                info.IsSlot = typeCode == TypeCode.Boolean || dictAttr?.Slot == true || enumAttr?.Slot == true;
+
                 data.Add(info);
             }
 
             return data;
-        }
-
-        /// <summary>
-        /// 获取程序集
-        /// </summary>
-        /// <param name="nameSpace"></param>
-        /// <returns></returns>
-        protected virtual IEnumerable<Type> GetTypes(string nameSpace)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => x.FullName.StartsWith(nameSpace))
-                .SelectMany(a => a.GetTypes());
         }
     }
 

@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    2: typeof import('./src/components/Upload/src/components/ImageUpload copy 2.vue')['default']
+    3: typeof import('./src/components/Upload/src/components/ImageUpload copy 3.vue')['default']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
     ACheckboxGroup: typeof import('ant-design-vue/es')['CheckboxGroup']
@@ -65,6 +67,7 @@ declare module 'vue' {
     CollapseTransition: typeof import('./src/components/Transition/src/CollapseTransition.vue')['default']
     ColumnSetting: typeof import('./src/components/Table/src/components/settings/ColumnSetting.vue')['default']
     ContextMenu: typeof import('./src/components/ContextMenu/src/ContextMenu.vue')['default']
+    copy: typeof import('./src/components/Upload/src/components/ImageUpload copy.vue')['default']
     CountButton: typeof import('./src/components/CountDown/src/CountButton.vue')['default']
     CountdownInput: typeof import('./src/components/CountDown/src/CountdownInput.vue')['default']
     CountTo: typeof import('./src/components/CountTo/src/CountTo.vue')['default']
@@ -96,6 +99,7 @@ declare module 'vue' {
     Icon: typeof import('./src/components/Icon/Icon.vue')['default']
     IconPicker: typeof import('./src/components/Icon/src/IconPicker.vue')['default']
     ImageUpload: typeof import('./src/components/Upload/src/components/ImageUpload.vue')['default']
+    'ImageUpload copy': typeof import('./src/components/Upload/src/components/ImageUpload copy.vue')['default']
     ImgRotate: typeof import('./src/components/Verify/src/ImgRotate.vue')['default']
     ImgUpload: typeof import('./src/components/Tinymce/src/ImgUpload.vue')['default']
     ImportExcel: typeof import('./src/components/Excel/src/ImportExcel.vue')['default']

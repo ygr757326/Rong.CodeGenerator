@@ -1,0 +1,35 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueRouterModel>
+@{
+}
+import type { AppRouteModule } from '@@/router/types';
+
+import { LAYOUT } from '@@/router/constant';
+import { t } from '@@/hooks/web/useI18n';
+
+const about: AppRouteModule = {
+  path: '/@{Model.EntityCase}',
+  name: '@{Model.Entity}',
+  component: LAYOUT,
+  redirect: '/@{Model.EntityCase}/index',
+  meta: {
+    hideChildrenInMenu: true,
+    icon: '',
+    title: '@{Model.EntityName}',
+    orderNo: 100000,
+  },
+  children: [
+    {
+      path: 'index',
+      name: '@{Model.Entity}Page',
+      component: () => import('@@/views/@{Model.EntityCase}/index.vue'),
+      meta: {
+        title:  '@Model.EntityName',
+        icon: '',
+        hideMenu: true,
+      },
+    },
+  ],
+};
+
+export default about;

@@ -8,17 +8,17 @@ import { commonParams } from './model/identityModel';
 import { defHttp } from '/@/utils/http/axios';
 enum Api {
   //获取公告列表
-  noticeGetList = '/api/Shop/notice/getList',
+  noticeGetList = '/api/Asset/notice/getList',
   // 获取公告详情
-  noticeGet = '/api/Shop/notice/get',
+  noticeGet = '/api/Asset/notice/get',
   // 修改公告
-  noticeUpdate = '/api/Shop/notice/update?id=',
+  noticeUpdate = '/api/Asset/notice/update?id=',
   // 删除公告
-  noticeDelete = '/api/Shop/notice/delete?id=',
+  noticeDelete = '/api/Asset/notice/delete?id=',
   //创建公告
-  noticeCreate = '/api/Shop/notice/create',
+  noticeCreate = '/api/Asset/notice/create',
   // 是否发布广告
-  noticeSetIsActive = '/api/Shop/notice/setIsActive',
+  noticeSetIsActive = '/api/Asset/notice/setIsActive',
 }
 
 // 获取公告列表

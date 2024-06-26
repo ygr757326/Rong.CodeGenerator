@@ -5,11 +5,7 @@
       <a-button @click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
     </template>
     <div>
-      <BasicForm @register="Register">
-        <template #logo="{ model, field }">
-          <GzUploadFile v-model="model[field]"></GzUploadFile>
-        </template>
-      </BasicForm>
+      <BasicForm @register="Register"> </BasicForm>
     </div>
   </a-drawer>
 </template>
@@ -54,12 +50,11 @@
     },
     {
       field: 'logo',
-      component: 'Input',
+      component: 'ImageUpload',
       label: '封面图片',
       colProps: {
         span: 24,
       },
-      slot: 'logo',
     },
     {
       field: 'content',

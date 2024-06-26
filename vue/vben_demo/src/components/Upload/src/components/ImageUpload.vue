@@ -1,100 +1,147 @@
 <template>
   <div>
-    <Upload
+    <!-- :preview-file="previewFile" 
+       @preview="preview" 
+            v-on="listeners"
+      -->
+    <a-upload
+      :accept="accept"
       v-bind="$attrs"
-      v-model:file-list="fileList"
-      :list-type="listType"
-      :accept="getStringAccept"
+      v-model:value="currentValue"
+      :customRequest="customRequest"
       :multiple="multiple"
-      :maxCount="maxNumber"
+      :name="name"
+      :list-type="listType"
+      :file-list="myFileList"
+      @change="change"
+      @preview="previewNew"
       :before-upload="beforeUpload"
-      :custom-request="customRequest"
-      :disabled="disabled"
-      @preview="handlePreview"
-      @remove="handleRemove"
+      :show-upload-list="showUploadList"
     >
-      <div v-if="fileList && fileList.length < maxNumber">
-        <plus-outlined />
-        <div style="margin-top: 8px">{{ t('component.upload.upload') }}</div>
+      <div v-if="listType == 'picture-card'">
+        <PlusOutlined />
+        <div class="ant-upload-text">选择文件</div>
       </div>
-    </Upload>
-    <Modal :open="previewOpen" :title="previewTitle" :footer="null" @cancel="handleCancel">
-      <img alt="" style="width: 100%" :src="previewImage" />
-    </Modal>
+      <div v-else-if="listType == 'text'">
+        <a-button :icon="h(PlusOutlined)">选择文件 </a-button>
+      </div>
+    </a-upload>
+    <!-- <FileViewModal
+      :visible="previewData.visible"
+      :type="viewType"
+      :src="previewData.fileId"
+      :name="previewData.name"
+      @cancel="cancelPreview"
+    ></FileViewModal> -->
+    <a-modal :visible="previewData.visible" :footer="null" @cancel="cancelPreview">
+      <a-spin :spinning="previewData.loading">
+        <img style="width: 100%" :src="previewData.fileId" />
+      </a-spin>
+    </a-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, toRefs, watch } from 'vue';
+  import { message } from 'ant-design-vue';
+  import { reactive, ref, watch, h } from 'vue';
   import { PlusOutlined } from '@ant-design/icons-vue';
-  import type { UploadFile, UploadProps } from 'ant-design-vue';
-  import { Modal, Upload } from 'ant-design-vue';
-  import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
-  import { useMessage } from '@/hooks/web/useMessage';
-  import { isArray, isFunction, isObject, isString } from '@/utils/is';
-  import { warn } from '@/utils/log';
-  import { useI18n } from '@/hooks/web/useI18n';
-  import { useUploadType } from '../hooks/useUpload';
-  import { uploadContainerProps } from '../props';
-  import { checkFileType } from '../helper';
-  import { UploadResultStatus } from '@/components/Upload/src/types/typing';
-  import { get, omit } from 'lodash-es';
-
+  import {
+    getFile0ssPreviewThumbnail,
+    getFileGetFileInfos,
+    getFileOssPreview,
+  } from '@/api/manageCenter/fileManage';
+  import { defHttp } from '@/utils/http/axios';
+  import { log } from 'console';
+  //  import { FileViewModal } from '@/components/_myComponents/FileView';
   defineOptions({ name: 'ImageUpload' });
-
-  const emit = defineEmits(['change', 'update:value', 'delete']);
+  const $emit = defineEmits(['change', 'error', 'success', 'update:modelValue', 'update:value']);
   const props = defineProps({
-    ...omit(uploadContainerProps, ['previewColumns', 'beforePreviewData']),
+    /**
+     * v-model:value 是否为 fileId
+     * */
+    fileIdValue: {
+      type: Boolean,
+      default: () => true,
+    },
+    /**
+     * 文件分类
+     */
+    cate: {
+      type: Number,
+      default: 0,
+    },
+    /**
+     * 最大文件大小 MB
+     */
+    maxSize: {
+      type: Number,
+      default: () => 0,
+    },
+    //----------------------以上为自定义------------------------------------
+    /**
+     * v-model
+     */
+    modelValue: {
+      type: [String, Array, Object],
+      default: null,
+    },
+    listType: {
+      type: String,
+      default: () => 'picture-card',
+    },
+    name: {
+      type: String,
+      default: () => 'file',
+    },
+    accept: {
+      type: String,
+      default: () => null,
+    },
+    multiple: {
+      type: Boolean,
+      default: () => false,
+    },
+    showUploadList: {
+      type: Boolean,
+      default: () => true,
+    },
+    /**
+          * uid: '-1',
+            name: 'xxx.png',
+            status: 'done',//uploading done error removed
+            url: 'http://www.baidu.com/xxx.png',
+          // */
+    fileList: {
+      type: Array,
+      default: () => null,
+    },
+    //  viewType: {
+    //    type: 'modal' | 'drawer' | 'open',
+    //  }
   });
-  const { t } = useI18n();
-  const { createMessage } = useMessage();
-  const { accept, helpText, maxNumber, maxSize } = toRefs(props);
-  const isInnerOperate = ref<boolean>(false);
-  const { getStringAccept } = useUploadType({
-    acceptRef: accept,
-    helpTextRef: helpText,
-    maxNumberRef: maxNumber,
-    maxSizeRef: maxSize,
+  let previewData = reactive({
+    fileId: '',
+    fileName: null,
+    visible: false,
+    loading: true,
   });
-  const previewOpen = ref<boolean>(false);
-  const previewImage = ref<string>('');
-  const previewTitle = ref<string>('');
-
-  const fileList = ref<UploadProps['fileList']>([]);
-  const isLtMsg = ref<boolean>(true);
-  const isActMsg = ref<boolean>(true);
+  let currentValue = ref<String | Array<string> | Object>('');
+  let uploading = ref<boolean>(false);
+  let myFileList: any = ref([]);
+  let fileInfos: any = ref([]);
+  let url = ref<string>('/api/Asset/fileOss/uploadForm');
 
   watch(
-    () => props.value,
-    (v) => {
-      if (isInnerOperate.value) {
-        isInnerOperate.value = false;
-        return;
+    () => props.modelValue,
+    (newValue: any) => {
+      console.log('文件上传：' + newValue);
+      currentValue.value = newValue;
+      // 防止文件列表累计
+      // myFileList.value = [];
+      if (!newValue) {
+        myFileList.value = [];
       }
-      let value: string[] = [];
-      if (v) {
-        if (isArray(v)) {
-          value = v;
-        } else {
-          value.push(v);
-        }
-        fileList.value = value.map((item, i) => {
-          if (item && isString(item)) {
-            return {
-              uid: -i + '',
-              name: item.substring(item.lastIndexOf('/') + 1),
-              status: 'done',
-              url: item,
-            };
-          } else if (item && isObject(item)) {
-            return item;
-          } else {
-            return;
-          }
-        }) as UploadProps['fileList'];
-      }
-      emit('update:value', value);
-      emit('change', value);
+      setFileListByValue(newValue);
     },
     {
       immediate: true,
@@ -102,115 +149,381 @@
     },
   );
 
-  function getBase64<T extends string | ArrayBuffer | null>(file: File) {
-    return new Promise<T>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result as T);
-      };
-      reader.onerror = (error) => reject(error);
+  /**
+   * 上传状态改变：file.status 状态有：uploading done error removed
+   */
+  function change(info) {
+    //设置并显示文件
+    setChangeFileList(info);
+    //触发自定义方法
+    if (isError(info.file)) {
+      //上传错误
+      $emit('error', info.file, info.fileList);
+    } else if (isDone(info.file)) {
+      var val = setChangeValue(info);
+
+      //上传成功
+      $emit('success', info.file, info.fileList);
+      $emit('update:modelValue', val);
+      $emit('change', val);
+    } else if (isRemoved(info.file)) {
+      var val = setChangeValue(info);
+      $emit('update:modelValue', val);
+      $emit('change', val);
+      console.log('文件移除', info);
+    }
+  }
+  /**
+   * 当 fileIdValue 设为 true 时，获取响应后的fileId集合，作为双向绑定数据
+   * @param {'{file,fileList}'} info
+   */
+  function setChangeValue(info) {
+    if (!info) {
+      return null;
+    }
+
+    if (isUploading(info.file)) {
+      return info;
+    }
+
+    if (props.fileIdValue) {
+      //多张
+      if (props.multiple) {
+        return info.fileList?.filter((a) => isDone(a)).map((a) => a?.response?.fileId || a?.uid);
+      }
+      //一张
+      if (isDone(info.file)) {
+        return info.file?.response?.fileId;
+      }
+
+      return null;
+    } else {
+      return info.fileList.length == 0 ? null : info;
+    }
+  }
+  /**
+   * 设置上传时的：文件列表
+   */
+  function setChangeFileList(info) {
+    if (!props.multiple && info.fileList && info.fileList.length > 1) {
+      info.fileList = info.fileList.filter((item) => item.uid === info.file.uid);
+    }
+    myFileList.value = info.fileList;
+  }
+  /**
+   * 设置赋值时的：文件列表
+   */
+  async function setFileListByValue(value) {
+    if (!value || !props.fileIdValue || value.length == 0) {
+      return;
+    }
+
+    let fileIds: any = [];
+    if (value instanceof Array) {
+      fileIds = !props.multiple ? [value[0]] : [...value];
+    } else if (typeof value == 'string') {
+      fileIds = [value];
+    }
+
+    await GetFileIdNames(fileIds);
+
+    fileIds.forEach((id) => {
+      setMyFileList(id);
     });
   }
 
-  const handlePreview = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64<string>(file.originFileObj!);
+  async function setMyFileList(fileId) {
+    if (!fileId || !props.fileIdValue) {
+      return;
     }
-    previewImage.value = file.url || file.preview || '';
-    previewOpen.value = true;
-    previewTitle.value =
-      file.name || previewImage.value.substring(previewImage.value.lastIndexOf('/') + 1);
-  };
-
-  const handleRemove = async (file: UploadFile) => {
-    if (fileList.value) {
-      const index = fileList.value.findIndex((item) => item.uid === file.uid);
-      index !== -1 && fileList.value.splice(index, 1);
-      const value = getValue();
-      isInnerOperate.value = true;
-      emit('update:value', value);
-      emit('change', value);
-      emit('delete', file);
-    }
-  };
-
-  const handleCancel = () => {
-    previewOpen.value = false;
-    previewTitle.value = '';
-  };
-
-  const beforeUpload = (file: File) => {
-    const { maxSize, accept } = props;
-    const isAct = checkFileType(file, accept);
-    if (!isAct) {
-      createMessage.error(t('component.upload.acceptUpload', [accept]));
-      isActMsg.value = false;
-      // 防止弹出多个错误提示
-      setTimeout(() => (isActMsg.value = true), 1000);
-    }
-    const isLt = file.size / 1024 / 1024 > maxSize;
-    if (isLt) {
-      createMessage.error(t('component.upload.maxSizeMultiple', [maxSize]));
-      isLtMsg.value = false;
-      // 防止弹出多个错误提示
-      setTimeout(() => (isLtMsg.value = true), 1000);
-    }
-    return (isAct && !isLt) || Upload.LIST_IGNORE;
-  };
-
-  async function customRequest(info: UploadRequestOption<any>) {
-    const { api, uploadParams = {}, name, filename, resultField } = props;
-    if (!api || !isFunction(api)) {
-      return warn('upload api must exist and be a function');
-    }
-    try {
-      const res = await api?.({
-        data: {
-          ...uploadParams,
-        },
-        file: info.file,
-        name: name,
-        filename: filename,
+    let index = myFileList.value.findIndex((item) => item.uid === fileId);
+    let index1 = myFileList.value.findIndex((item) => item.response?.fileId === fileId);
+    let list: any = [];
+    if (index == -1 && index1 == -1) {
+      var url = await PreviewThumbnail(fileId);
+      list.push({
+        uid: fileId,
+        name: getFileNameByPath(fileId),
+        status: 'done',
+        url: url,
+        thumbUrl: url,
+        //type: "image/jpeg"
+        //size:0
       });
-      if (props.resultField) {
-        let result = get(res, resultField);
-        info.onSuccess!(result);
-      } else {
-        // 不传入 resultField 的情况
-        info.onSuccess!(res.data);
-      }
-      const value = getValue();
-      isInnerOperate.value = true;
-      emit('update:value', value);
-      emit('change', value);
-    } catch (e: any) {
-      console.log(e);
-      info.onError!(e);
     }
+    myFileList.value = [...myFileList.value, ...list];
   }
 
-  function getValue() {
-    const list = (fileList.value || [])
-      .filter((item) => item?.status === UploadResultStatus.DONE)
-      .map((item: any) => {
-        if (item?.response && props?.resultField) {
-          return item?.response;
-        }
-        return item?.url || item?.response?.url;
+  //  function  removeFromFileList(file) {
+  //    let index = myFileList.value.findIndex((item) => item.uid === file.uid);
+  //    if (index != -1) {
+  //      myFileList.value.splice(index, 1);
+  //    }
+  //  }
+  /**
+   * 验证文件大小
+   * @param {*} file
+   */
+  function validFileSize(file) {
+    if (props.maxSize <= 0) return true;
+    const isOK = file.size / 1024 / 1024 < props.maxSize;
+    if (!isOK) {
+      message.error(`文件大小不能超过 ${props.maxSize} MB：${file.name}`);
+    }
+    return isOK;
+  }
+  /**
+   * 验证文件类型
+   * @param {文件} file
+   */
+  function validFileType(file: any) {
+    return true;
+    // if (!this.accept) return true
+    // const isOK = this.accept.indexOf(file.type) != -1
+    // if (!isOK) {
+    //   this.$message.error(`只能上传格式为【${this.accept}】的文件：${file.name}`)
+    // }
+    // return isOK
+  }
+  /**
+   * 文件是否验证
+   * @param {} file
+   */
+  function isValid(file) {
+    return validFileType(file) && validFileSize(file);
+  }
+  /**
+   * 上传之前处理
+   */
+  function beforeUpload(file) {
+    if (!isValid(file)) {
+      return false;
+    }
+    return true;
+  }
+  /**
+   * 自定义上传
+   * { action, file, onSuccess, onError, onProgress }
+   */
+  function customRequest(info) {
+    uploading.value = true;
+    //上传
+    defHttp
+      .uploadFile(
+        {
+          url: import.meta.env.VITE_GLOB_API_URL + url.value,
+          onUploadProgress: (progressEvent) => {
+            info.onProgress(
+              {
+                percent: (progressEvent.loaded / progressEvent.total) * 100,
+              },
+              info.file,
+            ); //e.percent, file
+          },
+          timeout: 5 * 60 * 1000,
+        },
+        {
+          file: info.file,
+          data: {
+            Category: props.cate,
+          },
+        },
+      )
+      .then((res: any) => {
+        info.onSuccess(res.data, info.file); //response, file, xhr
+      })
+      .catch((res) => {
+        info.onError(res, res, info.file); //error, response, file
+      })
+      .finally(() => {
+        uploading.value = false;
       });
-    return list;
+  }
+  function isDone(file) {
+    return file?.status == 'done';
+  }
+  function isError(file) {
+    return file?.status == 'error';
+  }
+  function isUploading(file) {
+    return file?.status == 'uploading';
+  }
+  function isRemoved(file) {
+    return file?.status == 'removed';
+  }
+  /**
+   * 点击文件链接或预览图标时的回调
+   */
+  // async function previewNew(file) {
+
+  //   previewData.visible = true;
+  //   previewData.fileName = file.name;
+
+  //   previewData.loading = true;
+
+  //   if (file.response?.fileId) {
+  //     previewData.fileId = file.response?.fileId;
+  //   } else {
+  //     previewData.fileId = file.uid;
+  //   }
+
+  //   previewData.loading = false;
+  // }
+
+  /**
+   * 点击文件链接或预览图标时的回调
+   */
+  async function previewNew(file) {
+    if (props.listType == 'picture-card') {
+      previewData.visible = true;
+      previewData.loading = true;
+      previewData.fileName = file.name;
+
+      if (file.response) {
+        if (!file.url && !file.preview) {
+          file.preview = await getBase64(file.originFileObj);
+        }
+        previewData.fileId = file.url || file.preview;
+      } else {
+        file.preview = await goPreview(file.uid);
+
+        previewData.fileId = file.preview;
+      }
+
+      previewData.loading = false;
+    }
+    // previewData.visible = true;
+    //   previewData.loading = true;
+    //   previewData.fileName = file.name;
+
+    //   if (file.response) {
+    //     if (!file.url && !file.preview) {
+    //       file.preview = await getBase64(file.originFileObj);
+    //     }
+    //     previewData.fileId = file.url || file.preview;
+    //   } else {
+    //     file.preview = await goPreview(file.uid);
+
+    //     previewData.fileId = file.preview;
+    //   }
+
+    //   previewData.loading = false;
+  }
+  /**
+   * 取消预览
+   */
+  function cancelPreview() {
+    previewData.visible = false;
+  }
+  /**
+   * 获取文件base64编码
+   */
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      // 转化为base64
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+  /**
+   * 缩略图
+   */
+  function PreviewThumbnail(fileId) {
+    return new Promise((resolve, reject) => {
+      if (!IsOssFile(fileId)) {
+        resolve(fileId);
+        return;
+      }
+      getFile0ssPreviewThumbnail({ FileId: fileId })
+        .then((res) => {
+          resolve(res.url);
+          // this.getBase64(new Blob([res])).then((r) => {
+          //   resolve(r)
+          // })
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+  // /**
+  //  * 转图片类型
+  //  */
+  // function createObjectURL(res) {
+  //   const blob = new Blob([res]);
+  //   return window.URL.createObjectURL(blob);
+  // }
+
+  /**
+   * 原图
+   * @param {*} fileId
+   */
+  function goPreview(fileId) {
+    return new Promise((resolve, reject) => {
+      if (!fileId) {
+        return;
+      }
+      if (!IsOssFile(fileId)) {
+        resolve(fileId);
+        return;
+      }
+      getFileOssPreview({ FileId: fileId })
+        .then((res) => {
+          let src = res.url;
+          resolve(src);
+
+          // this.$viewerApi({
+          //   images: [src],
+          // })
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+  /**
+   * 自定义上传时的本地预览，用于处理非图片格式文件（例如视频文件）
+   */
+  // function previewFile(file) {
+  //   return new Promise((resolve) => {
+  //     resolve('thumbUrl');
+  //   });
+  // }
+  function IsOssFile(fileId) {
+    if (!fileId) return false;
+
+    var guid = fileId.match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/i);
+    return !!guid;
+  }
+  /**
+   * 获取文件id信息集合
+   */
+  async function GetFileIdNames(fileIds) {
+    var ids = fileIds.filter((fileId) => IsOssFile(fileId));
+    if (fileIds.length == 0 || ids.length == 0 || fileInfos.value?.length > 0) {
+      return;
+    }
+    fileInfos.value = [];
+    let list = await getFileGetFileInfos({ fileIds: ids });
+    fileInfos.value = list;
+  }
+  /**
+   * 获取文件名称
+   */
+  function getFileNameByPath(path) {
+    var name = fileInfos.value?.find(
+      (a) => a.id.toUpperCase() == path.toUpperCase(),
+    )?.fileOriginName;
+    if (name) {
+      return name;
+    } else {
+      var pos1 = path.lastIndexOf('/');
+      var pos2 = path.lastIndexOf('\\');
+      var pos = Math.max(pos1, pos2);
+      if (pos < 0) return path;
+      else return path.substring(pos + 1);
+    }
   }
 </script>
-
-<style lang="less">
-  .ant-upload-select-picture-card i {
-    color: #999;
-    font-size: 32px;
-  }
-
-  .ant-upload-select-picture-card .ant-upload-text {
-    margin-top: 8px;
-    color: #666;
-  }
-</style>

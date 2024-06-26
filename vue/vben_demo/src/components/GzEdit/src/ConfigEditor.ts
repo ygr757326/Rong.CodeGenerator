@@ -23,7 +23,7 @@ const ConfigEditor = {
  * 上传图片的配置
  */
 ConfigEditor.MENU_CONF['uploadImage'] = {
-  // server: '/api/Shop/fileOss/uploadForm',
+  // server: '/api/Asset/fileOss/uploadForm',
   allowedFileTypes: ['image/*'], //如不想限制，则设置为 []
   fieldName: 'file',
   maxFileSize: 1024 * 1024 * 10, //mb
@@ -33,7 +33,7 @@ ConfigEditor.MENU_CONF['uploadImage'] = {
     defHttp
       .uploadFile(
         {
-          url: import.meta.env.VITE_API_URL + '/api/Shop/fileOss/uploadForm',
+          url: import.meta.env.VITE_API_URL + '/api/Asset/fileOss/uploadForm',
         },
         {
           file: file,
@@ -68,7 +68,7 @@ ConfigEditor.MENU_CONF['uploadImage'] = {
     postFileOssAppServiceUploadForm(formData)
       .then((res) => {
         if (res.success) {
-          insertFn(`/api/Shop/fileOss/getPreview?fileId=${res?.result?.fileId}`);
+          insertFn(`/api/Asset/fileOss/getPreview?fileId=${res?.result?.fileId}`);
           // Preview({
           //   fileId: res.result?.fileId,
           // })
@@ -91,7 +91,7 @@ ConfigEditor.MENU_CONF['uploadImage'] = {
  *  上传视频的配置
  */
 ConfigEditor.MENU_CONF['uploadVideo'] = {
-  server: '/api/Shop/fileOss/uploadForm',
+  server: '/api/Asset/fileOss/uploadForm',
   allowedFileTypes: ['video/*'], //如不想限制，则设置为 []
   fieldName: 'file',
   maxFileSize: 1024 * 1024 * 100, //mb

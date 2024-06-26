@@ -15,25 +15,25 @@ import {
 
 enum Api {
   // 获取用户列表
-  identityUsers = '/api/Shop/user/getPaged',
+  identityUsers = '/api/Asset/user/getPaged',
   // 新增用户s
-  sysUserCreate = '/api/Shop/user/create',
+  sysUserCreate = '/api/Asset/user/create',
   // 修改用户2
-  sysUserUpdate = '/api/Shop/user/update?id=',
+  sysUserUpdate = '/api/Asset/user/update?id=',
   // 获取用户详情
-  sysUserGet = '/api/Shop/user/get',
+  sysUserGet = '/api/Asset/user/get',
   // 删除用户
-  sysUserDelete = '/api/Shop/user/delete?id=',
+  sysUserDelete = '/api/Asset/user/delete?id=',
   // 同步用户数据
-  userSync = '/api/Shop/user/sync',
+  userSync = '/api/Asset/user/sync',
   // 重置密码
-  sysUserResetPassword = '/api/Shop/user/resetPassword?id=',
+  sysUserResetPassword = '/api/Asset/user/resetPassword?id=',
   // 修改密码,
-  sysUserChangePassword = '/api/Shop/user/changePassword',
+  sysUserChangePassword = '/api/Asset/user/changePassword',
   // 获取可用角色
-  sysUserGetAssignableRoles = '/api/Shop/user/getAssignableRoles',
+  sysUserGetAssignableRoles = '/api/Asset/user/getAssignableRoles',
   // 获取某用户角色
-  sysUserGetRoles = '/api/Shop/user/getRoles',
+  sysUserGetRoles = '/api/Asset/user/getRoles',
   // 获取角色列表
   identityRoles = '/api/identity/roles',
   // 添加角色
@@ -47,9 +47,9 @@ enum Api {
   // 修改授权
   modifyPermissions = '/api/permission-management/permissions?',
   // 获取可用组织机构信息
-  availableOrganizationUnitsTree = '/api/Shop/user/getAvailableOrganizationUnitsTree',
+  availableOrganizationUnitsTree = '/api/Asset/user/getAvailableOrganizationUnitsTree',
   //获取用户组织机构信息
-  organizationUnits = '/api/Shop/user/getOrganizationUnits',
+  organizationUnits = '/api/Asset/user/getOrganizationUnits',
 }
 
 export const getIdentityUsers = (params?: IdentityUsersParams) =>

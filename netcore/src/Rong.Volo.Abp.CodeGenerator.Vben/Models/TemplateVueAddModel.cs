@@ -8,13 +8,13 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
     public class TemplateVueAddModel: TemplateVueModel
     {
         /// <summary>
-        /// 表单数据
+        /// 表单模板
         /// </summary>
         public List<TemplateVueModelData>? Form { get; set; } = new List<TemplateVueModelData>();
 
         /// <summary>
-        /// 表单数据字符串
+        /// 表单字符串模板
         /// </summary>
-        public string? FormString { get; set; }
+        public string? FormTemplate { get; set; }
     }
 }

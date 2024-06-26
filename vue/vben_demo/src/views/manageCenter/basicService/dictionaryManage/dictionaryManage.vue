@@ -5,7 +5,7 @@
         <a-button type="primary" style="margin-right: 20px" @click="handleCreate">添加</a-button>
         <a-button type="primary" style="margin-right: 20px" @click="removeCache">移除缓存</a-button>
       </template>
-      <template #isActive="{ record }">
+      <template #isActive="{ value, record }">
         <Tag :color="record.isActive ? 'green' : 'red'">
           {{ record.isActive ? t('common.enabled') : t('common.disEnabled') }}
         </Tag>

@@ -372,6 +372,7 @@
 
       function renderItem() {
         const { itemProps, slot, render, field, suffix, component, prefix } = props.schema;
+
         const { labelCol, wrapperCol } = unref(itemLabelWidthProp);
         const { colon } = props.formProps;
         const opts = { disabled: unref(getDisable), readonly: unref(getReadonly) };

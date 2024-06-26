@@ -5,7 +5,11 @@
       <a-button @click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
     </template>
     <div ref="dictionaryModify">
-      <BasicForm @register="Register" />
+      <BasicForm @register="Register" v-if="visible">
+        <!-- <template #logo="{ model, field }">
+          <ImageUpload v-model="model[field]"></ImageUpload>
+        </template> -->
+      </BasicForm>
     </div>
   </a-drawer>
 </template>
@@ -21,6 +25,7 @@
   import { BasicForm, FormSchema, useForm } from '@/components/Form/index';
   import { useLoading } from '@/components/Loading';
 
+  import { postFileOssAppServiceUploadForm } from '@/api/manageCenter/fileManage';
   const dictionaryModify = ref(null);
 
   const [openWrapLoading, closeWrapLoading] = useLoading({
@@ -54,6 +59,8 @@
   async function handleSubmit() {
     await validateFields();
     const data: any = getFieldsValue();
+    console.log('---77', data);
+
     if (isUpdate.value) {
       await putDictionaryUpdate(data.id, data);
     } else {
@@ -96,6 +103,19 @@
       required: true,
       ifShow: isUpdate.value,
       show: false,
+    },
+    {
+      field: 'logo',
+      component: 'ImageUpload',
+      label: '封面图片',
+      colProps: {
+        span: 24,
+      },
+      // componentProps: {
+      //   api: postFileOssAppServiceUploadForm,
+      //   valueField: 'fileList',
+      // },
+      // slot: 'logo',
     },
     {
       label: '类别',

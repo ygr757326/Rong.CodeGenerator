@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
+
 //using Microsoft.Extensions.WebEncoders;
 using Volo.Abp.Modularity;
 using Volo.Abp.TextTemplating.Razor;
@@ -32,6 +34,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
                 options.FileSets.AddEmbedded<CodeGeneratorVueModule>("Rong.Volo.Abp.CodeGenerator.Vue");
+            });
+
+            Configure<CodeGeneratorVueOptions>(options =>
+            {
+                options.ComponentMapForVben = new Dictionary<string, string>();
             });
         }
     }

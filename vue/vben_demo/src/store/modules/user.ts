@@ -96,9 +96,9 @@ export const useUserStore = defineStore({
           username: params.username,
           password: params.password,
           grant_type: 'password',
-          client_id: 'Shop_App',
+          client_id: 'Asset_Local',
           rememberMe: false,
-          scope: 'Shop roles openid email phone offline_access',
+          scope: 'Asset roles openid email phone offline_access',
         };
         const data = await getConnectToken(request);
         console.log(data);

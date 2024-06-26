@@ -3,16 +3,13 @@
 @{
 }
 <template>
-<a-drawer v-model:visible="visible" :title="title" width="800px">
+<a-drawer v-model:visible="visible" title="编辑 - @Model.EntityName" width="800px">
   <template #extra>
     <a-button @@click="visible = false">取消</a-button>
     <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
   </template>
   <div ref="modifyFormRef">
-    <BasicForm @@register="Register">
-      <template #logo="{ model, field }">
-        <GzUploadFile v-model="model[field]" />
-      </template>
+    <BasicForm @@register="Register" v-if="visible">
     </BasicForm>
   </div>
 </a-drawer>
@@ -21,7 +18,7 @@
 <script lang="ts" setup>
 
 import { nextTick, ref } from 'vue';
-import { @{@Model.Entity}Get, @{@Model.Entity}Update } from 'api';
+import { @{@Model.Entity}Get, @{@Model.Entity}Update } from '../api';
 import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
 import { useLoading } from '@@/components/Loading';
 import { useDictStore } from '@@/store/modules/dict';
@@ -40,14 +37,13 @@ const [openWrapLoading, closeWrapLoading] = useLoading({
 });
 
 const visible = ref<boolean>(false);
-const title = ref<string>('编辑');
 const $emit = defineEmits(['success']);
 
 /**
  * 表单
  */
 const schemas: FormSchema[] = [
-@Model.FormString
+@Model.FormTemplate
 ];
 
 /**

@@ -4,21 +4,21 @@ import { defHttp } from '@/utils/http/axios';
 
 enum Api {
   //获取组织机构列表
-  orgGetList = '/api/Shop/org/getList',
+  orgGetList = '/api/Asset/org/getList',
   // 获取组织机构详情
-  orgGet = '/api/Shop/org/get',
+  orgGet = '/api/Asset/org/get',
   // 修改组织机构
-  orgUpdate = '/api/Shop/org/update?id=',
+  orgUpdate = '/api/Asset/org/update?id=',
   // 删除组织机构
-  orgDelete = '/api/Shop/org/delete?id=',
+  orgDelete = '/api/Asset/org/delete?id=',
   //创建组织机构
-  orgCreate = '/api/Shop/org/create',
+  orgCreate = '/api/Asset/org/create',
   // 获取下拉树
-  orgGetDropDownList = '/api/Shop/org/getDropDownList',
+  orgGetDropDownList = '/api/Asset/org/getDropDownList',
   // 获取可用组织机构树
-  orgGetAvailableOrganizationUnitsTree = '/api/Shop/org/getAvailableOrganizationUnitsTree',
+  orgGetAvailableOrganizationUnitsTree = '/api/Asset/org/getAvailableOrganizationUnitsTree',
   // 同步组织机构
-  orgSync = '/api/Shop/org/syncOrg',
+  orgSync = '/api/Asset/org/syncOrg',
 }
 
 // 获取组织机构列表

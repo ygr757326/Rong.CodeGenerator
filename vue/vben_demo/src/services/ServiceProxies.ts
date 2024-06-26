@@ -7347,7 +7347,7 @@ export class UsersServiceProxy extends ServiceProxyBase {
     body: ChangePasswordInput | undefined,
     cancelToken?: CancelToken | undefined,
   ): Promise<boolean> {
-    let url_ = this.baseUrl + '/api/Shop/sysUser/changePassword';
+    let url_ = this.baseUrl + '/api/Asset/sysUser/changePassword';
     url_ = url_.replace(/[?&]$/, '');
 
     const content_ = JSON.stringify(body);

@@ -6,19 +6,7 @@
     var createAuth = @indexAuth + ".Create";
     var updateAuth = @indexAuth + ".Update";
     var deleteAuth = @indexAuth + ".Delete";
-
-    // string tableColumns = null;
-    // foreach(var item in Model.Table)
-    // {
-    //     tableColumns += $"  {{title: '{@item.DisplayName}', dataIndex: '{@item.PropertyCase}' }},\r\n  ";
-    // }
-
-    // string searchSchemas = null;
-    // foreach (var item in Model.Search)
-    // {
-    //     searchSchemas += $"  {{label: '{@item.DisplayName}', field: '{@item.Property}', component: 'Input' }},\r\n      ";
-    // }
- }
+}
 <template>
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
@@ -50,7 +38,8 @@
             },
           ]"
         />
-      </template> 
+       </template>                    
+@Model.TableColumnsSlotsTemplate
     </BasicTable>
     <!-- 新增 -->
     <Add ref="addRef" @@success="handleSuccess"></Add>
@@ -68,7 +57,7 @@
   import Modify from './components/modify.vue';
   import Drawer from './components/drawer.vue';
   import { AbsViewModal } from '#/common';
-  import { @{@Model.Entity}Api , @{@Model.Entity}Delete } from 'api';
+  import { @{@Model.Entity}Delete, @{@Model.Entity}GetList } from './api';
   import { PageWrapper } from '@@/components/Page';
   import { BasicColumn, BasicTable, TableAction, useTable } from '@@/components/Table';
   import { useGrid } from '@@/hooks/manageCenter/useGrid';
@@ -99,14 +88,14 @@
     * 表头
    */
   const columns: BasicColumn[] = [
-@Model.TableString
+@Model.TableColumnsTemplate
   ];
 
   /**
    * 表头配置
    */
   const [register, { reload }] = useTable({
-    api: @{@Model.Entity}Api.GetList,
+    api: @{@Model.Entity}GetList,
     columns,
     tableSetting: {
       redo: true,
@@ -127,7 +116,7 @@
       labelWidth: 120,
       ...useGrid(),
       schemas: [
-@Model.SearchString
+@Model.TableSchemasTemplate
       ],
     },
   });

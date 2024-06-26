@@ -12,21 +12,21 @@ import { commonParams } from './model/identityModel';
 
 enum Api {
   // 获取审计日志列表
-  auditLogGetList = '/api/Shop/auditLog/getList',
+  auditLogGetList = '/api/Asset/auditLog/getList',
   // 查看审计日志详情
-  auditLogGet = '/api/Shop/auditLog/get',
+  auditLogGet = '/api/Asset/auditLog/get',
   // 获取http请求方式下拉
-  getHttpMethodDropDown = '/api/Shop/auditLog/getHttpMethodDropDown',
+  getHttpMethodDropDown = '/api/Asset/auditLog/getHttpMethodDropDown',
   // 获取http状态码下拉
-  getHttpStatusCodeDropDown = '/api/Shop/auditLog/getHttpStatusCodeDropDown',
+  getHttpStatusCodeDropDown = '/api/Asset/auditLog/getHttpStatusCodeDropDown',
   // 获取外部api请求
-  getExternalApiRecordList = '/api/Shop/externalApiRecord/getList',
+  getExternalApiRecordList = '/api/Asset/externalApiRecord/getList',
   // 获取外部api请求详情
-  getExternalApiRecordGet = '/api/Shop/externalApiRecord/get',
+  getExternalApiRecordGet = '/api/Asset/externalApiRecord/get',
   // 获取短信发送列表
-  getSmsSendRecordList = '/api/Shop/smsSendRecord/getList',
+  getSmsSendRecordList = '/api/Asset/smsSendRecord/getList',
   // 获取短信发送详情
-  getSmsSendRecordGet = '/api/Shop/smsSendRecord/get',
+  getSmsSendRecordGet = '/api/Asset/smsSendRecord/get',
 }
 
 export const getAuditLogGetList = (params?: AuditLogGetListParams) =>

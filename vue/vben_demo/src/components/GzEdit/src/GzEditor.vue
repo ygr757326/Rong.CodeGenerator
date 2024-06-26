@@ -126,7 +126,7 @@
     //         defHttp
     //           .uploadFile(
     //             {
-    //               url: import.meta.env.VITE_API_URL + '/api/Shop/fileOss/uploadForm',
+    //               url: import.meta.env.VITE_API_URL + '/api/Asset/fileOss/uploadForm',
     //               onUploadProgress: (progressEvent) => {
     //                 info.onProgress(
     //                   {
@@ -146,7 +146,7 @@
     //           )
     //           .then((res) => {
     //             if (res.success) {
-    //               insertFn(`/api/Shop/fileOss/getPreview?fileId=${res?.data}`);
+    //               insertFn(`/api/Asset/fileOss/getPreview?fileId=${res?.data}`);
     //               // Preview({
     //               //   fileId: res.result?.fileId,
     //               // })

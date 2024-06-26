@@ -167,12 +167,7 @@
       }
 
       // handle schema.valueFormat
-      if (
-        isHandleDefaultValue &&
-        defaultValue &&
-        component &&
-        isFunction(valueFormat)
-      ) {
+      if (isHandleDefaultValue && defaultValue && component && isFunction(valueFormat)) {
         schema.defaultValue = valueFormat({
           value: defaultValue,
           schema,
@@ -181,6 +176,9 @@
         });
       }
     }
+
+    console.log('schemas', schemas);
+
     if (unref(getProps).showAdvancedButton) {
       return schemas.filter(
         (schema) => !isIncludeSimpleComponents(schema.component),
@@ -292,6 +290,8 @@
   }
 
   function setFormModel(key: string, value: any, schema: FormSchema) {
+    console.log('setFormModel', key, value);
+
     formModel[key] = value;
     emit('field-value-change', key, value);
     // TODO 优化验证，这里如果是autoLink=false手动关联的情况下才会再次触发此函数
@@ -339,6 +339,8 @@
   onMounted(() => {
     initDefault();
     emit('register', formActionType);
+
+    console.log(formActionType);
   });
 </script>
 <style lang="less">

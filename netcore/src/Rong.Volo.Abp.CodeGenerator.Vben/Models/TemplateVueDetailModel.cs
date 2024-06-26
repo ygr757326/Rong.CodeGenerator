@@ -8,13 +8,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
     public class TemplateVueDetailModel: TemplateVueModel
     {
         /// <summary>
-        /// 视图数据
+        /// 详情模板
         /// </summary>
-        public List<TemplateVueModelData>? View { get; set; } = new List<TemplateVueModelData>();
+        public List<TemplateVueModelData>? Detail { get; set; } = new List<TemplateVueModelData>();
+
         /// <summary>
-        /// 视图数据字符串
+        /// 详情字符串模板
         /// </summary>
-        public string? ViewString { get; set; }
+        public string? DetailTemplate { get; set; }
 
     }
 }

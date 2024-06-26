@@ -313,6 +313,8 @@ export function useFormEvents({
   function getFieldsValue(): Recordable {
     const formEl = unref(formElRef);
     if (!formEl) return {};
+    console.log('formModel11', formModel);
+
     return handleFormValues(toRaw(unref(formModel)));
   }
 

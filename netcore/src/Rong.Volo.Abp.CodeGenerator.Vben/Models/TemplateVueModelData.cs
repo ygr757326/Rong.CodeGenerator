@@ -40,6 +40,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public bool IsDictionary { get; set; }
 
         /// <summary>
+        /// 是否是Slot
+        /// </summary>
+        public bool IsSlot { get; set; }
+
+        /// <summary>
         /// 字典编码
         /// </summary>
         public string? DictionaryCode { get; set; }
@@ -68,5 +73,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// 是否是多文件
         /// </summary>
         public bool MultipleFile { get; set; }
+
     }
 }

@@ -5,27 +5,32 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
     /// <summary>
     /// 主页模型
     /// </summary>
-    public class TemplateVueIndexModel: TemplateVueModel
+    public class TemplateVueIndexModel : TemplateVueModel
     {
         /// <summary>
-        /// Table 列表数据
+        /// Table Columns列
         /// </summary>
-        public List<TemplateVueModelData>? Table { get; set; } = new List<TemplateVueModelData>();
+        public List<TemplateVueModelData>? TableColumns { get; set; } = new List<TemplateVueModelData>();
 
         /// <summary>
-        /// Table 列表数据字符串
+        /// Table Columns列模板字符串
         /// </summary>
-        public string? TableString { get; set; }
+        public string? TableColumnsTemplate { get; set; }
 
         /// <summary>
-        /// 查询数据
+        /// Table Columns列Slots模板字符串
         /// </summary>
-        public List<TemplateVueModelData>? Search { get; set; } = new List<TemplateVueModelData>();
+        public string? TableColumnsSlotsTemplate { get; set; }
 
         /// <summary>
-        /// 查询数据字符串
+        /// Table Schemas 查询表单
         /// </summary>
-        public string? SearchString { get; set; }
+        public List<TemplateVueModelData>? TableSchemas { get; set; } = new List<TemplateVueModelData>();
+
+        /// <summary>
+        /// Table Schemas 查询表单模板字符串
+        /// </summary>
+        public string? TableSchemasTemplate { get; set; }
 
     }
 }

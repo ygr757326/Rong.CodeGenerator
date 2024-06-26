@@ -130,7 +130,7 @@
   let uploading = ref<boolean>(false);
   let myFileList: any = ref([]);
   let fileInfos: any = ref([]);
-  let url = ref<string>('/api/Shop/fileOss/uploadForm');
+  let url = ref<string>('/api/Asset/fileOss/uploadForm');
 
   watch(
     () => props.modelValue,
