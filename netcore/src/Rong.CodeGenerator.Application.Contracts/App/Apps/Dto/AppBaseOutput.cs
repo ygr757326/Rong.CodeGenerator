@@ -13,6 +13,22 @@ namespace Rong.CodeGenerator.App.Apps.Dto
     public class AppBaseOutput : EntityDto<Guid>
     {
         /// <summary>
+        /// 头像 
+        /// </summary>
+        [Display(Name = "头像")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueFile()]
+        public string Logo { get; set; }
+
+        /// <summary>
+        /// 头 1
+        /// </summary>
+        [Display(Name = "头像1")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueFile(true)]
+        public string[] Logos { get; set; }
+
+        /// <summary>
         /// 客户端 
         /// </summary>
         [Display(Name = "客户端")]
@@ -26,6 +42,14 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         [Required(ErrorMessage = "{0}不能为空")]
         [VueDictionary("MyDictCode", VueSelectModeEnum.Radio)]
         public string ClientDict { get; set; }
+
+        /// <summary>
+        /// 客户端3
+        /// </summary>
+        [Display(Name = "客户端3")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueDictionary("MyDictCode", VueSelectModeEnum.Select, slot: true)]
+        public string ClientDict3 { get; set; }
 
         /// <summary>
         /// App版本数字号
@@ -80,6 +104,22 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         /// </summary>
         [Display(Name = "枚举")]
         public TestEnum MyEnum { get; set; }
+
+
+        /// <summary>
+        /// 枚举1
+        /// </summary>
+        [Display(Name = "枚举1")]
+        [VueEnum(typeof(TestEnum), VueSelectModeEnum.Select)]
+        public TestEnum MyEnum1 { get; set; }
+
+
+        /// <summary>
+        /// 枚举2
+        /// </summary>
+        [Display(Name = "枚举2")]
+        [VueEnum(typeof(TestEnum), VueSelectModeEnum.Radio, slot: true)]
+        public TestEnum MyEnum2 { get; set; }
 
     }
 }

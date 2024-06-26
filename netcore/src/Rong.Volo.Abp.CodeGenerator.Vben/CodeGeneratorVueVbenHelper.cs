@@ -17,6 +17,63 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// </summary>
     public class CodeGeneratorVueVbenHelper : ISingletonDependency
     {
+        public string GetVueTableSlots(List<TemplateVueModelData> models, int space = 8)
+        {
+            StringBuilder b = new StringBuilder();
+            b.AppendLine();
+
+            foreach (var item in models)
+            {
+                var typeCode = item.PropertyType.GetMyTypeCode();
+
+                if (item.IsEnum && item.IsSlot)
+                {
+                    b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+                    b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                    b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}',value) }}}}");
+                    b.Space(space + 2).AppendLine($"</Tag>");
+                    b.Space(space).AppendLine($"</template>");
+                }
+                else if (item.IsDictionary && item.IsSlot)
+                {
+                    b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+                    b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                    b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', value) }}}}");
+                    b.Space(space + 2).AppendLine($"</Tag>");
+                    b.Space(space).AppendLine($"</template>");
+
+                }
+                else if (new[] { TypeCode.Boolean }.Contains(typeCode))
+                {
+                    b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+                    b.Space(space + 2).AppendLine($"<Tag :color=\"value ? 'green' : 'red'\">");
+                    b.Space(space + 2).AppendLine($" {{{{ value ? '是' : '否' }}}}");
+                    b.Space(space + 2).AppendLine($"</Tag>");
+                    b.Space(space).AppendLine($"</template>");
+                }
+                else if (item.IsFile)
+                {
+                    b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+
+                    b.Space(space + 2).Append($"<{item.FileViewComponent ?? "ImagePreview"} :width=\"50\" :height=\"50\"");
+
+                    if (item.MultipleFile)
+                    {
+                        b.Append($" v-for=\"(item, i) in value\" :src=\"item\" ");
+                    }
+                    else
+                    {
+                        b.Append($" :src=\"value\" ");
+                    }
+
+                    b.AppendLine($"></{item.FileViewComponent ?? "ImagePreview"}>");
+
+                   
+                    b.Space(space).AppendLine($"</template>");
+                }
+            }
+            return b.ToString();
+        }
         /// <summary>
         /// 获取vue详情
         /// </summary>
@@ -35,30 +92,64 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             {
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
-                b.Space(space).Append($"<a-descriptions-item label=\"{@item.DisplayName}\">");
-                b.Append($" {{{{ ");
+                b.Space(space).Append($"<a-descriptions-item label=\"{item.DisplayName}\">");
 
                 if (typeCode == TypeCode.DateTime)
                 {
-                    b.Append($"formatToDate(detailData?.{@item.PropertyCase})");
+                    b.Append($" {{{{ formatToDate(detailData?.{item.PropertyCase})  }}}} ");
                 }
                 else if (item.IsEnum)
                 {
-                    b.Append($"enumStore?.findName('{item.PropertyType.Name}',detailData?.{@item.PropertyCase})");
+                    if (item.IsSlot)
+                    {
+                        b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                        b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}',detailData?.{item.PropertyCase}) }}}} ");
+                        b.Space(space + 2).AppendLine($"</Tag>");
+                    }
+                    else
+                    {
+                        b.Append($" {{{{ enumStore?.findName('{item.PropertyType.Name}',detailData?.{item.PropertyCase})  }}}} ");
+                    }
                 }
                 else if (item.IsDictionary)
                 {
-                    b.Append($"dictStore?.findName('{item.DictionaryCode}',detailData?.{@item.PropertyCase})");
+                    if (item.IsSlot)
+                    {
+                        b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                        b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}',detailData?.{item.PropertyCase}) }}}} ");
+                        b.Space(space + 2).AppendLine($"</Tag>");
+                    }
+                    else
+                    {
+                        b.Append($" {{{{ dictStore?.findName('{item.DictionaryCode}',detailData?.{item.PropertyCase})  }}}} ");
+                    }
                 }
                 else if (new[] { TypeCode.Boolean }.Contains(typeCode))
                 {
-                    b.Append($"detailData?.{@item.PropertyCase} ? '是' : '否'");
+                    b.Space(space + 2).AppendLine($"<Tag :color=\"detailData?.{item.PropertyCase} ? 'green' : 'red'\">");
+                    b.Space(space + 2).AppendLine($" {{{{ detailData?.{item.PropertyCase} ? '是' : '否' }}}} ");
+                    b.Space(space + 2).AppendLine($"</Tag>");
+                }
+                else if (item.IsFile)
+                {
+
+                    b.Space(space + 2).Append($"<{item.FileViewComponent ?? "ImagePreview"} :width=\"100\" :height=\"100\"");
+                    if (item.MultipleFile)
+                    {
+                        b.Append($" v-for=\"(item, i) in value\" :src=\"item\" ");
+                    }
+                    else
+                    {
+                        b.Append($" :src=\"value\" ");
+                    }
+
+                    b.AppendLine($"></{item.FileViewComponent ?? "ImagePreview"}>");
+
                 }
                 else
                 {
-                    b.Append($"detailData?.{@item.PropertyCase}");
+                    b.Append($" {{{{ detailData?.{item.PropertyCase}  }}}} ");
                 }
-                b.Append($" }}}} ");
                 b.AppendLine("</a-descriptions-item>");
             }
 
@@ -83,8 +174,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
                 b.Space(space).AppendLine("{");
-                b.Space(space + 2).AppendLine($"title: '{@item.DisplayName}',");
-                b.Space(space + 2).AppendLine($"dataIndex: '{@item.PropertyCase}',");
+                b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
+                b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
 
                 if (typeCode == TypeCode.DateTime || item.PropertyType == typeof(DateTime?))
                 {
@@ -94,21 +185,37 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 }
                 else if (item.IsEnum)
                 {
-                    b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                    b.Space(space + 4).AppendLine($"return enumStore?.findName('{item.PropertyType.Name}',value);");
-                    b.Space(space + 2).AppendLine($"}},");
+                    if (item.IsSlot)
+                    {
+                        b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                    }
+                    else
+                    {
+                        b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
+                        b.Space(space + 4).AppendLine($"return enumStore?.findName('{item.PropertyType.Name}',value);");
+                        b.Space(space + 2).AppendLine($"}},");
+                    }
                 }
                 else if (item.IsDictionary)
                 {
-                    b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                    b.Space(space + 4).AppendLine($"return dictStore?.findName('{item.DictionaryCode}',value);");
-                    b.Space(space + 2).AppendLine($"}},");
+                    if (item.IsSlot)
+                    {
+                        b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                    }
+                    else
+                    {
+                        b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
+                        b.Space(space + 4).AppendLine($"return dictStore?.findName('{item.DictionaryCode}',value);");
+                        b.Space(space + 2).AppendLine($"}},");
+                    }
                 }
                 else if (new[] { TypeCode.Boolean }.Contains(typeCode))
                 {
-                    b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                    b.Space(space + 4).AppendLine($"return value ? '是' : '否';");
-                    b.Space(space + 2).AppendLine($"}},");
+                    b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                }
+                else if (item.IsFile)
+                {
+                    b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
                 }
 
                 if (item.TableSorter)
@@ -146,7 +253,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     b.Space(space + 2).AppendLine($"component: 'DatePicker',");
                     b.Space(space + 2).AppendLine($"componentProps: {{");
                     b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD'");
-                    b.Space(space + 4).AppendLine($"}},");
+                    b.Space(space + 2).AppendLine($"}},");
                 }
                 else if (item.IsEnum)
                 {
@@ -229,7 +336,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 }
                 else if (item.IsFile)
                 {
-                    b.Space(space + 2).AppendLine($"component: 'ImageUpload',");
+                    b.Space(space + 2).AppendLine($"component: '{item.FileUploadComponent ?? "ImageUpload"}',");
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile},");
+                    b.Space(space + 2).AppendLine($"}},");
                 }
                 else
                 {

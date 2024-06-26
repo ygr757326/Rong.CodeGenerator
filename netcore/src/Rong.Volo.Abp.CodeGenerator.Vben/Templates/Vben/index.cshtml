@@ -6,19 +6,7 @@
     var createAuth = @indexAuth + ".Create";
     var updateAuth = @indexAuth + ".Update";
     var deleteAuth = @indexAuth + ".Delete";
-
-    // string tableColumns = null;
-    // foreach(var item in Model.Table)
-    // {
-    //     tableColumns += $"  {{title: '{@item.DisplayName}', dataIndex: '{@item.PropertyCase}' }},\r\n  ";
-    // }
-
-    // string searchSchemas = null;
-    // foreach (var item in Model.Search)
-    // {
-    //     searchSchemas += $"  {{label: '{@item.DisplayName}', field: '{@item.Property}', component: 'Input' }},\r\n      ";
-    // }
- }
+}
 <template>
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
@@ -50,7 +38,8 @@
             },
           ]"
         />
-      </template> 
+       </template>                    
+@Model.TableSlotsString
     </BasicTable>
     <!-- 新增 -->
     <Add ref="addRef" @@success="handleSuccess"></Add>

@@ -9,10 +9,7 @@
     <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
   </template>
   <div ref="modifyFormRef">
-    <BasicForm @@register="Register">
-      <template #logo="{ model, field }">
-        <GzUploadFile v-model="model[field]" />
-      </template>
+    <BasicForm @@register="Register" v-if="visible">
     </BasicForm>
   </div>
 </a-drawer>

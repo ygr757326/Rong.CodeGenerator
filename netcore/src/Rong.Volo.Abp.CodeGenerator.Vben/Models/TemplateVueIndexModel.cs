@@ -18,6 +18,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public string? TableString { get; set; }
 
         /// <summary>
+        /// Table 列表数据slots字符串
+        /// </summary>
+        public string? TableSlotsString { get; set; }
+
+        /// <summary>
         /// 查询数据
         /// </summary>
         public List<TemplateVueModelData>? Search { get; set; } = new List<TemplateVueModelData>();

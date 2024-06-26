@@ -31,14 +31,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         public virtual object? GetModel(TemplateVueModel model, string template)
         {
             var types = GetTypes(model.NameSpace);
-            object? data = null;
+            object data;
             switch (template)
             {
                 case CodeGeneratorVbenTemplateNames.Vben_index:
                     {
 
                         var page = types.FirstOrDefault(a => a.Name == $"{model.Entity}PageOutput");
-                        var tableData = GetPropertyInfo(page, ignoreProperties: new[] { "id", "concurrencyStamp" }).Where(a =>
+                        var tableData = GetPropertyInfo(page, ignoreProperties: new[] { "id", "concurrencyStamp" })?.Where(a =>
                             !a.Property.Equals("concurrencyStamp", StringComparison.CurrentCultureIgnoreCase)).ToList();
 
                         var search = types.FirstOrDefault(a => a.Name == $"{model.Entity}PageSearchInput");
@@ -48,6 +48,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                         {
                             Table = tableData,
                             TableString = _codeGeneratorVueVbenHelper.GetVueTable(tableData, 4),
+                            TableSlotsString = _codeGeneratorVueVbenHelper.GetVueTableSlots(tableData, 8),
                             Search = searchData,
                             SearchString = _codeGeneratorVueVbenHelper.GetVueForm(searchData, 8),
                         };
@@ -100,6 +101,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case CodeGeneratorVbenTemplateNames.Vben_detailDrawer:
                     {
+                        data = new TemplateVueDetailDrawerModel()
+                        {
+
+                        };
                         break;
                     }
                 default:
@@ -169,6 +174,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
                 info.IsFile = fileAttr != null;
                 info.MultipleFile = fileAttr?.Multiple ?? false;
+
+                info.IsSlot = dictAttr?.Slot == true || enumAttr?.Slot == true;
 
                 data.Add(info);
             }

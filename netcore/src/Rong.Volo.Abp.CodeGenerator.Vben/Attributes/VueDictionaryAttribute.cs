@@ -18,14 +18,20 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         public VueSelectModeEnum SelectMode { get; set; }
 
         /// <summary>
+        /// 是否插槽
+        /// </summary>
+        public bool  Slot { get; set; }
+
+        /// <summary>
         /// 字典编码
         /// </summary>
         public string Code { get; set; }
 
-        public VueDictionaryAttribute(string code, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool sorter = true) : base(sorter)
+        public VueDictionaryAttribute(string code, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot=false, bool sorter = true) : base(sorter)
         {
             Code = code;
             SelectMode = selectMode;
+            Slot = slot;
         }
     }
 }
