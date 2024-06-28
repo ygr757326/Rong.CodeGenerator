@@ -13,6 +13,13 @@ namespace Rong.CodeGenerator.App.Apps.Dto
     /// </summary>
     public abstract class AppCreateOrUpdateInputBase : IValidatableObject
     {
+        /// <summary>
+        /// 文章 
+        /// </summary>
+        [Display(Name = "文章")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueEditor()]
+        public string Edit { get; set; }
 
         /// <summary>
         /// 头像 
@@ -23,13 +30,12 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         public string Logo { get; set; }
 
         /// <summary>
-        /// 头 1
+        /// 文件
         /// </summary>
-        [Display(Name = "头像1")]
+        [Display(Name = "文件")]
         [Required(ErrorMessage = "{0}不能为空")]
-        [VueFile(true)]
-        public string[] Logos { get; set; }
-
+        [VueFile(true,VueFileTypeEnum.File)]
+        public string[] Files { get; set; }
 
         /// <summary>
         /// 客户端 

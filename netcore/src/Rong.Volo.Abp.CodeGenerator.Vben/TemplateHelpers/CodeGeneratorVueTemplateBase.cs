@@ -28,6 +28,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers
 
             return Options.ComponentMapForVben[srcComponent];
         }
+
     }
 
 }

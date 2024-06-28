@@ -53,7 +53,7 @@
   import { defHttp } from '@/utils/http/axios';
   import { log } from 'console';
   //  import { FileViewModal } from '@/components/_myComponents/FileView';
-  defineOptions({ name: 'GzUploadFile' });
+  defineOptions({ name: 'ImageUpload' });
   const $emit = defineEmits(['change', 'error', 'success', 'update:modelValue', 'update:value']);
   const props = defineProps({
     /**

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp.Application.Dtos;
 
 namespace Rong.CodeGenerator.App.Apps.Dto
@@ -10,6 +12,28 @@ namespace Rong.CodeGenerator.App.Apps.Dto
     /// </summary>
     public class AppPageSearchInput : PagedAndSortedResultRequestDto
     {
+        /// <summary>
+        /// 枚举
+        /// </summary>
+        [Display(Name = "枚举")]
+        public TestEnum MyEnum { get; set; }
+
+
+        /// <summary>
+        /// 枚举1
+        /// </summary>
+        [Display(Name = "枚举1")]
+        [VueEnum(typeof(TestEnum))]
+        public TestEnum? MyEnum1 { get; set; }
+
+        /// <summary>
+        /// 客户端3
+        /// </summary>
+        [Display(Name = "客户端3")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueDictionary("MyDictCode",slot: true)]
+        public string ClientDict3 { get; set; }
+
         /// <summary>
         /// 版本号
         /// </summary>

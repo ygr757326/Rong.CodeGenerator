@@ -8,23 +8,25 @@ import { LAYOUT } from '@@/router/constant';
 import { t } from '@@/hooks/web/useI18n';
 
 const about: AppRouteModule = {
-  path: '/@{Model.EntityCase}',
-  name: '@{Model.Entity}',
+  path: '/@{@Model.EntityCase}',
+  name: '@{@Model.Entity}',
   component: LAYOUT,
-  redirect: '/@{Model.EntityCase}/index',
+  redirect: '/@{@Model.EntityCase}/index',
   meta: {
     hideChildrenInMenu: true,
     icon: '',
-    title: '@{Model.EntityName}',
+    title: '@{@Model.EntityName}',
     orderNo: 100000,
+    policy:'@{@Model.PermissionIndex}',
   },
   children: [
     {
       path: 'index',
-      name: '@{Model.Entity}Page',
-      component: () => import('@@/views/@{Model.EntityCase}/index.vue'),
+      name: '@{@Model.Entity}Page',
+      component: () => import('@@/views/@{@Model.EntityCase}/index.vue'),
       meta: {
-        title:  '@Model.EntityName',
+        policy:'@{@Model.PermissionIndex}',
+        title:  '@{@Model.EntityName}',
         icon: '',
         hideMenu: true,
       },

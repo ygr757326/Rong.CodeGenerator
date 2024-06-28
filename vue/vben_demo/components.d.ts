@@ -100,6 +100,7 @@ declare module 'vue' {
     IconPicker: typeof import('./src/components/Icon/src/IconPicker.vue')['default']
     ImageUpload: typeof import('./src/components/Upload/src/components/ImageUpload.vue')['default']
     'ImageUpload copy': typeof import('./src/components/Upload/src/components/ImageUpload copy.vue')['default']
+    'ImageUpload copy 2': typeof import('./src/components/Upload/src/components/ImageUpload copy 2.vue')['default']
     ImgRotate: typeof import('./src/components/Verify/src/ImgRotate.vue')['default']
     ImgUpload: typeof import('./src/components/Tinymce/src/ImgUpload.vue')['default']
     ImportExcel: typeof import('./src/components/Excel/src/ImportExcel.vue')['default']

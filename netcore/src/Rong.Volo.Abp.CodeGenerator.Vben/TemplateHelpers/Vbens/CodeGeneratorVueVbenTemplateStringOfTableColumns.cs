@@ -246,27 +246,71 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// <returns></returns>
         public virtual string? ImagePreviewSlot(TemplateVueModelData item, int space = 6)
         {
+            var componentName = Options.ImagePreviewComponent ?? GetMapComponent("BaseUpload");
+
             StringBuilder b = new StringBuilder();
 
             b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
 
-            b.Space(space + 2).Append($"<{GetMapComponent("ImagePreview")} :width=\"50\" :height=\"50\"");
+            b.Space(space + 2).Append($"<{componentName} :width=\"50\" :height=\"50\"");
 
             if (item.MultipleFile)
             {
-                b.Append($" v-for=\"(item, i) in value\" :src=\"item\" :key=\"i\" ");
+                b.Append($" v-for=\"(item, i) in value\" :{Options.ImagePreviewComponentProp ?? "src"}=\"item\" :key=\"i\" ");
             }
             else
             {
-                b.Append($" :src=\"value\" ");
+                b.Append($" :{Options.ImagePreviewComponentProp ?? "src"}=\"value\" ");
             }
 
-            b.AppendLine($"></{GetMapComponent("ImagePreview")}>");
+            b.AppendLine($"></{componentName}>");
 
 
             b.Space(space).AppendLine($"</template>");
 
             return b.ToString();
         }
+
+        /// <summary>
+        /// 文件预览插槽
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? FilePreviewSlot(TemplateVueModelData item, int space = 6)
+        {
+            var componentName = Options.FilePreviewComponent ?? GetMapComponent("BaseUpload");
+
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+
+            b.Space(space + 2).Append($"<{componentName}");
+
+            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"value\"  listType=\"text\" :disabled=\"true\" ");
+
+            b.AppendLine($"></{componentName}>");
+
+
+            b.Space(space).AppendLine($"</template>");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 编辑器插槽
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? EditorSlot(TemplateVueModelData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+
+            b.Space(space + 2).Append($"<p v-html=\"value\" />");
+
+            b.Space(space).AppendLine($"</template>");
+
+            return b.ToString();
+        }
+        
     }
 }

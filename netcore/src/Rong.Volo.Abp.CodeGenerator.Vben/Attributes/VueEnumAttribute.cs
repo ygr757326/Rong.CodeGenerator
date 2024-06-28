@@ -10,7 +10,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 枚举特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueEnumAttribute : VueSorterAttribute
+    public class VueEnumAttribute : VueTableSorterAttribute
     {
         /// <summary>
         /// 选择模式

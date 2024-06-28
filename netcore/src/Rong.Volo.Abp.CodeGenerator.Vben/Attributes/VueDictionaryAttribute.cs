@@ -10,7 +10,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 字典特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueDictionaryAttribute : VueSorterAttribute
+    public class VueDictionaryAttribute : VueTableSorterAttribute
     {
         /// <summary>
         /// 选择模式

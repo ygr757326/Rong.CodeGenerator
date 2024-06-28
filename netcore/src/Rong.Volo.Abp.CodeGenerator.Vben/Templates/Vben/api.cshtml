@@ -11,27 +11,27 @@ export enum @{@Model.Entity}Api {
     /**
     * 获取 @{@Model.EntityName} 列表 - 分页
     */
-    GetList = '/api/@{@Model.ServiceName}/@{@Model.EntityCase}/getList',
+    GetList = '/api/@{@Model.ApiRootPath}/@{@Model.EntityCase}/getList',
 
     /**
     * 获取 @{@Model.EntityName} 详情 - 通过id
     */
-    Get = '/api/@{@Model.ServiceName}/@{@Model.EntityCase}/get?id=',
+    Get = '/api/@{@Model.ApiRootPath}/@{@Model.EntityCase}/get?id=',
 
     /**
     * 修改 @{@Model.EntityName} - 
     */
-    Update ='/api/@{@Model.ServiceName}/@{@Model.EntityCase}/update?id=',
+    Update ='/api/@{@Model.ApiRootPath}/@{@Model.EntityCase}/update?id=',
 
     /**
     * 删除 @{@Model.EntityName} - 
     */
-    Delete = '/api/@{@Model.ServiceName}/@{@Model.EntityCase}/delete?id=',
+    Delete = '/api/@{@Model.ApiRootPath}/@{@Model.EntityCase}/delete?id=',
 
     /**
     * 创建 @{@Model.EntityName} - 
     */
-    Create = '/api/@{@Model.ServiceName}/@{@Model.EntityCase}/create'
+    Create = '/api/@{@Model.ApiRootPath}/@{@Model.EntityCase}/create'
 }
 
 /**

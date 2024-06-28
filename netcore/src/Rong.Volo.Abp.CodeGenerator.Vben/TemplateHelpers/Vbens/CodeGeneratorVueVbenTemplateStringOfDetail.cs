@@ -54,9 +54,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
                 b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{item.PropertyCase}) }}}} ");
-                b.Space(space + 2).AppendLine($"</Tag>");
+                b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
@@ -79,9 +79,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
                 b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{item.PropertyCase}) }}}} ");
-                b.Space(space + 2).AppendLine($"</Tag>");
+                b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
@@ -102,9 +102,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).AppendLine($"<Tag :color=\"detailData?.{item.PropertyCase} ? 'green' : 'red'\">");
+            b.Space(space + 2).AppendLine($"<a-tag :color=\"detailData?.{item.PropertyCase} ? 'green' : 'red'\">");
             b.Space(space + 2).AppendLine($" {{{{ detailData?.{item.PropertyCase} ? '是' : '否' }}}} ");
-            b.Space(space + 2).AppendLine($"</Tag>");
+            b.Space(space + 2).AppendLine($"</a-tag>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
@@ -117,26 +117,66 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// <returns></returns>
         public virtual string? ImagePreviewTemplate(TemplateVueModelData item, int space = 8)
         {
+            var componentName = Options.ImagePreviewComponent ?? GetMapComponent("ImageUpload");
+
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).Append($"<{GetMapComponent("ImagePreview")} :width=\"100\" :height=\"100\"");
+            b.Space(space + 2).Append($"<{componentName} {(Options.ImagePreviewComponent != null ? ":width=\"100\" :height=\"100\"" : ":disabled=\"true\"")} ");
 
             if (item.MultipleFile)
             {
-                b.Append($" v-for=\"(item, i) in detailData?.{item.PropertyCase}|| []\" :key=\"i\" :src=\"item\" ");
+                b.Append($" v-for=\"(item, i) in detailData?.{item.PropertyCase}|| []\" :key=\"i\" :{Options.ImagePreviewComponentProp ?? "v-model"}=\"item\" ");
             }
             else
             {
-                b.Append($" :src=\"detailData?.{item.PropertyCase}\" ");
+                b.Append($" :{Options.ImagePreviewComponentProp ?? "v-model"}=\"detailData?.{item.PropertyCase}\" ");
             }
 
-            b.AppendLine($"></{GetMapComponent("ImagePreview")}>");
+            b.AppendLine($"></{componentName}>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
             return b.ToString();
         }
 
+        /// <summary>
+        /// 文件预览模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? FilePreviewTemplate(TemplateVueModelData item, int space = 8)
+        {
+            var componentName = Options.FilePreviewComponent ?? GetMapComponent("BaseUpload");
+
+            StringBuilder b = new StringBuilder();
+            b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
+
+            b.Space(space + 2).Append($"<{componentName} ");
+
+            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"detailData?.{item.PropertyCase}\" listType=\"text\" :disabled=\"true\" ");
+
+            b.AppendLine($"></{componentName}>");
+
+            b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
+
+            return b.ToString();
+        }
+
+
+        /// <summary>
+        /// 编辑器模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? EditorTemplate(TemplateVueModelData item, int space = 8)
+        {
+            StringBuilder b = new StringBuilder();
+            b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
+
+            b.Space(space + 2).Append($"<p v-html=\"detailData?.{ item.PropertyCase}\" />");
+
+            b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
+
+            return b.ToString();
+        }
     }
 }

@@ -17,9 +17,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public bool Multiple { get; set; }
 
-        public VueFileAttribute(bool multiple = false)
+        /// <summary>
+        /// 文件类型
+        /// </summary>
+        public VueFileTypeEnum FileType { get; set; }
+
+        public VueFileAttribute(bool multiple = false, VueFileTypeEnum fileType = VueFileTypeEnum.Image)
         {
             Multiple = multiple;
+            FileType = fileType;
         }
     }
 }

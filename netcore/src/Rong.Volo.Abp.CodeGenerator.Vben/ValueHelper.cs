@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
@@ -35,6 +38,32 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
 
             return Type.GetTypeCode(type);
+        }
+
+        /// <summary>
+        /// 获取  Decimal 小数位
+        /// </summary>
+        /// <returns></returns>
+        public static int GetDecimalPlaceFromColumnAttribute(this PropertyInfo propertyInfo)
+        {
+            int length = 2;
+            var column = propertyInfo.GetCustomAttribute<ColumnAttribute>();
+
+            if (column?.TypeName != null)
+            {
+                string pattern = @"\((.*?)\)";
+                var match = Regex.Match(column.TypeName, pattern);
+                if (match.Success)
+                {
+                    var de = match.Groups[1].Value.Split(",");
+                    if (de.Length == 2)
+                    {
+                        int.TryParse(de[1], out length);
+                    }
+                }
+            }
+
+            return length;
         }
     }
 }

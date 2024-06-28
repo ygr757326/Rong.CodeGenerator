@@ -10,14 +10,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 字典特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueSorterAttribute : Attribute
+    public class VueTableSorterAttribute : Attribute
     {
         /// <summary>
         /// 是否排序
         /// </summary>
         public bool Sorter { get; set; }
 
-        public VueSorterAttribute(bool sorter=false)
+        public VueTableSorterAttribute(bool sorter=false)
         {
             Sorter = sorter;
         }

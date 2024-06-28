@@ -56,6 +56,50 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
                 options.CustomSchemaIds(type => type.FullName);
             });
 
+        //vue代码生成器
+        Configure<CodeGeneratorVueOptions>(options =>
+        {
+            //Vben 组件替换
+            options.ComponentMapForVben = new();
+
+            //枚举Select
+            options.EnumSelectComponent = "EnumSelect";
+            options.EnumSelectComponentProp = "code";
+
+            //枚举Radio
+            options.EnumRadioComponent = "EnumRadio";
+            options.EnumRadioComponentProp = "code";
+
+            //字典Select
+            options.DictionarySelectComponent = "DictSelect";
+            options.DictionarySelectComponentProp = "code";
+
+            //字典Radio
+            options.DictionaryRadioComponent = "DictRadio";
+            options.DictionaryRadioComponentProp = "code";
+
+            //bool
+            options.BoolSelectComponent = "BoolSelect";
+            options.BoolRadioComponent = "BoolRadio";
+
+            //文件上传
+            options.FileUploadComponent = "GzUploadFile";
+
+            //图片上传
+            options.ImageUploadComponent = "GzUploadFile";
+
+            //文件预览
+            options.FilePreviewComponent = "GzUploadFile";
+            options.FilePreviewComponentProp = "v-model";
+
+            //图片预览
+            options.ImagePreviewComponent = "GzImagePreview";
+            options.ImagePreviewComponentProp = "fileId";
+
+            ////编辑器
+            //options.EditorComponent = "GzEditor";
+        });
+
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

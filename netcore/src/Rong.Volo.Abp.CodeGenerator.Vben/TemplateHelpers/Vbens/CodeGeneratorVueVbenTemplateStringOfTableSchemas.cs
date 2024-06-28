@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
-using System.Text.RegularExpressions;
 using Volo.Abp.DependencyInjection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
@@ -60,7 +55,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("DatePicker")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD'");//YYYY-MM-DD HH:mm:ss
+            b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD',");//YYYY-MM-DD HH:mm:ss
+            b.Space(space + 4).AppendLine($"allowClear: true,");
             b.Space(space + 2).AppendLine($"}},");
 
             if (item.IsRequired)
@@ -86,13 +82,26 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
 
-            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Select")}',");
+            b.Space(space + 2).AppendLine($"component: '{Options.EnumSelectComponent ?? GetMapComponent("Select")}',");
 
-            b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"options: enumStore?.findCodeSelect('{item.PropertyType.Name}'),");
-            b.Space(space + 4).AppendLine($"showSearch: true,");
-            b.Space(space + 4).AppendLine($"optionFilterProp: 'label'");
-            b.Space(space + 2).AppendLine($"}},");
+            if (Options.EnumSelectComponentProp != null)
+            {
+                b.Space(space + 2).AppendLine($"componentProps: {{");
+                b.Space(space + 4).AppendLine($"{Options.EnumSelectComponentProp}: '{item.PropertyType.Name}',");
+                b.Space(space + 4).AppendLine($"showSearch: true,");
+                b.Space(space + 4).AppendLine($"allowClear: true,");
+                b.Space(space + 2).AppendLine($"}},");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($"componentProps: {{");
+                b.Space(space + 4).AppendLine($"options: enumStore?.findCodeSelect('{item.PropertyType.Name}'),");
+                b.Space(space + 4).AppendLine($"showSearch: true,");
+                b.Space(space + 4).AppendLine($"allowClear: true,");
+                b.Space(space + 4).AppendLine($"optionFilterProp: 'label',");
+                b.Space(space + 2).AppendLine($"}},");
+            }
+
 
             if (item.IsRequired)
             {
@@ -116,12 +125,25 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
-            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Select")}',");
-            b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"options: dictStore?.findCodeSelect('{item.DictionaryCode}'),");
-            b.Space(space + 4).AppendLine($"showSearch: true,");
-            b.Space(space + 4).AppendLine($"optionFilterProp: 'label'");
-            b.Space(space + 2).AppendLine($"}},");
+            b.Space(space + 2).AppendLine($"component: '{Options.DictionarySelectComponent ?? GetMapComponent("Select")}',");
+
+            if (Options.DictionarySelectComponentProp != null)
+            {
+                b.Space(space + 2).AppendLine($"componentProps: {{");
+                b.Space(space + 4).AppendLine($"{Options.DictionarySelectComponentProp}: '{item.DictionaryCode}',");
+                b.Space(space + 4).AppendLine($"showSearch: true,");
+                b.Space(space + 4).AppendLine($"allowClear: true,");
+                b.Space(space + 2).AppendLine($"}},");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($"componentProps: {{");
+                b.Space(space + 4).AppendLine($"options: dictStore?.findCodeSelect('{item.DictionaryCode}'),");
+                b.Space(space + 4).AppendLine($"showSearch: true,");
+                b.Space(space + 4).AppendLine($"allowClear: true,");
+                b.Space(space + 4).AppendLine($"optionFilterProp: 'label',");
+                b.Space(space + 2).AppendLine($"}},");
+            }
 
             if (item.IsRequired)
             {
@@ -149,7 +171,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"componentProps: {{");
             b.Space(space + 4).AppendLine($"options: [");
             b.Space(space + 6).AppendLine($"{{label: '是', value: true }},");
-            b.Space(space + 6).AppendLine($"{{label: '否', value: false }}");
+            b.Space(space + 6).AppendLine($"{{label: '否', value: false }},");
             b.Space(space + 4).AppendLine($"],");
             b.Space(space + 2).AppendLine($"}},");
 
@@ -191,22 +213,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             }
             else if (new[] { TypeCode.Decimal }.Contains(typeCode))
             {
-                int length = 2;
-                var column = item.PropertyType.GetCustomAttribute<ColumnAttribute>();
-
-                if (column?.TypeName != null)
-                {
-                    string pattern = @"\((.*?)\)";
-                    var match = Regex.Match(column.TypeName, pattern);
-                    if (match.Success)
-                    {
-                        var de = match.Groups[1].Value.Split(",");
-                        if (de.Length == 2)
-                        {
-                            int.TryParse(de[1], out length);
-                        }
-                    }
-                }
+                int length = item.PropertyInfo.GetDecimalPlaceFromColumnAttribute();
                 b.Space(space + 2).AppendLine($"component:'{GetMapComponent("InputNumber")}',");
                 b.Space(space + 2).AppendLine($"componentProps: {{ precision: {length} }},");
             }

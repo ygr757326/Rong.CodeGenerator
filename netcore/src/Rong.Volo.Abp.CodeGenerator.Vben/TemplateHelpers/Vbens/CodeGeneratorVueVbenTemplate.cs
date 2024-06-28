@@ -63,7 +63,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 }
                 else if (item.IsFile)
                 {
+                    b.Append(TableColumnsTemplate.FilePreviewSlot(item, space));
+                }
+                else if (item.IsImage)
+                {
                     b.Append(TableColumnsTemplate.ImagePreviewSlot(item, space));
+                }
+                else if (item.IsEditor)
+                {
+                    b.Append(TableColumnsTemplate.EditorSlot(item, space));
                 }
             }
 
@@ -106,8 +114,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 }
                 else if (item.IsFile)
                 {
+                    b.Append(DetailTemplate.FilePreviewTemplate(item, space));
+                }
+                else if (item.IsImage)
+                {
                     b.Append(DetailTemplate.ImagePreviewTemplate(item, space));
-
+                }
+                else if (item.IsEditor)
+                {
+                    b.Append(DetailTemplate.EditorTemplate(item, space));
                 }
                 else
                 {
@@ -255,7 +270,19 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 }
                 else if (item.IsFile)
                 {
-                    b.Append(FormTemplate.UploadTemplate(item, space));
+                    b.Append(FormTemplate.FileUploadTemplate(item, space));
+                }
+                else if (item.IsImage)
+                {
+                    b.Append(FormTemplate.ImageUploadTemplate(item, space));
+                }
+                else if (item.IsTextarea)
+                {
+                    b.Append(FormTemplate.TextareaTemplate(item, space));
+                }
+                else if (item.IsEditor)
+                {
+                    b.Append(FormTemplate.EditorTemplate(item, space));
                 }
                 else
                 {

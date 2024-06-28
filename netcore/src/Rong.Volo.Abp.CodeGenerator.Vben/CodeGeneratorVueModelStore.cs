@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
@@ -86,35 +88,27 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
                 case CodeGeneratorVueVbenTemplateNames.Vben_api:
                     {
-                        data = new TemplateVueApiModel()
-                        {
-
-                        };
+                        data = new TemplateVueApiModel();
                         break;
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_detailDrawer:
                     {
-                        data = new TemplateVueDetailDrawerModel()
-                        {
-
-                        };
+                        data = new TemplateVueDetailDrawerModel();
                         break;
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_router:
-                {
-                    data = new TemplateVueRouterModel()
                     {
-
-                    };
-                    break;
-                }
+                        data = new TemplateVueRouterModel();
+                        break;
+                    }
                 default:
                     throw new UserFriendlyException($"模板【{template}】输出未实现");
             }
 
             if (data is TemplateVueModel m)
             {
-                m.ServiceName = model.ServiceName;
+                m.Options = model.Options;
+                m.ApiRootPath = model.ApiRootPath;
                 m.EntityCase = model.EntityCase;
                 m.Entity = model.Entity;
                 m.EntityName = model.EntityName;
@@ -148,13 +142,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             {
                 var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
 
-                var dictAttr = propertyInfo.GetCustomAttribute<VueDictionaryAttribute>();
-                var enumAttr = propertyInfo.GetCustomAttribute<VueEnumAttribute>();
-                var fileAttr = propertyInfo.GetCustomAttribute<VueFileAttribute>();
-                var sorterAttr = propertyInfo.GetCustomAttribute<VueSorterAttribute>();
-
                 var info = new TemplateVueModelData()
                 {
+                    PropertyInfo = propertyInfo,
                     Property = propertyInfo.Name,
                     PropertyCase = propertyInfo.Name.ToCamelCase(),
                     PropertyType = propertyInfo.PropertyType,
@@ -162,29 +152,127 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     IsRequired = propertyInfo.IsDefined(typeof(RequiredAttribute), true) ||
                                  !propertyInfo.PropertyType.IsNullableValueType(),
                 };
-                info.IsDictionary = dictAttr != null;
-                info.DictionaryCode = dictAttr?.Code;
 
-                info.IsEnum = enumAttr != null || propertyInfo.PropertyType.IsEnum;
+                HandleEditorModel(info, propertyInfo);
+                HandleTextareaModel(info, propertyInfo);
+                HandleDictionaryModel(info, propertyInfo);
+                HandleEnumModel(info, propertyInfo);
+                HandleBoolModel(info, propertyInfo);
+                HandleFileModel(info, propertyInfo);
+                HandleValueNameModel(info, propertyInfo);
 
-                if (enumAttr != null)
+                var sorterAttr = propertyInfo.GetCustomAttribute<VueTableSorterAttribute>();
+                if (sorterAttr != null)
                 {
-                    info.PropertyType = enumAttr.EnumType;
+                    info.TableSorter = sorterAttr.Sorter;
                 }
-
-                info.SelectMode = enumAttr?.SelectMode ?? dictAttr?.SelectMode;
-
-                info.TableSorter = info.IsEnum || info.IsDictionary || dictAttr?.Sorter == true || enumAttr?.Sorter == true || sorterAttr != null;
-
-                info.IsFile = fileAttr != null;
-                info.MultipleFile = fileAttr?.Multiple ?? false;
-
-                info.IsSlot = typeCode == TypeCode.Boolean || dictAttr?.Slot == true || enumAttr?.Slot == true;
 
                 data.Add(info);
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// 字典模型
+        /// </summary>
+        protected virtual void HandleDictionaryModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueDictionaryAttribute>();
+            if (attr == null)
+            {
+                return;
+            }
+
+            info.IsDictionary = true;
+            info.DictionaryCode = attr.Code;
+            info.SelectMode = attr.SelectMode;
+            info.TableSorter = attr.Sorter;
+            info.IsSlot = attr.Slot;
+        }
+
+        /// <summary>
+        /// 枚举模型
+        /// </summary>
+        protected virtual void HandleEnumModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueEnumAttribute>();
+
+            info.IsEnum = attr != null || propertyInfo.PropertyType.IsEnum;
+            info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Select;
+
+            if (attr != null)
+            {
+                info.PropertyType = attr.EnumType;
+            }
+
+            info.TableSorter = attr?.Sorter ?? true;
+            info.IsSlot = attr?.Slot ?? true;
+        }
+        /// <summary>
+        /// bool模型
+        /// </summary>
+        protected virtual void HandleBoolModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueBoolAttribute>();
+            info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Switch;
+            info.TableSorter = attr?.Sorter ?? true;
+            info.IsSlot = attr?.Slot ?? true;
+        }
+
+        /// <summary>
+        /// 文件模型
+        /// </summary>
+        protected virtual void HandleFileModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueFileAttribute>();
+            if (attr == null)
+            {
+                return;
+            }
+            info.IsFile = attr.FileType.Equals(VueFileTypeEnum.File);
+            info.IsImage = attr.FileType.Equals(VueFileTypeEnum.Image);
+            info.MultipleFile = attr.Multiple;
+        }
+
+        /// <summary>
+        /// 内容输入模型
+        /// </summary>
+        protected virtual void HandleTextareaModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueTextareaAttribute>();
+            if (attr == null)
+            {
+                return;
+            }
+            info.IsTextarea = true;
+        }
+
+        /// <summary>
+        /// 编辑器模型
+        /// </summary>
+        protected virtual void HandleEditorModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueEditorAttribute>();
+            if (attr == null)
+            {
+                return;
+            }
+            info.IsEditor = true;
+        }
+
+        /// <summary>
+        /// 值名称数据模型
+        /// </summary>
+        protected virtual void HandleValueNameModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueValueNameAttribute>();
+            if (attr == null || string.IsNullOrWhiteSpace(attr.PointSplicingName))
+            {
+                return;
+            }
+            info.Property = attr.PointSplicingName;
+            info.PropertyCase = attr.PointSplicingName.Split(".").Select(a => a.ToCamelCase()).JoinAsString(".");
         }
     }
 

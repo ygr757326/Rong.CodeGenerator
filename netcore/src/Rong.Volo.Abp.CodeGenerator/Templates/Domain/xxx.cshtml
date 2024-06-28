@@ -9,6 +9,7 @@ namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
     /// @{@Model.EntityName} 表
     /// </summary>
     [Table("@{@Model.Entity}")]
+    [Display(Name = "@{@Model.EntityName}")]
     public class @{@Model.Entity} : FullAuditedAggregateRoot<Guid>
     {
         /// <summary>

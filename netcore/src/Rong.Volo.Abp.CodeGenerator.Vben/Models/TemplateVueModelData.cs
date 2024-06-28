@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
@@ -28,6 +29,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// 是否必须
         /// </summary>
         public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// 属性信息
+        /// </summary>
+        public PropertyInfo PropertyInfo { get; set; }
 
         /// <summary>
         /// 属性值类型
@@ -70,9 +76,23 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public bool IsFile { get; set; }
 
         /// <summary>
+        /// 是否是图片
+        /// </summary>
+        public bool IsImage { get; set; }
+
+        /// <summary>
         /// 是否是多文件
         /// </summary>
         public bool MultipleFile { get; set; }
 
+        /// <summary>
+        /// 是否是内容输入框
+        /// </summary>
+        public bool IsTextarea { get; set; }
+
+        /// <summary>
+        /// 是否是编辑器
+        /// </summary>
+        public bool IsEditor { get; set; }
     }
 }

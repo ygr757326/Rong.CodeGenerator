@@ -34,7 +34,7 @@ import { IconPicker } from '@/components/Icon';
 import { CountdownInput } from '@/components/CountDown';
 import { BasicTitle } from '@/components/Basic';
 import { CropperAvatar } from '@/components/Cropper';
-
+import gzUploadFile from './components/gz-upload-file.vue';
 const componentMap = new Map<ComponentType | string, Component>();
 
 componentMap.set('Input', Input);
@@ -78,7 +78,8 @@ componentMap.set('Divider', Divider);
 componentMap.set('CropperAvatar', CropperAvatar);
 
 componentMap.set('BasicTitle', BasicTitle);
-
+componentMap.set('BasicTitle', BasicTitle);
+// componentMap.set('GzUploadFile', gzUploadFile);
 export function add<T extends string, R extends Component>(
   compName: ComponentType | T,
   component: R,

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
@@ -21,28 +22,32 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// </summary>
     public class CodeGeneratorVueStore : ITransientDependency
     {
-        private readonly CodeGeneratorVueModelStore _codeGeneratorModelStore;
-        private readonly ITemplateDefinitionManager _templateDefinitionManager;
-        private readonly ITemplateRenderer _templateRenderer;
+        protected CodeGeneratorVueOptions Options;
+
+        protected CodeGeneratorVueModelStore CodeGeneratorModelStore;
+        protected ITemplateDefinitionManager TemplateDefinitionManager;
+        protected ITemplateRenderer TemplateRenderer;
 
         public CodeGeneratorVueStore(
+            IOptions<CodeGeneratorVueOptions> options,
             CodeGeneratorVueModelStore codeGeneratorModelStore,
             ITemplateDefinitionManager templateDefinitionManager,
             ITemplateRenderer templateRenderer)
         {
-            _templateRenderer = templateRenderer;
-            _templateDefinitionManager = templateDefinitionManager;
-            _codeGeneratorModelStore = codeGeneratorModelStore;
+            TemplateRenderer = templateRenderer;
+            TemplateDefinitionManager = templateDefinitionManager;
+            CodeGeneratorModelStore = codeGeneratorModelStore;
+            Options = options.Value;
         }
 
         /// <summary>
         /// 开始代码生成
         /// </summary>
-        /// <param name="serviceName">服务名称</param>
+        /// <param name="apiRootPath">api根路径</param>
         /// <param name="entities">实体集合</param>
         /// <param name="saveRootPath">要保存到的根目录</param>
         /// <returns></returns>
-        public virtual async Task StartAsync(List<TemplateVueModel> entities, string serviceName, string saveRootPath)
+        public virtual async Task StartAsync(List<TemplateVueModel> entities, string apiRootPath, string saveRootPath)
         {
             Check.NotNull(entities, nameof(entities));
             Check.NotNullOrWhiteSpace(saveRootPath, nameof(saveRootPath));
@@ -61,7 +66,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             foreach (var item in entities)
             {
                 item.EntityCase = item.Entity.ToCamelCase();
-                item.ServiceName ??= serviceName;
+                item.ApiRootPath ??= apiRootPath;
+                item.Options = Options;
 
                 tasks.Add(Task.Run(async () => { await GenerateForEntityAsync(item, saveRootPath); }));
             }
@@ -83,7 +89,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             foreach (var template in templates)
             {
                 //模板不存在
-                var temp = await _templateDefinitionManager.GetAsync(template);
+                var temp = await TemplateDefinitionManager.GetAsync(template);
                 if (temp == null)
                 {
                     continue;
@@ -94,7 +100,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     .Replace("$rootPath", saveRootPath?.TrimEnd('\\', '/'));
 
                 //获取模值
-                var model = _codeGeneratorModelStore.GetModel(entity, template);
+                var model = CodeGeneratorModelStore.GetModel(entity, template);
 
                 //保存
                 await SaveAsync(model, template, name, path);
@@ -109,7 +115,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         protected virtual async Task SaveAsync(object? model, string template, string name, string path)
         {
             //模板不存在
-            var temp = await _templateDefinitionManager.GetAsync(template);
+            var temp = await TemplateDefinitionManager.GetAsync(template);
             if (temp == null)
             {
                 return;
@@ -132,7 +138,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
 
             //渲染生成
-            var result = await _templateRenderer.RenderAsync(
+            var result = await TemplateRenderer.RenderAsync(
                 template,
                 model
             );

@@ -1,35 +1,31 @@
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueIndexModel>
 @{
-    var permissionGroup = string.IsNullOrWhiteSpace(@Model.PermissionGroup) ? null : (@Model.PermissionGroup + ".");
-    var indexAuth = permissionGroup + @Model.Entity;
-    var createAuth = @indexAuth + ".Create";
-    var updateAuth = @indexAuth + ".Update";
-    var deleteAuth = @indexAuth + ".Delete";
+
 }
 <template>
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
       <template #toolbar>
-        <a-button auth="@createAuth" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
+        <a-button auth="@Model.PermissionCreate" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
        <template #action="{ record }">
         <TableAction
           :actions="[
             {
-              auth:'@updateAuth',
+              auth:'@Model.PermissionUpdate',
               label: '编辑',
               onClick: handleEdit.bind(null, record),
             },
             { 
-              auth:'@indexAuth',
+              auth:'@Model.PermissionIndex',
               label: '查看',
               onClick: handleDetail.bind(null, record),
             },
           ]"
           :dropDownActions="[
             {
-              auth:'@deleteAuth',
+              auth:'@Model.PermissionDelete',
               label: '删除',
               popConfirm: {
                 title: '是否删除？',
@@ -46,7 +42,7 @@
     <!-- 编辑 -->
     <Modify ref="modifyRef" @@success="handleSuccess" />
     <!-- 查看 -->
-    <Drawer ref="drawerRef" />
+    <DetailDrawer ref="detailDrawerRef" />
   </PageWrapper>
 </template>
 
@@ -55,7 +51,7 @@
   import { ref } from 'vue';
   import Add from './components/add.vue';
   import Modify from './components/modify.vue';
-  import Drawer from './components/drawer.vue';
+  import DetailDrawer from './components/detailDrawer.vue';
   import { AbsViewModal } from '#/common';
   import { @{@Model.Entity}Delete, @{@Model.Entity}GetList } from './api';
   import { PageWrapper } from '@@/components/Page';
@@ -69,7 +65,7 @@
   const enumStore = useEnumStore();
   const addRef = ref<AbsViewModal | null>(null);
   const modifyRef = ref<AbsViewModal | null>(null);
-  const drawerRef = ref<AbsViewModal | null>(null);
+  const detailDrawerRef = ref<AbsViewModal | null>(null);
 
   // 编辑或新增成功
   function handleSuccess() {
@@ -140,7 +136,7 @@
    * 点击查看详情
    */
   function handleDetail(record: Recordable) {
-    drawerRef.value?.open({
+    detailDrawerRef.value?.open({
       id: record.id,
     });
   }

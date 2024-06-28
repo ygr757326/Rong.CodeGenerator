@@ -1,10 +1,18 @@
+@using System.Linq
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueAddModel>
 
 @{
+    var hasEditor = Model.Form.Any(a => a.IsEditor);
+    var hasTinymceEditor = hasEditor && (Model.Options.EditorComponent == null || Model.Options.EditorComponent == "Tinymce");
+    string? useComponentRegister = hasTinymceEditor ? ", useComponentRegister" : null;
+    string? useTinymce = hasTinymceEditor ? "import { Tinymce } from '@/components/Tinymce/index';" : null;
+    string? registerTinymce = hasTinymceEditor ? "useComponentRegister('Tinymce', Tinymce);" : null;
+    string? width = hasEditor ? "85%" : "800px";
+   
 }
 <template>
-  <a-drawer v-model:visible="visible" title="新增 - @Model.EntityName" width="800px">
+    <a-drawer v-model:visible="visible" title="新增 - @Model.EntityName" width="@width">
     <template #extra>
       <a-button @@click="visible = false">取消</a-button>
       <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
@@ -20,10 +28,11 @@
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { @{@Model.Entity}Create } from '../api';
-  import { BasicForm, FormSchema, useForm } from '@@/components/Form/index';
+  import { BasicForm, FormSchema, useForm @useComponentRegister } from '@@/components/Form/index';
   import { useDictStore } from '@@/store/modules/dict';
   import { useEnumStore } from '@@/store/modules/enum';
-
+  @useTinymce
+  @registerTinymce
   const dictStore = useDictStore();
   const enumStore = useEnumStore();
   const visible = ref<Boolean>(false);

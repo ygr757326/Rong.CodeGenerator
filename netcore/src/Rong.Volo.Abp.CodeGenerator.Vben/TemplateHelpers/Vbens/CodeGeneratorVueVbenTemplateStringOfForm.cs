@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
@@ -35,7 +36,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Input")}',");
-
             if (item.IsRequired)
             {
                 b.Space(space + 2).AppendLine($"required: true,");
@@ -66,7 +66,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("DatePicker")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD'");//YYYY-MM-DD HH:mm:ss
+            b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD',");//YYYY-MM-DD HH:mm:ss
+            b.Space(space + 4).AppendLine($"allowClear: true,");
             b.Space(space + 2).AppendLine($"}},");
 
             if (item.IsRequired)
@@ -92,20 +93,47 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
 
+            bool defaultComponentProps = true;
             if (item.SelectMode == VueSelectModeEnum.Radio)
             {
-                b.Space(space + 2).AppendLine($"component: '{GetMapComponent("RadioGroup")}',");
+                b.Space(space + 2).AppendLine($"component: '{Options.EnumRadioComponent ?? GetMapComponent("RadioGroup")}',");
+
+                if (Options.EnumRadioComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.EnumRadioComponentProp}: '{item.PropertyType.Name}',");
+                    b.Space(space + 4).AppendLine($"showSearch: true,");
+                    b.Space(space + 4).AppendLine($"allowClear: true,");
+                    b.Space(space + 2).AppendLine($"}},");
+                }
             }
             else
             {
-                b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Select")}',");
+                b.Space(space + 2).AppendLine($"component: '{Options.EnumSelectComponent ?? GetMapComponent("Select")}',");
+
+                if (Options.EnumSelectComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.EnumSelectComponentProp}: '{item.PropertyType.Name}',");
+                    b.Space(space + 4).AppendLine($"showSearch: true,");
+                    b.Space(space + 4).AppendLine($"allowClear: true,");
+                    b.Space(space + 2).AppendLine($"}},");
+                }
             }
 
-            b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"options: enumStore?.findCodeSelect('{item.PropertyType.Name}'),");
-            b.Space(space + 4).AppendLine($"showSearch: true,");
-            b.Space(space + 4).AppendLine($"optionFilterProp: 'label'");
-            b.Space(space + 2).AppendLine($"}},");
+            if (defaultComponentProps)
+            {
+                b.Space(space + 2).AppendLine($"componentProps: {{");
+                b.Space(space + 4).AppendLine($"options: enumStore?.findCodeSelect('{item.PropertyType.Name}'),");
+                b.Space(space + 4).AppendLine($"showSearch: true,");
+                b.Space(space + 4).AppendLine($"allowClear: true,");
+                b.Space(space + 4).AppendLine($"optionFilterProp: 'label',");
+                b.Space(space + 2).AppendLine($"}},");
+            }
 
             if (item.IsRequired)
             {
@@ -130,20 +158,47 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
 
+            bool defaultComponentProps = true;
             if (item.SelectMode == VueSelectModeEnum.Radio)
             {
-                b.Space(space + 2).AppendLine($"component: '{GetMapComponent("RadioGroup")}',");
+                b.Space(space + 2).AppendLine($"component: '{Options.DictionaryRadioComponent ?? GetMapComponent("RadioGroup")}',");
+
+                if (Options.DictionaryRadioComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.DictionaryRadioComponentProp}: '{item.DictionaryCode}',");
+                    b.Space(space + 4).AppendLine($"showSearch: true,");
+                    b.Space(space + 4).AppendLine($"allowClear: true,");
+                    b.Space(space + 2).AppendLine($"}},");
+                }
             }
             else
             {
-                b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Select")}',");
+                b.Space(space + 2).AppendLine($"component: '{Options.DictionarySelectComponent ?? GetMapComponent("Select")}',");
+
+                if (Options.DictionarySelectComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.DictionarySelectComponentProp}: '{item.DictionaryCode}',");
+                    b.Space(space + 4).AppendLine($"showSearch: true,");
+                    b.Space(space + 4).AppendLine($"allowClear: true,");
+                    b.Space(space + 2).AppendLine($"}},");
+                }
             }
 
-            b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"options: dictStore?.findCodeSelect('{item.DictionaryCode}'),");
-            b.Space(space + 4).AppendLine($"showSearch: true,");
-            b.Space(space + 4).AppendLine($"optionFilterProp: 'label'");
-            b.Space(space + 2).AppendLine($"}},");
+            if (defaultComponentProps)
+            {
+                b.Space(space + 2).AppendLine($"componentProps: {{");
+                b.Space(space + 4).AppendLine($"options: dictStore?.findCodeSelect('{item.DictionaryCode}'),");
+                b.Space(space + 4).AppendLine($"showSearch: true,");
+                b.Space(space + 4).AppendLine($"allowClear: true,");
+                b.Space(space + 4).AppendLine($"optionFilterProp: 'label',");
+                b.Space(space + 2).AppendLine($"}},");
+            }
 
             if (item.IsRequired)
             {
@@ -168,9 +223,20 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
 
-            b.Space(space + 2).AppendLine($"component:'{GetMapComponent("Switch")}',");
+            if (item.SelectMode == VueSelectModeEnum.Radio)
+            {
+                b.Space(space + 2).AppendLine($"component:'{Options.BoolRadioComponent ?? GetMapComponent("Switch")}',");
+            }
+            else if (item.SelectMode == VueSelectModeEnum.Select)
+            {
+                b.Space(space + 2).AppendLine($"component:'{Options.BoolSelectComponent ?? GetMapComponent("Switch")}',");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($"component:'{GetMapComponent("Switch")}',");
+            }
 
-            var defaultValue = item.PropertyType.GetCustomAttribute<DefaultValueAttribute>();
+            var defaultValue = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
             if (defaultValue?.Value != null)
             {
                 b.Space(space + 2).AppendLine($"defaultValue: '{defaultValue.Value.ToString()?.ToCamelCase()}',");
@@ -213,22 +279,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             }
             else if (new[] { TypeCode.Decimal }.Contains(typeCode))
             {
-                int length = 2;
-                var column = item.PropertyType.GetCustomAttribute<ColumnAttribute>();
-
-                if (column?.TypeName != null)
-                {
-                    string pattern = @"\((.*?)\)";
-                    var match = Regex.Match(column.TypeName, pattern);
-                    if (match.Success)
-                    {
-                        var de = match.Groups[1].Value.Split(",");
-                        if (de.Length == 2)
-                        {
-                            int.TryParse(de[1], out length);
-                        }
-                    }
-                }
+                int length = item.PropertyInfo.GetDecimalPlaceFromColumnAttribute();
                 b.Space(space + 2).AppendLine($"component:'{GetMapComponent("InputNumber")}',");
                 b.Space(space + 2).AppendLine($"componentProps: {{ precision: {length} }},");
             }
@@ -252,7 +303,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 文件上传模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? UploadTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? FileUploadTemplate(TemplateVueModelData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -260,10 +311,90 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
-            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("ImageUpload")}',");
+            b.Space(space + 2).AppendLine($"component: '{Options.FileUploadComponent ?? GetMapComponent("BaseUpload")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
             b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile.ToString().ToCamelCase()},");
+            b.Space(space + 4).AppendLine($"listType: 'text',");
             b.Space(space + 2).AppendLine($"}},");
+
+            if (item.IsRequired)
+            {
+                b.Space(space + 2).AppendLine($"required: true,");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 图片上传模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ImageUploadTemplate(TemplateVueModelData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"component: '{Options.ImageUploadComponent ?? GetMapComponent("ImageUpload")}',");
+            b.Space(space + 2).AppendLine($"componentProps: {{");
+            b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile.ToString().ToCamelCase()},");
+            b.Space(space + 4).AppendLine($"listType: 'picture-card',");
+            b.Space(space + 2).AppendLine($"}},");
+
+            if (item.IsRequired)
+            {
+                b.Space(space + 2).AppendLine($"required: true,");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 内容输入框模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? TextareaTemplate(TemplateVueModelData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("InputTextArea")}',");
+            //b.Space(space + 2).AppendLine($"componentProps: {{");
+            //b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile.ToString().ToCamelCase()},");
+            //b.Space(space + 4).AppendLine($"listType: 'picture-card',");
+            //b.Space(space + 2).AppendLine($"}},");
+            if (item.IsRequired)
+            {
+                b.Space(space + 2).AppendLine($"required: true,");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 编辑器模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? EditorTemplate(TemplateVueModelData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"component: '{Options.EditorComponent ?? GetMapComponent("Tinymce")}',");
 
             if (item.IsRequired)
             {

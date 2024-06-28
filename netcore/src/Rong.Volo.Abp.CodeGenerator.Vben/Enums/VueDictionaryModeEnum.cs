@@ -10,6 +10,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Enums
     public enum VueSelectModeEnum
     {
         Select,
-        Radio
+        Radio,
+        /// <summary>
+        /// 仅对boo类型有效
+        /// </summary>
+        Switch
     }
 }
