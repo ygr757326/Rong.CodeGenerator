@@ -1,10 +1,10 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models
-@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueDetailDrawerModel>
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageDetailDrawerModel>
 @{
 
 }
 <template>
- <a-drawer v-model:visible="visible" title=" @Model.EntityName - 详情" width="800px">
+ <a-drawer v-model:visible="visible" title=" @Model.EntityInfo.EntityName - 详情" width="800px">
    <!--  详情页面 -->
    <Detail ref="detailRef" v-if="visible"></Detail>
  </a-drawer>

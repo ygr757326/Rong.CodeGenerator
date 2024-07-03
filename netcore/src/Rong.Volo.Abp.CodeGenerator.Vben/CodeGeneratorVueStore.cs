@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
@@ -24,13 +27,13 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     {
         protected CodeGeneratorVueOptions Options;
 
-        protected CodeGeneratorVueModelStore CodeGeneratorModelStore;
+        protected CodeGeneratorVueModelHelper CodeGeneratorModelStore;
         protected ITemplateDefinitionManager TemplateDefinitionManager;
         protected ITemplateRenderer TemplateRenderer;
 
         public CodeGeneratorVueStore(
             IOptions<CodeGeneratorVueOptions> options,
-            CodeGeneratorVueModelStore codeGeneratorModelStore,
+            CodeGeneratorVueModelHelper codeGeneratorModelStore,
             ITemplateDefinitionManager templateDefinitionManager,
             ITemplateRenderer templateRenderer)
         {
@@ -43,9 +46,46 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 开始代码生成
         /// </summary>
-        /// <param name="apiRootPath">api根路径</param>
-        /// <param name="entities">实体集合</param>
-        /// <param name="saveRootPath">要保存到的根目录</param>
+        /// <param name="entityBaseType">实体基类。如 typeof(IEntity)</param>
+        /// <param name="entityModule">实体所在模块。如 typeof(xxxDomainModule)</param>
+        /// <param name="dtoModule">输入输出dto所在模块。如 typeof(xxxApplicationContractsModule)</param>
+        /// <param name="apiRootPath">api根路径（如用于生成 getList api路径： '/api/<paramref name="apiRootPath"/>/实体/getList',）</param>
+        /// <param name="saveRootPath">要保存到的根目录。如 E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo</param>
+        /// <returns></returns>
+        public virtual async Task StartAsync(Type entityBaseType, Type entityModule, Type dtoModule, string apiRootPath, string saveRootPath)
+        {
+            List<TemplateVueModel> list = new List<TemplateVueModel>();
+
+            var entitys = entityModule.Assembly.GetTypes()
+                .Where(entityBaseType.IsAssignableFrom);
+
+            var dtos = dtoModule.Assembly.GetTypes();
+
+            foreach (var entity in entitys)
+            {
+                var name = entity.Name;
+
+                //实体显示名称
+                var displayName = GetEntityDisplayName(entity);
+                //权限
+                var permissionModel = GetTemplateVuePermissionModel(dtos, entity);
+                //实体dto
+                var entityTypeModel = GetTemplateVueDtoType(dtos, entity);
+
+                var item = new TemplateVueModel(name, displayName, entityTypeModel, permissionModel);
+                list.Add(item);
+            }
+
+            //开始生成
+            await StartAsync(list, apiRootPath, saveRootPath);
+        }
+
+        /// <summary>
+        /// 开始代码生成
+        /// </summary>
+        /// <param name="entities">实体模型集合</param>
+        /// <param name="apiRootPath">api根路径（如用于生成 getList api路径： '/api/<paramref name="apiRootPath"/>/实体/getList',）</param>
+        /// <param name="saveRootPath">要保存到的根目录。如 E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo</param>
         /// <returns></returns>
         public virtual async Task StartAsync(List<TemplateVueModel> entities, string apiRootPath, string saveRootPath)
         {
@@ -158,6 +198,64 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             byte[] buffer = renderResult.GetBytes(Encoding.UTF8);
             using FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
             await fs.WriteAsync(buffer, 0, buffer.Length);
+        }
+
+        /// <summary>
+        /// 获取dto类型
+        /// </summary>
+        /// <param name="dtoTypes"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual TemplateVueDtoType GetTemplateVueDtoType(Type[] dtoTypes, Type entity)
+        {
+            var name = entity.Name;
+            var page = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageOutput");
+            var search = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
+            var create = dtoTypes.FirstOrDefault(a => a.Name == $"{name}CreateInput");
+            var update = dtoTypes.FirstOrDefault(a => a.Name == $"{name}UpdateInput");
+            var detail = dtoTypes.FirstOrDefault(a => a.Name == $"{name}DetailOutput");
+            var permission = dtoTypes.FirstOrDefault(a => a.Name == $"{name}Permissions");
+            string? permissionGroup = permission?.GetField("GroupName")?.GetValue(null)?.ToString();
+
+            var entityTypeModel = new TemplateVueDtoType()
+            {
+                SearchType = search,
+                PageType = page,
+                DetailType = detail,
+                CreateType = create,
+                UpdateType = update,
+            };
+            return entityTypeModel;
+
+        }
+
+        /// <summary>
+        /// 获取dto类型
+        /// </summary>
+        /// <param name="dtoTypes"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual TemplateVuePermissionModel GetTemplateVuePermissionModel(Type[] dtoTypes, Type entity)
+        {
+            string name = entity.Name;
+            var permission = dtoTypes.FirstOrDefault(a => a.Name == $"{name}Permissions");
+            string? permissionGroup = permission?.GetField("GroupName")?.GetValue(null)?.ToString();
+
+            var permissionModel = new TemplateVuePermissionModel(name, permissionGroup);
+
+            return permissionModel;
+        }
+
+        /// <summary>
+        /// 获取实体显示名称
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual string GetEntityDisplayName(Type entity)
+        {
+            var displayName = entity.GetCustomAttribute<TableAttribute>()?.Name ?? entity.Name;
+
+            return displayName;
         }
     }
 

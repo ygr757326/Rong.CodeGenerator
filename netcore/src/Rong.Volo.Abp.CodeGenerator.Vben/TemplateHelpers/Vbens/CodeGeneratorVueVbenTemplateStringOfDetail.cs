@@ -19,7 +19,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 默认模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DefaultTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? DefaultTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
@@ -33,7 +33,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 日期模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DateTimeTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? DateTimeTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
@@ -47,7 +47,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 枚举模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? EnumTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? EnumTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
@@ -72,7 +72,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 字典模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DictionaryTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? DictionaryTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
@@ -97,7 +97,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// bool模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? BoolTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? BoolTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
@@ -115,7 +115,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 图片预览模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? ImagePreviewTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? ImagePreviewTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             var componentName = Options.ImagePreviewComponent ?? GetMapComponent("ImageUpload");
 
@@ -144,7 +144,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 文件预览模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? FilePreviewTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? FilePreviewTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             var componentName = Options.FilePreviewComponent ?? GetMapComponent("BaseUpload");
 
@@ -167,7 +167,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 编辑器模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? EditorTemplate(TemplateVueModelData item, int space = 8)
+        public virtual string? EditorTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");

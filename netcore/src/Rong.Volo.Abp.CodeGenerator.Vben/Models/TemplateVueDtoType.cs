@@ -4,33 +4,33 @@ using System.Reflection;
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
 {
     /// <summary>
-    /// 模板模型类
+    /// dto模型类
     /// </summary>
-    public class TemplateVueModelType
+    public class TemplateVueDtoType
     {
         /// <summary>
         /// 查询类型
         /// </summary>
-        public Type SearchType { get; set; }
+        public Type? SearchType { get; set; }
 
         /// <summary>
-        /// 分页类型
+        /// 分页列表类型
         /// </summary>
-        public Type PageType { get; set; }
+        public Type? PageType { get; set; }
 
         /// <summary>
         /// 详情类型
         /// </summary>
-        public Type DetailType { get; set; }
+        public Type? DetailType { get; set; }
 
         /// <summary>
         /// 创建类型
         /// </summary>
-        public Type CreateType { get; set; }
+        public Type? CreateType { get; set; }
 
         /// <summary>
         /// 修改类型
         /// </summary>
-        public Type UpdateType { get; set; }
+        public Type? UpdateType { get; set; }
     }
 }

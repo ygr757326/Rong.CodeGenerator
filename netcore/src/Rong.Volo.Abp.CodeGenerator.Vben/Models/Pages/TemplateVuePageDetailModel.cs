@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
+namespace Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
 {
     /// <summary>
     /// 详情页模型
     /// </summary>
-    public class TemplateVueDetailModel: TemplateVueModel
+    public class TemplateVuePageDetailModel : TemplateVueEntityModelBase
     {
         /// <summary>
         /// 详情模板
         /// </summary>
-        public List<TemplateVueModelData>? Detail { get; set; } = new List<TemplateVueModelData>();
+        public List<TemplateVueEntityPropertyData>? Detail { get; set; } = new List<TemplateVueEntityPropertyData>();
 
         /// <summary>
         /// 详情字符串模板

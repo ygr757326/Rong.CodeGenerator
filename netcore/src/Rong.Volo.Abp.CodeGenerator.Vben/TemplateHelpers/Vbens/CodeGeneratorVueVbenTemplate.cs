@@ -36,7 +36,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// <param name="models"></param>
         /// <param name="space"></param>
         /// <returns></returns>
-        public virtual string GetTableColumnsSlotsTemplate(List<TemplateVueModelData> models, int space = 8)
+        public virtual string GetTableColumnsSlotsTemplate(List<TemplateVueEntityPropertyData> models, int space = 8)
         {
             StringBuilder b = new StringBuilder();
             b.AppendLine();
@@ -82,7 +82,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 获取vue详情页 模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? GetDetailTemplate(List<TemplateVueModelData> models, int space = 8)
+        public virtual string? GetDetailTemplate(List<TemplateVueEntityPropertyData> models, int space = 8)
         {
             if (models == null)
             {
@@ -136,7 +136,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 获取table表头列 模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? GetTableColumnsTemplate(List<TemplateVueModelData> models, int space = 4)
+        public virtual string? GetTableColumnsTemplate(List<TemplateVueEntityPropertyData> models, int space = 4)
         {
             if (models == null)
             {
@@ -181,7 +181,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 获取table表单 模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? GetTableSchemasTemplate(List<TemplateVueModelData> models, int space = 8)
+        public virtual string? GetTableSchemasTemplate(List<TemplateVueEntityPropertyData> models, int space = 8)
         {
             if (models == null)
             {
@@ -231,7 +231,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 获取新增编辑表单 模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? GetFormTemplate(List<TemplateVueModelData> models, int space = 4)
+        public virtual string? GetFormTemplate(List<TemplateVueEntityPropertyData> models, int space = 4)
         {
             if (models == null)
             {

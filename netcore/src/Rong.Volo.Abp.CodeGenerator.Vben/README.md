@@ -93,7 +93,7 @@ public class CodeVueController : AbpController
     }
 
     /// <summary>
-    /// 代码生成
+    /// 代码生成 - 方式1
     /// </summary>
     /// <returns></returns>+
     public async Task<ActionResult> GoAsync()
@@ -134,10 +134,31 @@ public class CodeVueController : AbpController
         return Content("ok");
 
     }}
+
+
+    /// <summary>
+    /// 代码生成 - 方式二
+    /// </summary>
+    /// <returns></returns>+
+    public async Task<ActionResult> GoAsync()
+    {
+
+        //开始生成
+        await _codeGeneratorStore.StartAsync(typeof(IEntity), 
+            typeof(CodeGeneratorDomainModule), 
+            typeof(CodeGeneratorApplicationContractsModule), 
+            CodeGeneratorRemoteServiceConsts.RootPath, 
+            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+
+        
+        return Content("ok");
+
+    }
  }
 
 
 ```
+
 
 ## 4. 页面位置和命名
 

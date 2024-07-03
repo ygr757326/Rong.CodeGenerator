@@ -8,7 +8,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
     /// <summary>
     /// 模型数据
     /// </summary>
-    public class TemplateVueModelData
+    public class TemplateVueEntityPropertyData
     {
         /// <summary>
         /// 显示名称

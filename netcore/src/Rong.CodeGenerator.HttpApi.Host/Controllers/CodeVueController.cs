@@ -34,39 +34,15 @@ public class CodeVueController : AbpController
     /// <returns></returns>+
     public async Task<ActionResult> GoAsync()
     {
-        List<TemplateVueModel> list = new List<TemplateVueModel>();
-
-        var entitys = typeof(CodeGeneratorDomainModule).Assembly.GetTypes()
-            .Where(x => typeof(IEntity).IsAssignableFrom(x));
-
-        var dtos = typeof(CodeGeneratorApplicationContractsModule).Assembly.GetTypes();
-
-        foreach (var entity in entitys)
-        {
-            var name = entity.Name;
-            var displayName = entity.GetCustomAttribute<DisplayAttribute>()?.Name ?? name;
-            var page = dtos.FirstOrDefault(a => a.Name == $"{name}PageOutput");
-            var search = dtos.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
-            var create = dtos.FirstOrDefault(a => a.Name == $"{name}CreateInput");
-            var update = dtos.FirstOrDefault(a => a.Name == $"{name}UpdateInput");
-            var detail = dtos.FirstOrDefault(a => a.Name == $"{name}DetailOutput");
-            var permission = dtos.FirstOrDefault(a => a.Name == $"{name}Permissions");
-            string? permissionGroup = permission?.GetField("GroupName")?.GetValue(null)?.ToString();
-
-            list.Add(new TemplateVueModel(name, displayName, new TemplateVueModelType()
-            {
-                SearchType = search,
-                PageType = page,
-                DetailType = detail,
-                CreateType = create,
-                UpdateType = update,
-            }, permissionGroup));
-        }
-
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, CodeGeneratorRemoteServiceConsts.RootPath, "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+        await _codeGeneratorStore.StartAsync(typeof(IEntity), 
+            typeof(CodeGeneratorDomainModule), 
+            typeof(CodeGeneratorApplicationContractsModule), 
+            CodeGeneratorRemoteServiceConsts.RootPath, 
+            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
 
+        
         return Content("ok");
 
     }

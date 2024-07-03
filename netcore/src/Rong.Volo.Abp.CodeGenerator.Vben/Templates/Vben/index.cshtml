@@ -1,5 +1,5 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models
-@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueIndexModel>
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageIndexModel>
 @{
 
 }
@@ -7,25 +7,25 @@
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
       <template #toolbar>
-        <a-button auth="@Model.PermissionCreate" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
+        <a-button auth="@Model.EntityInfo.Permission.Create" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
        <template #action="{ record }">
         <TableAction
           :actions="[
             {
-              auth:'@Model.PermissionUpdate',
+              auth:'@Model.EntityInfo.Permission.Update',
               label: '编辑',
               onClick: handleEdit.bind(null, record),
             },
             { 
-              auth:'@Model.PermissionIndex',
+              auth:'@Model.EntityInfo.Permission.Index',
               label: '查看',
               onClick: handleDetail.bind(null, record),
             },
           ]"
           :dropDownActions="[
             {
-              auth:'@Model.PermissionDelete',
+              auth:'@Model.EntityInfo.Permission.Delete',
               label: '删除',
               popConfirm: {
                 title: '是否删除？',
@@ -53,7 +53,7 @@
   import Modify from './components/modify.vue';
   import DetailDrawer from './components/detailDrawer.vue';
   import { AbsViewModal } from '#/common';
-  import { @{@Model.Entity}Delete, @{@Model.Entity}GetList } from './api';
+  import { @{@Model.EntityInfo.Entity}Delete, @{@Model.EntityInfo.Entity}GetList } from './api';
   import { PageWrapper } from '@@/components/Page';
   import { BasicColumn, BasicTable, TableAction, useTable } from '@@/components/Table';
   import { useGrid } from '@@/hooks/manageCenter/useGrid';
@@ -76,7 +76,7 @@
    *删除
    */
   async function handleDelete(record: Recordable) {
-    await @{@Model.Entity}Delete(record.id);
+    await @{@Model.EntityInfo.Entity}Delete(record.id);
     reload();
   }
 
@@ -91,7 +91,7 @@
    * 表头配置
    */
   const [register, { reload }] = useTable({
-    api: @{@Model.Entity}GetList,
+    api: @{@Model.EntityInfo.Entity}GetList,
     columns,
     tableSetting: {
       redo: true,

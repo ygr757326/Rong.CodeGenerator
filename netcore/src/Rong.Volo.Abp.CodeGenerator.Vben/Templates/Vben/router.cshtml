@@ -1,5 +1,5 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models
-@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueRouterModel>
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageRouterModel>
 @{
 }
 import type { AppRouteModule } from '@@/router/types';
@@ -8,25 +8,25 @@ import { LAYOUT } from '@@/router/constant';
 import { t } from '@@/hooks/web/useI18n';
 
 const about: AppRouteModule = {
-  path: '/@{@Model.EntityCase}',
-  name: '@{@Model.Entity}',
+  path: '/@{@Model.EntityInfo.EntityCase}',
+  name: '@{@Model.EntityInfo.Entity}',
   component: LAYOUT,
-  redirect: '/@{@Model.EntityCase}/index',
+  redirect: '/@{@Model.EntityInfo.EntityCase}/index',
   meta: {
     hideChildrenInMenu: true,
     icon: '',
-    title: '@{@Model.EntityName}',
+    title: '@{@Model.EntityInfo.EntityName}',
     orderNo: 100000,
-    policy:'@{@Model.PermissionIndex}',
+    policy:'@{@Model.EntityInfo.Permission.Index}',
   },
   children: [
     {
       path: 'index',
-      name: '@{@Model.Entity}Page',
-      component: () => import('@@/views/@{@Model.EntityCase}/index.vue'),
+      name: '@{@Model.EntityInfo.Entity}Page',
+      component: () => import('@@/views/@{@Model.EntityInfo.EntityCase}/index.vue'),
       meta: {
-        policy:'@{@Model.PermissionIndex}',
-        title:  '@{@Model.EntityName}',
+        policy:'@{@Model.EntityInfo.Permission.Index}',
+        title:  '@{@Model.EntityInfo.EntityName}',
         icon: '',
         hideMenu: true,
       },

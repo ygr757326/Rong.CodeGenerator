@@ -1,5 +1,5 @@
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models
-@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueDetailModel>
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageDetailModel>
 @{
 }
 <template>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 
-  import { @{@Model.Entity}Get } from '../api';
+  import { @{@Model.EntityInfo.Entity}Get } from '../api';
   import { ref, nextTick } from 'vue';
   import { useI18n } from '@@/hooks/web/useI18n';
   import { useLoading } from '@@/components/Loading';
@@ -47,7 +47,7 @@
    * 获取详情
    */
   function getData(data) {
-      @{@Model.Entity}Get(data.id).then((res) => {
+      @{@Model.EntityInfo.Entity}Get(data.id).then((res) => {
         detailData.value = res;
       })
       .finally(() => {

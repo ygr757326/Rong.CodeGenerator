@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
+namespace Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
 {
     /// <summary>
     /// 主页模型
     /// </summary>
-    public class TemplateVueIndexModel : TemplateVueModel
+    public class TemplateVuePageIndexModel : TemplateVueEntityModelBase
     {
         /// <summary>
         /// Table Columns列
         /// </summary>
-        public List<TemplateVueModelData>? TableColumns { get; set; } = new List<TemplateVueModelData>();
+        public List<TemplateVueEntityPropertyData>? TableColumns { get; set; } = new List<TemplateVueEntityPropertyData>();
 
         /// <summary>
         /// Table Columns列模板字符串
@@ -25,7 +25,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// <summary>
         /// Table Schemas 查询表单
         /// </summary>
-        public List<TemplateVueModelData>? TableSchemas { get; set; } = new List<TemplateVueModelData>();
+        public List<TemplateVueEntityPropertyData>? TableSchemas { get; set; } = new List<TemplateVueEntityPropertyData>();
 
         /// <summary>
         /// Table Schemas 查询表单模板字符串

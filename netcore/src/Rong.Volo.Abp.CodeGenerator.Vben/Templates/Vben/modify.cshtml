@@ -1,16 +1,16 @@
 @using System.Linq
-@using Rong.Volo.Abp.CodeGenerator.Vue.Models
-@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVueModifyModel>
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageModifyModel>
 @{
     var hasEditor = Model.Form.Any(a => a.IsEditor);
-    var hasTinymceEditor = hasEditor && (Model.Options.EditorComponent == null || Model.Options.EditorComponent == "Tinymce");
+    var hasTinymceEditor = hasEditor && (Model.EntityInfo.Options.EditorComponent == null || Model.EntityInfo.Options.EditorComponent == "Tinymce");
     string? useComponentRegister = hasTinymceEditor ? ", useComponentRegister" : null;
     string? useTinymce = hasTinymceEditor ? "import { Tinymce } from '@/components/Tinymce/index';" : null;
     string? registerTinymce = hasTinymceEditor ? "useComponentRegister('Tinymce', Tinymce);" : null;
     string? width = hasEditor ? "85%" : "800px";
 }
 <template>
-  <a-drawer v-model:visible="visible" title="编辑 - @Model.EntityName" width="@width">
+  <a-drawer v-model:visible="visible" title="编辑 - @Model.EntityInfo.EntityName" width="@width">
   <template #extra>
     <a-button @@click="visible = false">取消</a-button>
     <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 
 import { nextTick, ref } from 'vue';
-import { @{@Model.Entity}Get, @{@Model.Entity}Update } from '../api';
+import { @{@Model.EntityInfo.Entity}Get, @{@Model.EntityInfo.Entity}Update } from '../api';
 import { BasicForm, FormSchema, useForm @useComponentRegister } from '@@/components/Form/index';
 import { useLoading } from '@@/components/Loading';
 import { useDictStore } from '@@/store/modules/dict';
@@ -80,7 +80,7 @@ async function handleSubmit() {
   //获取
   const data: any = getFieldsValue();
   //修改
-  await @{@Model.Entity}Update(data.id, data);
+  await @{@Model.EntityInfo.Entity}Update(data.id, data);
 
   visible.value = false;
   $emit('success');
@@ -90,7 +90,7 @@ async function handleSubmit() {
 * 获取详情
 /*/
 async function getData(data) {
-  @{@Model.Entity}Get(data.id).then((res) => {
+  @{@Model.EntityInfo.Entity}Get(data.id).then((res) => {
       setFieldsValue(res);
   })
   .finally(() => {

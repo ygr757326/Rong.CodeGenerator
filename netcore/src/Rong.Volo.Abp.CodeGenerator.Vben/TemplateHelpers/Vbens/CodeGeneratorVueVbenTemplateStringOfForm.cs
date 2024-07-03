@@ -27,7 +27,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 默认模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DefaultTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? DefaultTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -56,7 +56,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 日期模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DateTimeTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? DateTimeTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -84,7 +84,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 枚举模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? EnumTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? EnumTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -149,7 +149,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 字典模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DictionaryTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? DictionaryTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -214,7 +214,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// bool模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? BoolTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? BoolTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -256,7 +256,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 数值模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? NumberTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? NumberTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             var typeCode = item.PropertyType.GetMyTypeCode();
 
@@ -303,7 +303,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 文件上传模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? FileUploadTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? FileUploadTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -331,7 +331,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 图片上传模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? ImageUploadTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? ImageUploadTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -359,7 +359,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 内容输入框模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? TextareaTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? TextareaTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -386,7 +386,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 编辑器模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? EditorTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? EditorTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 

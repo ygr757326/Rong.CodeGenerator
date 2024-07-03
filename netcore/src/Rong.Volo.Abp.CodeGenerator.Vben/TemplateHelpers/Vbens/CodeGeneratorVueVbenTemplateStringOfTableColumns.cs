@@ -19,7 +19,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 默认模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DefaultTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? DefaultTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -42,7 +42,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 日期模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DateTimeTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? DateTimeTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -69,7 +69,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 枚举模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? EnumTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? EnumTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -102,7 +102,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 枚举插槽
         /// </summary>
         /// <returns></returns>
-        public virtual string? EnumSlots(TemplateVueModelData item, int space = 6)
+        public virtual string? EnumSlots(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -119,7 +119,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 字典模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? DictionaryTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? DictionaryTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -153,7 +153,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 字典插槽
         /// </summary>
         /// <returns></returns>
-        public virtual string? DictionarySlot(TemplateVueModelData item, int space = 6)
+        public virtual string? DictionarySlot(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -170,7 +170,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// bool模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? BoolTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? BoolTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -204,7 +204,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// bool插槽
         /// </summary>
         /// <returns></returns>
-        public virtual string? BoolSlot(TemplateVueModelData item, int space = 6)
+        public virtual string? BoolSlot(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -221,7 +221,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 图片预览模板
         /// </summary>
         /// <returns></returns>
-        public virtual string? ImagePreviewTemplate(TemplateVueModelData item, int space = 6)
+        public virtual string? ImagePreviewTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 
@@ -244,7 +244,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 图片预览插槽
         /// </summary>
         /// <returns></returns>
-        public virtual string? ImagePreviewSlot(TemplateVueModelData item, int space = 6)
+        public virtual string? ImagePreviewSlot(TemplateVueEntityPropertyData item, int space = 6)
         {
             var componentName = Options.ImagePreviewComponent ?? GetMapComponent("BaseUpload");
 
@@ -275,7 +275,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 文件预览插槽
         /// </summary>
         /// <returns></returns>
-        public virtual string? FilePreviewSlot(TemplateVueModelData item, int space = 6)
+        public virtual string? FilePreviewSlot(TemplateVueEntityPropertyData item, int space = 6)
         {
             var componentName = Options.FilePreviewComponent ?? GetMapComponent("BaseUpload");
 
@@ -299,7 +299,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// 编辑器插槽
         /// </summary>
         /// <returns></returns>
-        public virtual string? EditorSlot(TemplateVueModelData item, int space = 6)
+        public virtual string? EditorSlot(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
 

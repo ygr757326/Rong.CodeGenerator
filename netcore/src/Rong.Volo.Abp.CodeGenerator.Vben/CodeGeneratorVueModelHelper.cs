@@ -10,16 +10,17 @@ using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
     /// <summary>
     /// Vben代码生成器帮助器
     /// </summary>
-    public class CodeGeneratorVueModelStore : ISingletonDependency
+    public class CodeGeneratorVueModelHelper : ISingletonDependency
     {
         private readonly CodeGeneratorVueVbenTemplate _vueTemplate;
-        public CodeGeneratorVueModelStore(CodeGeneratorVueVbenTemplate vueTemplate)
+        public CodeGeneratorVueModelHelper(CodeGeneratorVueVbenTemplate vueTemplate)
         {
             _vueTemplate = vueTemplate;
         }
@@ -44,7 +45,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
                         var searchData = GetPropertyInfo(model.EntityType.SearchType, true, new[] { "Sorting", "SkipCount", "MaxResultCount" });
 
-                        data = new TemplateVueIndexModel
+                        data = new TemplateVuePageIndexModel
                         {
                             TableColumns = tableData,
                             TableColumnsTemplate = _vueTemplate.GetTableColumnsTemplate(tableData, 4),
@@ -58,7 +59,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 case CodeGeneratorVueVbenTemplateNames.Vben_add:
                     {
                         var formData = GetPropertyInfo(model.EntityType.CreateType);
-                        data = new TemplateVueAddModel
+                        data = new TemplateVuePageAddModel
                         {
                             Form = formData,
                             FormTemplate = _vueTemplate.GetFormTemplate(formData, 4),
@@ -68,7 +69,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 case CodeGeneratorVueVbenTemplateNames.Vben_modify:
                     {
                         var formData = GetPropertyInfo(model.EntityType.UpdateType);
-                        data = new TemplateVueModifyModel
+                        data = new TemplateVuePageModifyModel
                         {
                             Form = formData,
                             FormTemplate = _vueTemplate.GetFormTemplate(formData, 4),
@@ -78,7 +79,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 case CodeGeneratorVueVbenTemplateNames.Vben_detail:
                     {
                         var viewData = GetPropertyInfo(model.EntityType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" });
-                        data = new TemplateVueDetailModel
+                        data = new TemplateVuePageDetailModel
                         {
                             Detail = viewData,
                             DetailTemplate = _vueTemplate.GetDetailTemplate(viewData, 8),
@@ -88,31 +89,26 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
                 case CodeGeneratorVueVbenTemplateNames.Vben_api:
                     {
-                        data = new TemplateVueApiModel();
+                        data = new TemplateVuePageApiModel();
                         break;
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_detailDrawer:
                     {
-                        data = new TemplateVueDetailDrawerModel();
+                        data = new TemplateVuePageDetailDrawerModel();
                         break;
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_router:
                     {
-                        data = new TemplateVueRouterModel();
+                        data = new TemplateVuePageRouterModel();
                         break;
                     }
                 default:
                     throw new UserFriendlyException($"模板【{template}】输出未实现");
             }
 
-            if (data is TemplateVueModel m)
+            if (data is TemplateVueEntityModelBase m)
             {
-                m.Options = model.Options;
-                m.ApiRootPath = model.ApiRootPath;
-                m.EntityCase = model.EntityCase;
-                m.Entity = model.Entity;
-                m.EntityName = model.EntityName;
-                m.PermissionGroup = model.PermissionGroup;
+                m.EntityInfo = model;
             }
 
             return data;
@@ -125,14 +121,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <param name="isCanWrite"></param>
         /// <param name="ignoreProperties">忽略的属性</param>
         /// <returns></returns>
-        protected virtual List<TemplateVueModelData>? GetPropertyInfo(Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null)
+        protected virtual List<TemplateVueEntityPropertyData>? GetPropertyInfo(Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null)
         {
             if (type == null)
             {
-                return new List<TemplateVueModelData>();
+                return new List<TemplateVueEntityPropertyData>();
             }
 
-            List<TemplateVueModelData> data = new List<TemplateVueModelData>();
+            List<TemplateVueEntityPropertyData> data = new List<TemplateVueEntityPropertyData>();
 
             var properties = type.GetProperties()
                 .WhereIf(ignoreProperties != null, a => !ignoreProperties.Contains(a.Name, StringComparer.CurrentCultureIgnoreCase))
@@ -142,7 +138,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             {
                 var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
 
-                var info = new TemplateVueModelData()
+                var info = new TemplateVueEntityPropertyData()
                 {
                     PropertyInfo = propertyInfo,
                     Property = propertyInfo.Name,
@@ -176,7 +172,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 字典模型
         /// </summary>
-        protected virtual void HandleDictionaryModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleDictionaryModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueDictionaryAttribute>();
             if (attr == null)
@@ -194,7 +190,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 枚举模型
         /// </summary>
-        protected virtual void HandleEnumModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleEnumModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueEnumAttribute>();
 
@@ -212,7 +208,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// bool模型
         /// </summary>
-        protected virtual void HandleBoolModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleBoolModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueBoolAttribute>();
             info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Switch;
@@ -223,7 +219,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 文件模型
         /// </summary>
-        protected virtual void HandleFileModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleFileModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueFileAttribute>();
             if (attr == null)
@@ -238,7 +234,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 内容输入模型
         /// </summary>
-        protected virtual void HandleTextareaModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleTextareaModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueTextareaAttribute>();
             if (attr == null)
@@ -251,7 +247,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 编辑器模型
         /// </summary>
-        protected virtual void HandleEditorModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleEditorModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueEditorAttribute>();
             if (attr == null)
@@ -264,7 +260,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 值名称数据模型
         /// </summary>
-        protected virtual void HandleValueNameModel(TemplateVueModelData info, PropertyInfo propertyInfo)
+        protected virtual void HandleValueNameModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueValueNameAttribute>();
             if (attr == null || string.IsNullOrWhiteSpace(attr.PointSplicingName))
