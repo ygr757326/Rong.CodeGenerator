@@ -129,7 +129,7 @@ public class CodeVueController : AbpController
 
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, CodeGeneratorRemoteServiceConsts.RootPath, "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+        await _codeGeneratorStore.StartAsync(list, CodeGeneratorRemoteServiceConsts.RootPath, "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo", new []{"app"});
 
         return Content("ok");
 
@@ -148,7 +148,8 @@ public class CodeVueController : AbpController
             typeof(CodeGeneratorDomainModule), 
             typeof(CodeGeneratorApplicationContractsModule), 
             CodeGeneratorRemoteServiceConsts.RootPath, 
-            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo",
+            new []{typeof(App)});
 
         
         return Content("ok");

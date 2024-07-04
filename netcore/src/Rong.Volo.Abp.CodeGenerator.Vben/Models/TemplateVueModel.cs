@@ -14,7 +14,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public string Entity { get; set; }
 
         /// <summary>
-        /// 实体名称
+        /// 实体显示名称
         /// </summary>
         public string EntityName { get; set; }
 
@@ -25,9 +25,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public string? ApiRootPath { get; set; }
 
         /// <summary>
-        /// 实体类型
+        /// 实体dto类型
         /// </summary>
-        public TemplateVueDtoType EntityType { get; set; }
+        public TemplateVueDtoType EntityDtoType { get; set; }
 
         /// <summary>
         /// 权限
@@ -54,10 +54,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="entityName">实体显示名称</param>
-        /// <param name="entityType"></param>
-        /// <param name="permission"></param>
+        /// <param name="entityDtoType">实体dto类型</param>
+        /// <param name="permission">权限</param>
         /// <param name="apiRootPath">api根路径</param>
-        public TemplateVueModel(string entity, string entityName, TemplateVueDtoType entityType, TemplateVuePermissionModel permission, string? apiRootPath = null)
+        public TemplateVueModel(string entity, string entityName, TemplateVueDtoType entityDtoType, TemplateVuePermissionModel permission, string? apiRootPath = null)
         {
             Entity = entity;
             EntityCase = Entity.ToCamelCase();
@@ -66,16 +66,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
             ApiRootPath = apiRootPath;
 
             Permission = permission;
-            EntityType = entityType;
-        }
-
-        /// <summary>
-        /// 设置选项
-        /// </summary>
-        /// <param name="options"></param>
-        internal void SetPermission(CodeGeneratorVueOptions options)
-        {
-            Options = options;
+            EntityDtoType = entityDtoType;
         }
     }
 }

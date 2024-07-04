@@ -40,7 +40,7 @@ public class CodeVueController : AbpController
             typeof(CodeGeneratorDomainModule), 
             typeof(CodeGeneratorApplicationContractsModule), 
             CodeGeneratorRemoteServiceConsts.RootPath, 
-            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo");
+            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo",new []{typeof(App.Apps.App)});
 
         
         return Content("ok");

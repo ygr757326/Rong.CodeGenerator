@@ -40,10 +40,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 case CodeGeneratorVueVbenTemplateNames.Vben_index:
                     {
 
-                        var tableData = GetPropertyInfo(model.EntityType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })?.Where(a =>
+                        var tableData = GetPropertyInfo(model.EntityDtoType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })?.Where(a =>
                             !a.Property.Equals("concurrencyStamp", StringComparison.CurrentCultureIgnoreCase)).ToList();
 
-                        var searchData = GetPropertyInfo(model.EntityType.SearchType, true, new[] { "Sorting", "SkipCount", "MaxResultCount" });
+                        var searchData = GetPropertyInfo(model.EntityDtoType.SearchType, true, new[] { "Sorting", "SkipCount", "MaxResultCount" });
 
                         data = new TemplateVuePageIndexModel
                         {
@@ -58,7 +58,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_add:
                     {
-                        var formData = GetPropertyInfo(model.EntityType.CreateType);
+                        var formData = GetPropertyInfo(model.EntityDtoType.CreateType);
                         data = new TemplateVuePageAddModel
                         {
                             Form = formData,
@@ -68,7 +68,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_modify:
                     {
-                        var formData = GetPropertyInfo(model.EntityType.UpdateType);
+                        var formData = GetPropertyInfo(model.EntityDtoType.UpdateType);
                         data = new TemplateVuePageModifyModel
                         {
                             Form = formData,
@@ -78,7 +78,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case CodeGeneratorVueVbenTemplateNames.Vben_detail:
                     {
-                        var viewData = GetPropertyInfo(model.EntityType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" });
+                        var viewData = GetPropertyInfo(model.EntityDtoType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" });
                         data = new TemplateVuePageDetailModel
                         {
                             Detail = viewData,

@@ -1,18 +1,14 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Microsoft.Extensions.Options;
-using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
-using Rong.Volo.Abp.CodeGenerator.Vue.Models;
-using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Reflection;
@@ -51,33 +47,40 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <param name="dtoModule">输入输出dto所在模块。如 typeof(xxxApplicationContractsModule)</param>
         /// <param name="apiRootPath">api根路径（如用于生成 getList api路径： '/api/<paramref name="apiRootPath"/>/实体/getList',）</param>
         /// <param name="saveRootPath">要保存到的根目录。如 E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo</param>
+        /// <param name="ignoreEntityTypes">要忽略的实体类型</param>
         /// <returns></returns>
-        public virtual async Task StartAsync(Type entityBaseType, Type entityModule, Type dtoModule, string apiRootPath, string saveRootPath)
+        public virtual async Task StartAsync(Type entityBaseType, Type entityModule, Type dtoModule, string apiRootPath,
+            string saveRootPath, Type[]? ignoreEntityTypes = null)
         {
             List<TemplateVueModel> list = new List<TemplateVueModel>();
 
-            var entitys = entityModule.Assembly.GetTypes()
+            var entityTypes = entityModule.Assembly.GetTypes()
                 .Where(entityBaseType.IsAssignableFrom);
 
-            var dtos = dtoModule.Assembly.GetTypes();
+            var dtoTypes = dtoModule.Assembly.GetTypes();
 
-            foreach (var entity in entitys)
+            foreach (var entityType in entityTypes)
             {
-                var name = entity.Name;
+                if (EntityShouldIgnore(ignoreEntityTypes, entityType))
+                {
+                    continue;
+                }
+
+                var name = entityType.Name;
 
                 //实体显示名称
-                var displayName = GetEntityDisplayName(entity);
+                var displayName = GetEntityDisplayName(entityType);
                 //权限
-                var permissionModel = GetTemplateVuePermissionModel(dtos, entity);
+                var permissionModel = GetTemplateVuePermissionModel(dtoTypes, entityType);
                 //实体dto
-                var entityTypeModel = GetTemplateVueDtoType(dtos, entity);
+                var entityDtoTypeModel = GetTemplateVueDtoType(dtoTypes, entityType);
 
-                var item = new TemplateVueModel(name, displayName, entityTypeModel, permissionModel);
+                var item = new TemplateVueModel(name, displayName, entityDtoTypeModel, permissionModel);
                 list.Add(item);
             }
 
             //开始生成
-            await StartAsync(list, apiRootPath, saveRootPath);
+            await StartAsync(list, apiRootPath, saveRootPath, null);
         }
 
         /// <summary>
@@ -86,8 +89,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <param name="entities">实体模型集合</param>
         /// <param name="apiRootPath">api根路径（如用于生成 getList api路径： '/api/<paramref name="apiRootPath"/>/实体/getList',）</param>
         /// <param name="saveRootPath">要保存到的根目录。如 E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo</param>
+        /// <param name="ignoreEntity">要忽略的是实体</param>
         /// <returns></returns>
-        public virtual async Task StartAsync(List<TemplateVueModel> entities, string apiRootPath, string saveRootPath)
+        public virtual async Task StartAsync(List<TemplateVueModel> entities, string apiRootPath, string saveRootPath, string[]? ignoreEntity = null)
         {
             Check.NotNull(entities, nameof(entities));
             Check.NotNullOrWhiteSpace(saveRootPath, nameof(saveRootPath));
@@ -105,6 +109,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             foreach (var item in entities)
             {
+                if (EntityShouldIgnore(ignoreEntity, item.Entity))
+                {
+                    continue;
+                }
+
                 item.EntityCase = item.Entity.ToCamelCase();
                 item.ApiRootPath ??= apiRootPath;
                 item.Options = Options;
@@ -124,7 +133,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <returns></returns>
         protected virtual async Task GenerateForEntityAsync(TemplateVueModel entity, string saveRootPath)
         {
-            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorVueVbenTemplateNames));
+            string[] templates =
+                ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorVueVbenTemplateNames));
 
             foreach (var template in templates)
             {
@@ -204,18 +214,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// 获取dto类型
         /// </summary>
         /// <param name="dtoTypes"></param>
-        /// <param name="entity"></param>
+        /// <param name="entityType"></param>
         /// <returns></returns>
-        protected virtual TemplateVueDtoType GetTemplateVueDtoType(Type[] dtoTypes, Type entity)
+        protected virtual TemplateVueDtoType GetTemplateVueDtoType(Type[] dtoTypes, Type entityType)
         {
-            var name = entity.Name;
+            var name = entityType.Name;
             var page = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageOutput");
             var search = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
             var create = dtoTypes.FirstOrDefault(a => a.Name == $"{name}CreateInput");
             var update = dtoTypes.FirstOrDefault(a => a.Name == $"{name}UpdateInput");
             var detail = dtoTypes.FirstOrDefault(a => a.Name == $"{name}DetailOutput");
-            var permission = dtoTypes.FirstOrDefault(a => a.Name == $"{name}Permissions");
-            string? permissionGroup = permission?.GetField("GroupName")?.GetValue(null)?.ToString();
 
             var entityTypeModel = new TemplateVueDtoType()
             {
@@ -233,11 +241,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// 获取dto类型
         /// </summary>
         /// <param name="dtoTypes"></param>
-        /// <param name="entity"></param>
+        /// <param name="entityType"></param>
         /// <returns></returns>
-        protected virtual TemplateVuePermissionModel GetTemplateVuePermissionModel(Type[] dtoTypes, Type entity)
+        protected virtual TemplateVuePermissionModel GetTemplateVuePermissionModel(Type[] dtoTypes, Type entityType)
         {
-            string name = entity.Name;
+            string name = entityType.Name;
             var permission = dtoTypes.FirstOrDefault(a => a.Name == $"{name}Permissions");
             string? permissionGroup = permission?.GetField("GroupName")?.GetValue(null)?.ToString();
 
@@ -249,14 +257,35 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <summary>
         /// 获取实体显示名称
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entityType"></param>
         /// <returns></returns>
-        protected virtual string GetEntityDisplayName(Type entity)
+        protected virtual string GetEntityDisplayName(Type entityType)
         {
-            var displayName = entity.GetCustomAttribute<TableAttribute>()?.Name ?? entity.Name;
+            var displayName = entityType.GetCustomAttribute<TableAttribute>()?.Name ?? entityType.Name;
 
             return displayName;
         }
-    }
 
+        /// <summary>
+        /// 实体是否应该忽略
+        /// </summary>
+        /// <param name="ignoreEntityTypes"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual bool EntityShouldIgnore(Type[]? ignoreEntityTypes, Type entity)
+        {
+            return ignoreEntityTypes != null && ignoreEntityTypes.Contains(entity);
+        }
+
+        /// <summary>
+        /// 实体是否应该忽略
+        /// </summary>
+        /// <param name="ignoreEntity"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual bool EntityShouldIgnore(string[]? ignoreEntity, string entity)
+        {
+            return ignoreEntity != null && ignoreEntity.Contains(entity, StringComparer.CurrentCultureIgnoreCase);
+        }
+    }
 }
