@@ -41,8 +41,8 @@ public class CodeController : AbpController
               new ("User", "用户"),
         };
 
-        //开始生成
-        await _codeGeneratorStore.StartAsync(list, false, "命名空间名称");
+        //开始生成：实体列表,命名空间名称
+        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator");
 
         return Content("ok");
     }
