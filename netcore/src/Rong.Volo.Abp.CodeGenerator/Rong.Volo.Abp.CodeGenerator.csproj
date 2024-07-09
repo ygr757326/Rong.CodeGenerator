@@ -7,7 +7,7 @@
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
     <RootNamespace>Rong.Volo.Abp.CodeGenerator</RootNamespace>
-    <Description>abp vnext 7.4.0以上的代码生成器。本人为了快速开发而写的后端代码生成器。当前仅供自己用。</Description>
+    <Description>abp vnext 7.4.0以上的代码生成器。本人为了快速开发而写的后端代码生成器。</Description>
     <Version>0.3.0</Version>
 	  <Authors>ygr</Authors>
 	  <PackageProjectUrl>https://github.com/ygr757326/Rong.CodeGenerator</PackageProjectUrl>
