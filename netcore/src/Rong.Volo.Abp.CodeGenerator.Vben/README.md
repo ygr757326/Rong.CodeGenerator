@@ -149,6 +149,7 @@ public class CodeVueController : AbpController
             typeof(CodeGeneratorApplicationContractsModule), 
             CodeGeneratorRemoteServiceConsts.RootPath, 
             "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo",
+            //要忽略生成的实体
             new []{typeof(App)});
 
         

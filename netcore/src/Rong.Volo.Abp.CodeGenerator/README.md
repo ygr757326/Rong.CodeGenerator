@@ -42,7 +42,7 @@ public class CodeController : AbpController
         };
 
         //开始生成：实体列表,命名空间名称
-        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator");
+        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator", saveFolderName: "App");
 
         return Content("ok");
     }
