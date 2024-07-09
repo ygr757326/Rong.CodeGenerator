@@ -1,9 +1,9 @@
 ﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
-using @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto;
+using @{@Model.NameSpace}.@{@Model.EntityDirectory}.@{@Model.Entity}s.Dto;
 using System;
 using Volo.Abp.Application.Services;
 
-namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+namespace @{@Model.NameSpace}.@{@Model.EntityDirectory}.@{@Model.Entity}s
 {
     /// <summary>
     /// @{@Model.EntityName} - 接口

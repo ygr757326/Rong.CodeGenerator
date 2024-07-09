@@ -29,7 +29,7 @@ public class CodeController : AbpController
         };
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator");
+        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator",entityDirectory:"Apps");
 
         return Content("ok");
 

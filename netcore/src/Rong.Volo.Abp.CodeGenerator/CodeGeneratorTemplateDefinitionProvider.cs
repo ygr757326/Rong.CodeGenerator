@@ -25,7 +25,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                            $"/Templates/Application/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Application/App/xxxs")
+                        .WithProperty("path", "../$namespace.Application/$directory/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -45,7 +45,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Application.Contracts/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Application.Contracts/App/xxxs")
+                        .WithProperty("path", "../$namespace.Application.Contracts/$directory/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -72,7 +72,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Application.Contracts/Dto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Application.Contracts/App/xxxs/Dto")
+                        .WithProperty("path", "../$namespace.Application.Contracts/$directory/xxxs/Dto")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -123,7 +123,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                 else
                 {
 
-                    definition.WithProperty("path", "../$namespace.Domain/App/xxxs");
+                    definition.WithProperty("path", "../$namespace.Domain/$directory/xxxs");
                     definition.WithProperty("name", $"{name}.cs");
                 }
 
@@ -146,7 +146,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Domain/DomainService/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Domain/App/xxxs/DomainService")
+                        .WithProperty("path", "../$namespace.Domain/$directory/xxxs/DomainService")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -165,7 +165,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Domain.Shared/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Domain.Shared/App/xxxs")
+                        .WithProperty("path", "../$namespace.Domain.Shared/$directory/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -182,7 +182,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Domain.Shared/Eto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Domain.Shared/App/xxxs/Eto")
+                        .WithProperty("path", "../$namespace.Domain.Shared/$directory/xxxs/Eto")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -199,7 +199,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/EntityFrameworkCore/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.EntityFrameworkCore/App/xxxs")
+                        .WithProperty("path", "../$namespace.EntityFrameworkCore/$directory/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
@@ -223,7 +223,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                 }
                 else
                 {
-                    definition.WithProperty("path", "../$namespace.HttpApi/App/xxxs");
+                    definition.WithProperty("path", "../$namespace.HttpApi/$directory/xxxs");
                     definition.WithProperty("name", $"{name}.cs");
                 }
 

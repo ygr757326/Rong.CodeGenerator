@@ -39,6 +39,11 @@ namespace Rong.Volo.Abp.CodeGenerator
         public string? Project { get; set; }
 
         /// <summary>
+        /// 要保存到的目录（默认App）
+        /// </summary>
+        public string? EntityDirectory { get; set; }
+
+        /// <summary>
         /// 构造
         /// </summary>
         public TemplateModel()
@@ -53,13 +58,14 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <param name="nameSpace"></param>
         /// <param name="project"></param>
         /// <param name="applicationAsController"></param>
-        public TemplateModel(string entity, string entityName, string? nameSpace = null, string? project = null, bool? applicationAsController = null)
+        public TemplateModel(string entity, string entityName, string? nameSpace = null, string? project = null, bool? applicationAsController = null, string? entityDirectory=null)
         {
             Entity = entity;
             EntityName = entityName;
             NameSpace = nameSpace;
             Project = project;
             ApplicationAsController = applicationAsController;
+            EntityDirectory = entityDirectory;
         }
 
         /// <summary>

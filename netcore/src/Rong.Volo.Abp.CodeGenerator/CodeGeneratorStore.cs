@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
@@ -31,15 +32,19 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// </summary>
         /// <param name="entities">实体集合</param>
         /// <param name="applicationAsController">统一是否应用层作为控制器，如果 <see cref="TemplateModel.ApplicationAsController"/> 为空则使用 <paramref name="applicationAsController"/>，否则使用 <see cref="TemplateModel.ApplicationAsController"/>(默认true,不生成）</param>
+        /// <param name="entityDirectory">要保存到的目录</param>
         /// <param name="nameSpace">统一命名空间，如果 <see cref="TemplateModel.NameSpace"/> 为空则使用 <paramref name="nameSpace"/>，否则使用 <see cref="TemplateModel.NameSpace"/></param>
         /// <param name="project">项目，若为空，则取 <paramref name="nameSpace"/>.Split('.')[1] </param>
         /// <returns></returns>
-        public async Task StartAsync(List<TemplateModel> entities, string nameSpace, string? project = null, bool applicationAsController = true)
+        public async Task StartAsync(List<TemplateModel> entities, string nameSpace, string? project = null, bool applicationAsController = true, string entityDirectory = "App")
         {
             Check.NotNull(entities, nameof(entities));
-            Check.NotNull(nameSpace, nameof(nameSpace));
+            Check.NotNullOrWhiteSpace(nameSpace, nameof(nameSpace));
+            Check.NotNullOrWhiteSpace(entityDirectory, nameof(entityDirectory));
 
-            var entitys = entities.GroupBy(a => a.Entity)
+            var entitys = entities
+                .Where(a => !string.IsNullOrWhiteSpace(a.Entity))
+                .GroupBy(a => a.Entity)
                 .Where(a => a.Count() > 1)
                 .Select(a => a.Key)
                 .ToList();
@@ -53,6 +58,7 @@ namespace Rong.Volo.Abp.CodeGenerator
             foreach (var item in entities)
             {
                 item.EntityCase = item.Entity.ToCamelCase();
+                item.EntityDirectory ??= entityDirectory;
                 item.NameSpace ??= nameSpace;
                 item.Project ??= project;
                 item.ApplicationAsController ??= applicationAsController;
@@ -62,6 +68,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                 tasks.Add(Task.Run(async () => { await GenerateForEntityAsync(item); }));
             }
 
+            //创建基类
             tasks.Add(Task.Run(async () => { await GenerateForBaseAsync(nameSpace, project); }));
 
             //等待任务执行完毕
@@ -93,8 +100,10 @@ namespace Rong.Volo.Abp.CodeGenerator
 
                 string name = temp.Properties["name"].ToString().Replace("xxx", entity.Entity)
                     .Replace("$project", entity.Project);
+
                 string path = temp.Properties["path"].ToString().Replace("xxx", entity.Entity)
-                    .Replace("$namespace", entity.NameSpace);
+                    .Replace("$namespace", entity.NameSpace)
+                    .Replace("$directory", entity.EntityDirectory);
 
                 //未启用
                 if (entity.ApplicationAsController == true &&

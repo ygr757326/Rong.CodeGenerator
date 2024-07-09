@@ -96,7 +96,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             Check.NotNull(entities, nameof(entities));
             Check.NotNullOrWhiteSpace(saveRootPath, nameof(saveRootPath));
 
-            var entitys = entities.GroupBy(a => a.Entity)
+            var entitys = entities
+                .Where(a => !string.IsNullOrWhiteSpace(a.Entity))
+                .GroupBy(a => a.Entity)
                 .Where(a => a.Count() > 1)
                 .Select(a => a.Key)
                 .ToList();

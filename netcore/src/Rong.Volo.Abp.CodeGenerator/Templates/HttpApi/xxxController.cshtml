@@ -1,14 +1,14 @@
 ﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
 using System;
 using System.Threading.Tasks;
-using @{@Model.NameSpace}.App.@{@Model.Entity}s.Dto;
+using @{@Model.NameSpace}.@{@Model.EntityDirectory}.@{@Model.Entity}s.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 @{
     string appService = $"{Model.EntityCase}AppService";
 }
 
-namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
+namespace @{@Model.NameSpace}.@{@Model.EntityDirectory}.@{@Model.Entity}s
 {
 
     /// <summary>
@@ -51,7 +51,6 @@ namespace @{@Model.NameSpace}.App.@{@Model.Entity}s
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
         public async Task<@{@Model.Entity}DetailOutput> GetAsync(Guid id)
         {
             return await _@{@appService}.GetAsync(id);
