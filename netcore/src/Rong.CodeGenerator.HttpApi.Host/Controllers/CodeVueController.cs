@@ -22,8 +22,8 @@ namespace Rong.CodeGenerator.Controllers;
 /// </summary>
 public class CodeVueController : AbpController
 {
-    private readonly CodeGeneratorVueStore _codeGeneratorStore;
-    public CodeVueController(CodeGeneratorVueStore codeGeneratorStore)
+    private readonly RongVoloAbpCodeGeneratorVueStore _codeGeneratorStore;
+    public CodeVueController(RongVoloAbpCodeGeneratorVueStore codeGeneratorStore)
     {
         _codeGeneratorStore = codeGeneratorStore;
     }
@@ -40,7 +40,9 @@ public class CodeVueController : AbpController
             typeof(CodeGeneratorDomainModule), 
             typeof(CodeGeneratorApplicationContractsModule), 
             CodeGeneratorRemoteServiceConsts.RootPath, 
-            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo",new []{typeof(App.Apps.App)});
+            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo"
+            //,new []{typeof(App.Apps.App)}
+            );
 
         
         return Content("ok");

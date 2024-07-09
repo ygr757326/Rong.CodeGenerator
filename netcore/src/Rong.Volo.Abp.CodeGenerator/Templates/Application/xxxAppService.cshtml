@@ -1,12 +1,12 @@
 ﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.TemplateModel>
-using @{@Model.NameSpace}.@{@Model.EntityDirectory}.@{@Model.Entity}s.Dto;
+using @{@Model.NameSpace}.@{@Model.SaveFolderName}.@{@Model.Entity}s.Dto;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
-namespace @{@Model.NameSpace}.@{@Model.EntityDirectory}.@{@Model.Entity}s
+namespace @{@Model.NameSpace}.@{@Model.SaveFolderName}.@{@Model.Entity}s
 {
     /// <summary>
     /// @Model.EntityName 管理

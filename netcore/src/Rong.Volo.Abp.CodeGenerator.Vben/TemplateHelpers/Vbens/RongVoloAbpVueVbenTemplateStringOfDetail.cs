@@ -8,10 +8,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
     /// <summary>
     /// vben模板 - 详情页
     /// </summary>
-    public class CodeGeneratorVueVbenTemplateStringOfDetail : CodeGeneratorVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVbenTemplateStringOfDetail : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public CodeGeneratorVueVbenTemplateStringOfDetail(IOptions<CodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVbenTemplateStringOfDetail(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 

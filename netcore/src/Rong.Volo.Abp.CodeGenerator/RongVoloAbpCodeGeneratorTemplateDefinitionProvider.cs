@@ -6,14 +6,14 @@ namespace Rong.Volo.Abp.CodeGenerator
     /// <summary>
     /// 模板定义
     /// </summary>
-    public class CodeGeneratorTemplateDefinitionProvider : TemplateDefinitionProvider
+    public class RongVoloAbpCodeGeneratorTemplateDefinitionProvider : TemplateDefinitionProvider
     {
         public override void Define(ITemplateDefinitionContext context)
         {
             //应用层
             string[] appServices = new[] {
-                CodeGeneratorTemplateNames.AppService_xxxAppService,
-                CodeGeneratorTemplateNames.AppService_xxxMapper
+                RongVoloAbpCodeGeneratorTemplateNames.AppService_xxxAppService,
+                RongVoloAbpCodeGeneratorTemplateNames.AppService_xxxMapper
             };
             foreach (var item in appServices)
             {
@@ -25,15 +25,15 @@ namespace Rong.Volo.Abp.CodeGenerator
                            $"/Templates/Application/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Application/$directory/xxxs")
+                        .WithProperty("path", "../$namespace.Application/$folderName/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
             //应用层合同层
             string[] applicationContracts = new[]
             {
-                CodeGeneratorTemplateNames.ApplicationContracts_IxxxAppService,
-                CodeGeneratorTemplateNames.ApplicationContracts_xxxPermissions
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContracts_IxxxAppService,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContracts_xxxPermissions
             };
             foreach (var item in applicationContracts)
             {
@@ -45,22 +45,22 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Application.Contracts/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Application.Contracts/$directory/xxxs")
+                        .WithProperty("path", "../$namespace.Application.Contracts/$folderName/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
             //应用层合同层Dto
             string[] applicationContractDtos = new[]
             {
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxBaseOutput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxCreateInput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxCreateOrUpdateInputBase,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxDetailOutput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxDropDownOutput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxDropDownSearchInput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxPageOutput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxPageSearchInput,
-                CodeGeneratorTemplateNames.ApplicationContractsDto_xxxUpdateInput
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxBaseOutput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxCreateInput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxCreateOrUpdateInputBase,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxDetailOutput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxDropDownOutput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxDropDownSearchInput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxPageOutput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxPageSearchInput,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxUpdateInput
             };
             foreach (var item in applicationContractDtos)
             {
@@ -72,16 +72,16 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Application.Contracts/Dto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Application.Contracts/$directory/xxxs/Dto")
+                        .WithProperty("path", "../$namespace.Application.Contracts/$folderName/xxxs/Dto")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
             //应用层合同层权限
             string[] applicationContractPermissions = new[] {
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionAttribute,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionConsts,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionExtensions,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionMultiTenancySideAttribute,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionAttribute,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionConsts,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionExtensions,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionMultiTenancySideAttribute,
  };
             foreach (var item in applicationContractPermissions)
             {
@@ -100,9 +100,9 @@ namespace Rong.Volo.Abp.CodeGenerator
 
             //领域层
             string[] domains = new[] {
-                CodeGeneratorTemplateNames.Domain_xxx,
-                CodeGeneratorTemplateNames.Domain_IxxxRepository,
-                CodeGeneratorTemplateNames.Domain_DomainServiceBase
+                RongVoloAbpCodeGeneratorTemplateNames.Domain_xxx,
+                RongVoloAbpCodeGeneratorTemplateNames.Domain_IxxxRepository,
+                RongVoloAbpCodeGeneratorTemplateNames.Domain_DomainServiceBase
             };
             foreach (var item in domains)
             {
@@ -115,7 +115,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                         isInlineLocalized: true
                     );
 
-                if (item == CodeGeneratorTemplateNames.Domain_DomainServiceBase)
+                if (item == RongVoloAbpCodeGeneratorTemplateNames.Domain_DomainServiceBase)
                 {
                     definition.WithProperty("path", "../$namespace.Domain");
                     definition.WithProperty("name", $"$project{name}.cs");
@@ -123,7 +123,7 @@ namespace Rong.Volo.Abp.CodeGenerator
                 else
                 {
 
-                    definition.WithProperty("path", "../$namespace.Domain/$directory/xxxs");
+                    definition.WithProperty("path", "../$namespace.Domain/$folderName/xxxs");
                     definition.WithProperty("name", $"{name}.cs");
                 }
 
@@ -133,8 +133,8 @@ namespace Rong.Volo.Abp.CodeGenerator
             //领域层DomainService
             string[] domainServices = new[]
             {
-                CodeGeneratorTemplateNames.DomainService_xxxManager,
-                CodeGeneratorTemplateNames.DomainService_xxxMapper
+                RongVoloAbpCodeGeneratorTemplateNames.DomainService_xxxManager,
+                RongVoloAbpCodeGeneratorTemplateNames.DomainService_xxxMapper
             };
             foreach (var item in domainServices)
             {
@@ -146,14 +146,14 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Domain/DomainService/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Domain/$directory/xxxs/DomainService")
+                        .WithProperty("path", "../$namespace.Domain/$folderName/xxxs/DomainService")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
             //领域层公共层
             string[] domainShareds = new[]
             {
-                CodeGeneratorTemplateNames.DomainShared_xxxConsts
+                RongVoloAbpCodeGeneratorTemplateNames.DomainShared_xxxConsts
             };
             foreach (var item in domainShareds)
             {
@@ -165,13 +165,13 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Domain.Shared/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Domain.Shared/$directory/xxxs")
+                        .WithProperty("path", "../$namespace.Domain.Shared/$folderName/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
 
             //领域层公共层Eto
-            string[] domainSharedEtos = new[] { CodeGeneratorTemplateNames.DomainShared_xxxEto };
+            string[] domainSharedEtos = new[] { RongVoloAbpCodeGeneratorTemplateNames.DomainShared_xxxEto };
             foreach (var item in domainSharedEtos)
             {
                 string name = item.Split('_')[1];
@@ -182,13 +182,13 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/Domain.Shared/Eto/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.Domain.Shared/$directory/xxxs/Eto")
+                        .WithProperty("path", "../$namespace.Domain.Shared/$folderName/xxxs/Eto")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
 
             //ef core层
-            string[] entityFrameworkCores = new[] { CodeGeneratorTemplateNames.EntityFrameworkCore_xxxEntityTypeConfiguration, CodeGeneratorTemplateNames.EntityFrameworkCore_xxxRepository };
+            string[] entityFrameworkCores = new[] { RongVoloAbpCodeGeneratorTemplateNames.EntityFrameworkCore_xxxEntityTypeConfiguration, RongVoloAbpCodeGeneratorTemplateNames.EntityFrameworkCore_xxxRepository };
             foreach (var item in entityFrameworkCores)
             {
                 string name = item.Split('_')[1];
@@ -199,12 +199,12 @@ namespace Rong.Volo.Abp.CodeGenerator
                             $"/Templates/EntityFrameworkCore/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         )
-                        .WithProperty("path", "../$namespace.EntityFrameworkCore/$directory/xxxs")
+                        .WithProperty("path", "../$namespace.EntityFrameworkCore/$folderName/xxxs")
                         .WithProperty("name", $"{name}.cs")
                 );
             }
             //api层
-            string[] httpApis = new[] { CodeGeneratorTemplateNames.HttpApi_xxxController, CodeGeneratorTemplateNames.HttpApi_ControllerBase };
+            string[] httpApis = new[] { RongVoloAbpCodeGeneratorTemplateNames.HttpApi_xxxController, RongVoloAbpCodeGeneratorTemplateNames.HttpApi_ControllerBase };
             foreach (var item in httpApis)
             {
                 string name = item.Split('_')[1];
@@ -216,14 +216,14 @@ namespace Rong.Volo.Abp.CodeGenerator
                         isInlineLocalized: true
                     );
 
-                if (item == CodeGeneratorTemplateNames.HttpApi_ControllerBase)
+                if (item == RongVoloAbpCodeGeneratorTemplateNames.HttpApi_ControllerBase)
                 {
                     definition.WithProperty("path", "../$namespace.HttpApi");
                     definition.WithProperty("name", $"$project{name}.cs");
                 }
                 else
                 {
-                    definition.WithProperty("path", "../$namespace.HttpApi/$directory/xxxs");
+                    definition.WithProperty("path", "../$namespace.HttpApi/$folderName/xxxs");
                     definition.WithProperty("name", $"{name}.cs");
                 }
 

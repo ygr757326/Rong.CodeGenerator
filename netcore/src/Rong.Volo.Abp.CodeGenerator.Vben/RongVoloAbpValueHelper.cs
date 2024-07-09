@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
-    internal static class ValueHelper
+    internal static class RongVoloAbpValueHelper
     {
         /// <summary>
         /// 是否是Nullable

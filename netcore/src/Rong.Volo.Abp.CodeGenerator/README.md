@@ -1,11 +1,11 @@
 ﻿
- ## 1.在你的 AbpModule 中 依赖 CodeGeneratorModule 模块
+ ## 1.在你的 AbpModule 中 依赖 RongVoloAbpCodeGeneratorModule 模块
 
 ```
   [DependsOn(
     ……
     //代码生成模块
-    typeof(CodeGeneratorModule)
+    typeof(RongVoloAbpCodeGeneratorModule)
    ……
 )]
 public class YourModule : AbpModule
@@ -13,7 +13,7 @@ public class YourModule : AbpModule
 
 # 2.使用
 
-依赖注入 CodeGeneratorStore 来生成
+依赖注入 RongVoloAbpCodeGeneratorStore 来生成
 
 例子：创建如下控制器，运行 http://localhost:端口/code/go ,返回 ok 则生成成功
 ```
@@ -23,8 +23,8 @@ public class YourModule : AbpModule
 /// </summary>
 public class CodeController : AbpController
 {
-    private readonly CodeGeneratorStore _codeGeneratorStore;
-    public CodeController(CodeGeneratorStore codeGeneratorStore)
+    private readonly RongVoloAbpCodeGeneratorStore _codeGeneratorStore;
+    public CodeController(RongVoloAbpCodeGeneratorStore codeGeneratorStore)
     {
         _codeGeneratorStore = codeGeneratorStore;
     }

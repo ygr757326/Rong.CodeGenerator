@@ -10,10 +10,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
     /// <summary>
     /// vben模板 -  table查询表单
     /// </summary>
-    public class CodeGeneratorVueVbenTemplateStringOfTableSchemas : CodeGeneratorVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVbenTemplateStringOfTableSchemas : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public CodeGeneratorVueVbenTemplateStringOfTableSchemas(IOptions<CodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVbenTemplateStringOfTableSchemas(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// vben模板名称
     /// </summary>
-    public class CodeGeneratorVueVbenTemplateNames
+    public class RongVoloAbpVueVbenTemplateNames
     {
         public const string Vben_index = "Vben_index";
         public const string Vben_add = "Vben_add";

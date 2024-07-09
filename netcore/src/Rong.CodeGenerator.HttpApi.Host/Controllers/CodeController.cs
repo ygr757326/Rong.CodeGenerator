@@ -11,8 +11,8 @@ namespace Rong.CodeGenerator.Controllers;
 /// </summary>
 public class CodeController : AbpController
 {
-    private readonly CodeGeneratorStore _codeGeneratorStore;
-    public CodeController(CodeGeneratorStore codeGeneratorStore)
+    private readonly RongVoloAbpCodeGeneratorStore _codeGeneratorStore;
+    public CodeController(RongVoloAbpCodeGeneratorStore codeGeneratorStore)
     {
         _codeGeneratorStore = codeGeneratorStore;
     }
@@ -29,7 +29,7 @@ public class CodeController : AbpController
         };
 
         //开始生成
-        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator",entityDirectory:"Apps");
+        await _codeGeneratorStore.StartAsync(list, "Rong.CodeGenerator", saveFolderName: "App");
 
         return Content("ok");
 

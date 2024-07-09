@@ -1,11 +1,11 @@
 ﻿
- ## 1.在你的 AbpModule 中 依赖 CodeGeneratorVueModule 模块
+ ## 1.在你的 AbpModule 中 依赖 RongVoloAbpCodeGeneratorVueModule 模块
 
 ```
   [DependsOn(
     ……
     //代码生成模块
-    typeof(CodeGeneratorVueModule)
+    typeof(RongVoloAbpCodeGeneratorVueModule)
    ……
 )]
 public class YourModule : AbpModule
@@ -32,7 +32,7 @@ VueValueNameAttribute：对象点拼接显示的属性名称, 如 student.name
 
 ```
         //vue代码生成器
-        Configure<CodeGeneratorVueOptions>(options =>
+        Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
         {
           //Vben 组件替换
             options.ComponentMapForVben = new();
@@ -79,15 +79,15 @@ VueValueNameAttribute：对象点拼接显示的属性名称, 如 student.name
 
 ## 3.使用
 
-依赖注入 CodeGeneratorVueStore 来生成
+依赖注入 RongVoloAbpCodeGeneratorVueStore 来生成
 
 例子：创建如下控制器，运行 http://localhost:端口/codevue/go ,返回 ok 则生成成功
 ```
 public class CodeVueController : AbpController
 {
 
-    private readonly CodeGeneratorVueStore _codeGeneratorStore;
-    public CodeVueController(CodeGeneratorVueStore codeGeneratorStore)
+    private readonly RongVoloAbpCodeGeneratorVueStore _codeGeneratorStore;
+    public CodeVueController(RongVoloAbpCodeGeneratorVueStore codeGeneratorStore)
     {
         _codeGeneratorStore = codeGeneratorStore;
     }

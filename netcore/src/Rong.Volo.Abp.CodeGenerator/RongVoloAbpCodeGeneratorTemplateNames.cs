@@ -3,7 +3,7 @@
     /// <summary>
     /// 模板名称
     /// </summary>
-    public class CodeGeneratorTemplateNames
+    public class RongVoloAbpCodeGeneratorTemplateNames
     {
         //应用层
         public const string AppService_xxxAppService = "AppService_xxxAppService";

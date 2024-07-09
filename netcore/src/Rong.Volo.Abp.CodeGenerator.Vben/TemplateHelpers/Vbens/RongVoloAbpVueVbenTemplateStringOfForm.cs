@@ -16,10 +16,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
     /// <summary>
     /// vben模板 -  新增编辑表单
     /// </summary>
-    public class CodeGeneratorVueVbenTemplateStringOfForm : CodeGeneratorVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVbenTemplateStringOfForm : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public CodeGeneratorVueVbenTemplateStringOfForm(IOptions<CodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVbenTemplateStringOfForm(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 

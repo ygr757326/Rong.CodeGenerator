@@ -37,7 +37,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// <summary>
         /// 配置
         /// </summary>
-        public CodeGeneratorVueOptions Options { get; internal set; }
+        public RongVoloAbpCodeGeneratorVueOptions Options { get; internal set; }
 
         /// <summary>
         /// 实体小写

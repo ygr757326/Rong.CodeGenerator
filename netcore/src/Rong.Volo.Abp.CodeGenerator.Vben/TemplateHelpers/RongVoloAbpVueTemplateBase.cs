@@ -5,11 +5,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers
     /// <summary>
     /// vue模板基类
     /// </summary>
-    public abstract class CodeGeneratorVueTemplateBase
+    public abstract class RongVoloAbpVueTemplateBase
     {
-        protected CodeGeneratorVueOptions Options;
+        protected RongVoloAbpCodeGeneratorVueOptions Options;
 
-        protected CodeGeneratorVueTemplateBase(IOptions<CodeGeneratorVueOptions> options)
+        protected RongVoloAbpVueTemplateBase(IOptions<RongVoloAbpCodeGeneratorVueOptions> options)
         {
             Options = options.Value;
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
@@ -15,12 +14,12 @@ namespace Rong.Volo.Abp.CodeGenerator
     /// <summary>
     /// 代码生成器帮助器
     /// </summary>
-    public class CodeGeneratorStore : ITransientDependency
+    public class RongVoloAbpCodeGeneratorStore : ITransientDependency
     {
         private readonly ITemplateDefinitionManager _templateDefinitionManager;
         private readonly ITemplateRenderer _templateRenderer;
 
-        public CodeGeneratorStore(ITemplateDefinitionManager templateDefinitionManager,
+        public RongVoloAbpCodeGeneratorStore(ITemplateDefinitionManager templateDefinitionManager,
             ITemplateRenderer templateRenderer)
         {
             _templateRenderer = templateRenderer;
@@ -32,15 +31,15 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// </summary>
         /// <param name="entities">实体集合</param>
         /// <param name="applicationAsController">统一是否应用层作为控制器，如果 <see cref="TemplateModel.ApplicationAsController"/> 为空则使用 <paramref name="applicationAsController"/>，否则使用 <see cref="TemplateModel.ApplicationAsController"/>(默认true,不生成）</param>
-        /// <param name="entityDirectory">要保存到的目录</param>
+        /// <param name="saveFolderName">要保存到的目录</param>
         /// <param name="nameSpace">统一命名空间，如果 <see cref="TemplateModel.NameSpace"/> 为空则使用 <paramref name="nameSpace"/>，否则使用 <see cref="TemplateModel.NameSpace"/></param>
         /// <param name="project">项目，若为空，则取 <paramref name="nameSpace"/>.Split('.')[1] </param>
         /// <returns></returns>
-        public async Task StartAsync(List<TemplateModel> entities, string nameSpace, string? project = null, bool applicationAsController = true, string entityDirectory = "App")
+        public async Task StartAsync(List<TemplateModel> entities, string nameSpace, string? project = null, bool applicationAsController = true, string saveFolderName = "App")
         {
             Check.NotNull(entities, nameof(entities));
             Check.NotNullOrWhiteSpace(nameSpace, nameof(nameSpace));
-            Check.NotNullOrWhiteSpace(entityDirectory, nameof(entityDirectory));
+            Check.NotNullOrWhiteSpace(saveFolderName, nameof(saveFolderName));
 
             var entitys = entities
                 .Where(a => !string.IsNullOrWhiteSpace(a.Entity))
@@ -58,9 +57,20 @@ namespace Rong.Volo.Abp.CodeGenerator
             foreach (var item in entities)
             {
                 item.EntityCase = item.Entity.ToCamelCase();
-                item.EntityDirectory ??= entityDirectory;
-                item.NameSpace ??= nameSpace;
-                item.Project ??= project;
+
+                if (string.IsNullOrWhiteSpace(item.SaveFolderName))
+                {
+                    item.SaveFolderName = saveFolderName;
+                }
+                if (string.IsNullOrWhiteSpace(item.NameSpace))
+                {
+                    item.NameSpace = nameSpace;
+                }
+                if (string.IsNullOrWhiteSpace(item.Project))
+                {
+                    item.Project = project;
+                }
+
                 item.ApplicationAsController ??= applicationAsController;
 
                 item.SetProject();
@@ -82,11 +92,11 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <returns></returns>
         private async Task GenerateForEntityAsync(TemplateModel entity)
         {
-            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorTemplateNames))
+            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(RongVoloAbpCodeGeneratorTemplateNames))
                 .Except(new[]
                 {
-                    CodeGeneratorTemplateNames.Domain_DomainServiceBase,
-                    CodeGeneratorTemplateNames.HttpApi_ControllerBase
+                    RongVoloAbpCodeGeneratorTemplateNames.Domain_DomainServiceBase,
+                    RongVoloAbpCodeGeneratorTemplateNames.HttpApi_ControllerBase
                 }).ToArray();
 
             foreach (var template in templates)
@@ -103,11 +113,11 @@ namespace Rong.Volo.Abp.CodeGenerator
 
                 string path = temp.Properties["path"].ToString().Replace("xxx", entity.Entity)
                     .Replace("$namespace", entity.NameSpace)
-                    .Replace("$directory", entity.EntityDirectory);
+                    .Replace("$folderName", entity.SaveFolderName);
 
                 //未启用
                 if (entity.ApplicationAsController == true &&
-                    template == CodeGeneratorTemplateNames.HttpApi_xxxController)
+                    template == RongVoloAbpCodeGeneratorTemplateNames.HttpApi_xxxController)
                 {
                     continue;
                 }
@@ -134,12 +144,12 @@ namespace Rong.Volo.Abp.CodeGenerator
 
             string[] templates = new[]
             {
-                CodeGeneratorTemplateNames.Domain_DomainServiceBase,
-                CodeGeneratorTemplateNames.HttpApi_ControllerBase,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionAttribute,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionConsts,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionExtensions,
-                CodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionMultiTenancySideAttribute,
+                RongVoloAbpCodeGeneratorTemplateNames.Domain_DomainServiceBase,
+                RongVoloAbpCodeGeneratorTemplateNames.HttpApi_ControllerBase,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionAttribute,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionConsts,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionExtensions,
+                RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsPermissions_PermissionMultiTenancySideAttribute,
             };
 
             foreach (var template in templates)

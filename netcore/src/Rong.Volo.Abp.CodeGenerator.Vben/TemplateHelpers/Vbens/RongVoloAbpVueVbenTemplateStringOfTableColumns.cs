@@ -8,10 +8,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
     /// <summary>
     /// vben模板 -  表头 columns
     /// </summary>
-    public class CodeGeneratorVueVbenTemplateStringOfTableColumns : CodeGeneratorVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVbenTemplateStringOfTableColumns : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public CodeGeneratorVueVbenTemplateStringOfTableColumns(IOptions<CodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVbenTemplateStringOfTableColumns(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 

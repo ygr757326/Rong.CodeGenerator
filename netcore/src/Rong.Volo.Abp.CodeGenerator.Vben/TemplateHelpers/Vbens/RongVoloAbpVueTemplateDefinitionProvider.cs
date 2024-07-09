@@ -1,18 +1,17 @@
-﻿using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
-using Volo.Abp.Reflection;
+﻿using Volo.Abp.Reflection;
 using Volo.Abp.TextTemplating;
 using Volo.Abp.TextTemplating.Razor;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue
+namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 {
     /// <summary>
     /// vben模板定义
     /// </summary>
-    public class CodeGeneratorVueTemplateDefinitionProvider : TemplateDefinitionProvider
+    public class RongVoloAbpVueTemplateDefinitionProvider : TemplateDefinitionProvider
     {
         public override void Define(ITemplateDefinitionContext context)
         {
-            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorVueVbenTemplateNames));
+            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(RongVoloAbpVueVbenTemplateNames));
 
             foreach (var item in templates)
             {
@@ -24,12 +23,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                            $"/Templates/Vben/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         );
-                if (item == CodeGeneratorVueVbenTemplateNames.Vben_index ||
-                    item == CodeGeneratorVueVbenTemplateNames.Vben_api)
+                if (item == RongVoloAbpVueVbenTemplateNames.Vben_index ||
+                    item == RongVoloAbpVueVbenTemplateNames.Vben_api)
                 {
                     def.WithProperty("path", $"$rootPath/src/views/xxx");
                 }
-                else if (item == CodeGeneratorVueVbenTemplateNames.Vben_router)
+                else if (item == RongVoloAbpVueVbenTemplateNames.Vben_router)
                 {
                     def.WithProperty("path", $"$rootPath/src/router/routes/modules");
                 }
@@ -37,11 +36,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 {
                     def.WithProperty("path", $"$rootPath/src/views/xxx/components");
                 }
-                if (item == CodeGeneratorVueVbenTemplateNames.Vben_api)
+                if (item == RongVoloAbpVueVbenTemplateNames.Vben_api)
                 {
                     def.WithProperty("name", $"{name}.ts");
                 }
-                else if (item == CodeGeneratorVueVbenTemplateNames.Vben_router)
+                else if (item == RongVoloAbpVueVbenTemplateNames.Vben_router)
                 {
                     def.WithProperty("name", $"xxx.ts");
                 }

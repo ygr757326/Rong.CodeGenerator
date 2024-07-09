@@ -10,18 +10,18 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
     /// <summary>
     /// vben代码生成器帮助器
     /// </summary>
-    public class CodeGeneratorVueVbenTemplate : ISingletonDependency
+    public class RongVoloAbpVueVbenTemplate : ISingletonDependency
     {
-        protected CodeGeneratorVueVbenTemplateStringOfForm FormTemplate;
-        protected CodeGeneratorVueVbenTemplateStringOfTableColumns TableColumnsTemplate;
-        protected CodeGeneratorVueVbenTemplateStringOfTableSchemas TableSchemasTemplate;
-        protected CodeGeneratorVueVbenTemplateStringOfDetail DetailTemplate;
+        protected RongVoloAbpVueVbenTemplateStringOfForm FormTemplate;
+        protected RongVoloAbpVueVbenTemplateStringOfTableColumns TableColumnsTemplate;
+        protected RongVoloAbpVueVbenTemplateStringOfTableSchemas TableSchemasTemplate;
+        protected RongVoloAbpVueVbenTemplateStringOfDetail DetailTemplate;
 
-        public CodeGeneratorVueVbenTemplate(
-            CodeGeneratorVueVbenTemplateStringOfForm form,
-            CodeGeneratorVueVbenTemplateStringOfTableColumns tableColumnsTemplate,
-            CodeGeneratorVueVbenTemplateStringOfTableSchemas tableSchemasTemplate,
-            CodeGeneratorVueVbenTemplateStringOfDetail detailTemplate
+        public RongVoloAbpVueVbenTemplate(
+            RongVoloAbpVueVbenTemplateStringOfForm form,
+            RongVoloAbpVueVbenTemplateStringOfTableColumns tableColumnsTemplate,
+            RongVoloAbpVueVbenTemplateStringOfTableSchemas tableSchemasTemplate,
+            RongVoloAbpVueVbenTemplateStringOfDetail detailTemplate
         )
         {
             FormTemplate = form;

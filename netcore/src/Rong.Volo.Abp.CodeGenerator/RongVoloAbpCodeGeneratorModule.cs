@@ -14,7 +14,7 @@ namespace Rong.Volo.Abp.CodeGenerator
         //RazorÄ£°å
         typeof(AbpTextTemplatingRazorModule)
     )]
-    public class CodeGeneratorModule : AbpModule
+    public class RongVoloAbpCodeGeneratorModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -27,13 +27,13 @@ namespace Rong.Volo.Abp.CodeGenerator
             Configure<AbpRazorTemplateCSharpCompilerOptions>(options =>
             {
                 options.References.Add(
-                    MetadataReference.CreateFromFile(typeof(CodeGeneratorModule).Assembly.Location));
+                    MetadataReference.CreateFromFile(typeof(RongVoloAbpCodeGeneratorModule).Assembly.Location));
             });
 
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<CodeGeneratorModule>("Rong.Volo.Abp.CodeGenerator");
+                options.FileSets.AddEmbedded<RongVoloAbpCodeGeneratorModule>("Rong.Volo.Abp.CodeGenerator");
             });
         }
     }

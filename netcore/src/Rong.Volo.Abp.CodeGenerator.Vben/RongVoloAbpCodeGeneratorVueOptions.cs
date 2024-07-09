@@ -7,7 +7,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// <summary>
     /// vue 代码生成选项
     /// </summary>
-    public class CodeGeneratorVueOptions
+    public class RongVoloAbpCodeGeneratorVueOptions
     {
         /// <summary>
         /// Vben 组件偷替换映射：原组件,新组件
@@ -88,7 +88,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// </summary>
         public string? EditorComponent { get; set; }
 
-        public CodeGeneratorVueOptions()
+        public RongVoloAbpCodeGeneratorVueOptions()
         {
 
         }

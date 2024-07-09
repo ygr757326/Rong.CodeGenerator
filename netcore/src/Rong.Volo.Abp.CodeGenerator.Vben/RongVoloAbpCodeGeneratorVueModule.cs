@@ -15,7 +15,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         //RazorÄ£°å
         typeof(AbpTextTemplatingRazorModule)
     )]
-    public class CodeGeneratorVueModule : AbpModule
+    public class RongVoloAbpCodeGeneratorVueModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -28,15 +28,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             Configure<AbpRazorTemplateCSharpCompilerOptions>(options =>
             {
                 options.References.Add(
-                    MetadataReference.CreateFromFile(typeof(CodeGeneratorVueModule).Assembly.Location));
+                    MetadataReference.CreateFromFile(typeof(RongVoloAbpCodeGeneratorVueModule).Assembly.Location));
             });
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<CodeGeneratorVueModule>("Rong.Volo.Abp.CodeGenerator.Vue");
+                options.FileSets.AddEmbedded<RongVoloAbpCodeGeneratorVueModule>("Rong.Volo.Abp.CodeGenerator.Vue");
             });
 
-            Configure<CodeGeneratorVueOptions>(options =>
+            Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
             {
                 options.ComponentMapForVben = new Dictionary<string, string>();
             });

@@ -19,17 +19,17 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// <summary>
     /// 代码生成器帮助器
     /// </summary>
-    public class CodeGeneratorVueStore : ITransientDependency
+    public class RongVoloAbpCodeGeneratorVueStore : ITransientDependency
     {
-        protected CodeGeneratorVueOptions Options;
+        protected RongVoloAbpCodeGeneratorVueOptions Options;
 
-        protected CodeGeneratorVueModelHelper CodeGeneratorModelStore;
+        protected RongVoloAbpCodeGeneratorVueModelHelper CodeGeneratorModelStore;
         protected ITemplateDefinitionManager TemplateDefinitionManager;
         protected ITemplateRenderer TemplateRenderer;
 
-        public CodeGeneratorVueStore(
-            IOptions<CodeGeneratorVueOptions> options,
-            CodeGeneratorVueModelHelper codeGeneratorModelStore,
+        public RongVoloAbpCodeGeneratorVueStore(
+            IOptions<RongVoloAbpCodeGeneratorVueOptions> options,
+            RongVoloAbpCodeGeneratorVueModelHelper codeGeneratorModelStore,
             ITemplateDefinitionManager templateDefinitionManager,
             ITemplateRenderer templateRenderer)
         {
@@ -117,7 +117,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 }
 
                 item.EntityCase = item.Entity.ToCamelCase();
-                item.ApiRootPath ??= apiRootPath;
+                if (string.IsNullOrWhiteSpace(item.ApiRootPath))
+                {
+                    item.ApiRootPath = apiRootPath;
+                }
+
                 item.Options = Options;
 
                 tasks.Add(Task.Run(async () => { await GenerateForEntityAsync(item, saveRootPath); }));
@@ -136,7 +140,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         protected virtual async Task GenerateForEntityAsync(TemplateVueModel entity, string saveRootPath)
         {
             string[] templates =
-                ReflectionHelper.GetPublicConstantsRecursively(typeof(CodeGeneratorVueVbenTemplateNames));
+                ReflectionHelper.GetPublicConstantsRecursively(typeof(RongVoloAbpVueVbenTemplateNames));
 
             foreach (var template in templates)
             {

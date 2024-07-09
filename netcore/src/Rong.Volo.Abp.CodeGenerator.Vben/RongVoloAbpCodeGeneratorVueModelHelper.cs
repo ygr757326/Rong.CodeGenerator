@@ -17,10 +17,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// <summary>
     /// Vben代码生成器帮助器
     /// </summary>
-    public class CodeGeneratorVueModelHelper : ISingletonDependency
+    public class RongVoloAbpCodeGeneratorVueModelHelper : ISingletonDependency
     {
-        private readonly CodeGeneratorVueVbenTemplate _vueTemplate;
-        public CodeGeneratorVueModelHelper(CodeGeneratorVueVbenTemplate vueTemplate)
+        private readonly RongVoloAbpVueVbenTemplate _vueTemplate;
+        public RongVoloAbpCodeGeneratorVueModelHelper(RongVoloAbpVueVbenTemplate vueTemplate)
         {
             _vueTemplate = vueTemplate;
         }
@@ -37,7 +37,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             object data;
             switch (template)
             {
-                case CodeGeneratorVueVbenTemplateNames.Vben_index:
+                case RongVoloAbpVueVbenTemplateNames.Vben_index:
                     {
 
                         var tableData = GetPropertyInfo(model.EntityDtoType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })?.Where(a =>
@@ -56,7 +56,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
                         break;
                     }
-                case CodeGeneratorVueVbenTemplateNames.Vben_add:
+                case RongVoloAbpVueVbenTemplateNames.Vben_add:
                     {
                         var formData = GetPropertyInfo(model.EntityDtoType.CreateType);
                         data = new TemplateVuePageAddModel
@@ -66,7 +66,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                         };
                         break;
                     }
-                case CodeGeneratorVueVbenTemplateNames.Vben_modify:
+                case RongVoloAbpVueVbenTemplateNames.Vben_modify:
                     {
                         var formData = GetPropertyInfo(model.EntityDtoType.UpdateType);
                         data = new TemplateVuePageModifyModel
@@ -76,7 +76,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                         };
                         break;
                     }
-                case CodeGeneratorVueVbenTemplateNames.Vben_detail:
+                case RongVoloAbpVueVbenTemplateNames.Vben_detail:
                     {
                         var viewData = GetPropertyInfo(model.EntityDtoType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" });
                         data = new TemplateVuePageDetailModel
@@ -87,17 +87,17 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                         break;
                     }
 
-                case CodeGeneratorVueVbenTemplateNames.Vben_api:
+                case RongVoloAbpVueVbenTemplateNames.Vben_api:
                     {
                         data = new TemplateVuePageApiModel();
                         break;
                     }
-                case CodeGeneratorVueVbenTemplateNames.Vben_detailDrawer:
+                case RongVoloAbpVueVbenTemplateNames.Vben_detailDrawer:
                     {
                         data = new TemplateVuePageDetailDrawerModel();
                         break;
                     }
-                case CodeGeneratorVueVbenTemplateNames.Vben_router:
+                case RongVoloAbpVueVbenTemplateNames.Vben_router:
                     {
                         data = new TemplateVuePageRouterModel();
                         break;

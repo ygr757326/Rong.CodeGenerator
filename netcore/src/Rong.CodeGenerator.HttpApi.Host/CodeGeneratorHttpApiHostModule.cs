@@ -27,8 +27,8 @@ namespace Rong.CodeGenerator;
     typeof(AbpSwashbuckleModule),
 
     //代码生成
-    typeof(CodeGeneratorModule),
-    typeof(CodeGeneratorVueModule)
+    typeof(RongVoloAbpCodeGeneratorModule),
+    typeof(RongVoloAbpCodeGeneratorVueModule)
     )]
 public class CodeGeneratorHttpApiHostModule : AbpModule
 {
@@ -57,7 +57,7 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
             });
 
         //vue代码生成器
-        Configure<CodeGeneratorVueOptions>(options =>
+        Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
         {
             //Vben 组件替换
             options.ComponentMapForVben = new();
