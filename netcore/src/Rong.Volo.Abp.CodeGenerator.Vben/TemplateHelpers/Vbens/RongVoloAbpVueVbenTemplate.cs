@@ -218,6 +218,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 {
                     b.Append(TableSchemasTemplate.DictionaryTemplate(item, space));
                 }
+                else if (item.IsComponent)
+                {
+                    b.Append(TableSchemasTemplate.ComponentTemplate(item, space));
+                }
                 else
                 {
                     b.Append(TableSchemasTemplate.DefaultTemplate(item, space));
@@ -283,6 +287,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 else if (item.IsEditor)
                 {
                     b.Append(FormTemplate.EditorTemplate(item, space));
+                }
+                else if (item.IsComponent)
+                {
+                    b.Append(FormTemplate.ComponentTemplate(item, space));
                 }
                 else
                 {

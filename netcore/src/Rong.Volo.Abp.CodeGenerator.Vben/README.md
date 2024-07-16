@@ -28,6 +28,8 @@ VueTextareaAttribute：内容输入组件
 
 VueValueNameAttribute：对象点拼接显示的属性名称, 如 student.name
 
+VueComponentAttribute: 使用组件
+
 针对 枚举下拉组件，字典下拉组件，bool 下拉组件，文件上传组件，文件预览组件，编辑器 组件,可通过 CodeGeneratorVueOptions 配置来指定，不指定则使用默认组件：
 
 ```

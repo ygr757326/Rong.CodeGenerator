@@ -94,5 +94,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// 是否是编辑器
         /// </summary>
         public bool IsEditor { get; set; }
+
+        /// <summary>
+        /// 是否是使用组件
+        /// </summary>
+        public bool IsComponent { get; set; }
+
+        /// <summary>
+        /// <see cref="IsComponent"/> 对应的 组件名称
+        /// </summary>
+        public string? Component { get; set; }
     }
 }

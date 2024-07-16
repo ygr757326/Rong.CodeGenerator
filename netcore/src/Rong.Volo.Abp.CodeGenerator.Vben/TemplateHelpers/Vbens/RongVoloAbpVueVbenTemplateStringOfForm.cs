@@ -405,5 +405,29 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             return b.ToString();
         }
+
+        /// <summary>
+        /// 使用组件模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ComponentTemplate(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"component: '{GetMapComponent(item.Component)}',");
+
+            if (item.IsRequired)
+            {
+                b.Space(space + 2).AppendLine($"required: true,");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
     }
 }

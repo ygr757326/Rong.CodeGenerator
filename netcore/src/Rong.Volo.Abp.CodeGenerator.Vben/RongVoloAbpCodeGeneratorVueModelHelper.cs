@@ -156,6 +156,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 HandleBoolModel(info, propertyInfo);
                 HandleFileModel(info, propertyInfo);
                 HandleValueNameModel(info, propertyInfo);
+                HandleComponentModel(info, propertyInfo);
 
                 var sorterAttr = propertyInfo.GetCustomAttribute<VueTableSorterAttribute>();
                 if (sorterAttr != null)
@@ -269,6 +270,21 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
             info.Property = attr.PointSplicingName;
             info.PropertyCase = attr.PointSplicingName.Split(".").Select(a => a.ToCamelCase()).JoinAsString(".");
+        }
+
+        /// <summary>
+        /// 自定义组件模型
+        /// </summary>
+        protected virtual void HandleComponentModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueComponentAttribute>();
+            if (attr == null)
+            {
+                return;
+            }
+
+            info.IsComponent = true;
+            info.Component = string.IsNullOrWhiteSpace(attr.Component) ? "Input" : attr.Component;
         }
     }
 

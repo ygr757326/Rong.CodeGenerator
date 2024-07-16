@@ -7,19 +7,19 @@ using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
 {
     /// <summary>
-    /// vue 字典特性
+    /// vue 组件数据特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueTableSorterAttribute : Attribute
+    public class VueComponentAttribute : Attribute
     {
         /// <summary>
-        /// 是否排序
+        /// 组件
         /// </summary>
-        public bool Sorter { get; set; }
+        public string Component { get; set; }
 
-        public VueTableSorterAttribute(bool sorter = false)
+        public VueComponentAttribute(string component)
         {
-            Sorter = sorter;
+            Component = component;
         }
     }
 }
