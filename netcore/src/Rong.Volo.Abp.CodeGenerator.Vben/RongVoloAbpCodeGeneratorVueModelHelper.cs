@@ -51,7 +51,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                             TableColumnsTemplate = _vueTemplate.GetTableColumnsTemplate(tableData, 4),
                             TableColumnsSlotsTemplate = _vueTemplate.GetTableColumnsSlotsTemplate(tableData, 8),
                             TableSchemas = searchData,
-                            TableSchemasTemplate = _vueTemplate.GetTableSchemasTemplate(searchData, 8),
+                            TableSchemasTemplate = _vueTemplate.GetTableSchemasTemplate(searchData, 4),
                         };
 
                         break;
@@ -100,6 +100,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 case RongVoloAbpVueVbenTemplateNames.Vben_router:
                     {
                         data = new TemplateVuePageRouterModel();
+                        break;
+                    }
+                case RongVoloAbpVueVbenTemplateNames.Vben_myComponentSetting:
+                    {
+                        data = null;
                         break;
                     }
                 default:

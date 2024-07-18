@@ -14,5 +14,7 @@
         public const string Vben_detailDrawer = "Vben_detailDrawer";
 
         public const string Vben_router = "Vben_router";
+
+        public const string Vben_myComponentSetting = "Vben_myComponentSetting";
     }
 }

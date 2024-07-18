@@ -23,6 +23,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                            $"/Templates/Vben/{name}.cshtml", //模板路径，属性窗口中将其标记为"嵌入式资源"
                             isInlineLocalized: true
                         );
+
+                //路径
                 if (item == RongVoloAbpVueVbenTemplateNames.Vben_index ||
                     item == RongVoloAbpVueVbenTemplateNames.Vben_api)
                 {
@@ -32,10 +34,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 {
                     def.WithProperty("path", $"$rootPath/src/router/routes/modules");
                 }
+                else if (item == RongVoloAbpVueVbenTemplateNames.Vben_myComponentSetting)
+                {
+                    def.WithProperty("path", $"$rootPath/src/settings");
+                }
                 else
                 {
                     def.WithProperty("path", $"$rootPath/src/views/xxx/components");
                 }
+
+                //名称
                 if (item == RongVoloAbpVueVbenTemplateNames.Vben_api)
                 {
                     def.WithProperty("name", $"{name}.ts");
@@ -43,6 +51,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 else if (item == RongVoloAbpVueVbenTemplateNames.Vben_router)
                 {
                     def.WithProperty("name", $"xxx.ts");
+                }
+                else if (item == RongVoloAbpVueVbenTemplateNames.Vben_myComponentSetting)
+                {
+                    def.WithProperty("name", $"myComponentSetting.ts");
                 }
                 else
                 {

@@ -172,7 +172,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).Append($"<p v-html=\"detailData?.{ item.PropertyCase}\" />");
+            b.Space(space + 2).AppendLine($"<p v-html=\"detailData?.{ item.PropertyCase}\"></p>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 

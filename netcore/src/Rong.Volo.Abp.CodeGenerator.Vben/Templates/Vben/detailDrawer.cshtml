@@ -4,29 +4,29 @@
 
 }
 <template>
- <a-drawer v-model:visible="visible" title=" @Model.EntityInfo.EntityName - 详情" width="800px">
+ <a-drawer v-model:visible="visible" title="@Model.EntityInfo.EntityName - 详情" width="800px">
    <!--  详情页面 -->
-   <Detail ref="detailRef" v-if="visible"></Detail>
+   <Detail v-if="visible" :id="id"></Detail>
  </a-drawer>
 </template>
 
 <script setup lang="ts">
 
- import { ref, nextTick } from 'vue';
+ import { ref } from 'vue';
  import Detail from './detail.vue';
- import { AbsViewModal } from '#/common';
 
- const detailRef = ref<AbsViewModal | null>(null);
  const visible = ref<boolean>(false);
-
+ const id = ref<string | null>(null);
+ 
+ /**
+  * 打开弹窗
+  */
  function open(data) {
   visible.value = true;
-  nextTick(() => {
-    detailRef.value?.init(data);
-  });
+  id.value = data.id;
  }
- defineExpose({ open });
 
+ defineExpose({ open });
 </script>
 
 <style lang="less" scoped></style>

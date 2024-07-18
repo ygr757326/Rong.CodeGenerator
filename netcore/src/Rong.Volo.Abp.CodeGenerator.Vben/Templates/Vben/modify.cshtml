@@ -81,15 +81,19 @@ async function handleSubmit() {
   const data: any = getFieldsValue();
   //修改
   await @{@Model.EntityInfo.Entity}Update(data.id, data);
-
+  //关闭弹窗
   visible.value = false;
+
   $emit('success');
 }
 
 /*
 * 获取详情
 /*/
-async function getData(data) {
+ function getData(data) {
+  nextTick(() => {
+    openWrapLoading();
+  });
   @{@Model.EntityInfo.Entity}Get(data.id).then((res) => {
       setFieldsValue(res);
   })
@@ -99,14 +103,15 @@ async function getData(data) {
 }
 
 /**
- * 弹框
+ * 打开弹窗
  */
 function open(data) {
   visible.value = true;
   nextTick(() => {
     resetFields();
   });
-  openWrapLoading();
+  
+  //获取详情
   getData({ id: data.id });
 }
 defineExpose({ open });

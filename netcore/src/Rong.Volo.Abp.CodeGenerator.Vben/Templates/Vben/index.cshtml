@@ -55,8 +55,8 @@
   import { AbsViewModal } from '#/common';
   import { @{@Model.EntityInfo.Entity}Delete, @{@Model.EntityInfo.Entity}GetList } from './api';
   import { PageWrapper } from '@@/components/Page';
-  import { BasicColumn, BasicTable, TableAction, useTable } from '@@/components/Table';
-  import { useGrid } from '@@/hooks/manageCenter/useGrid';
+  import { BasicColumn, BasicTable, FormSchema, TableAction, useTable } from '@@/components/Table';
+  import myComponentSetting from '@@/settings/myComponentSetting';
   import { formatToDate } from '@@/utils/dateUtil';
   import { useDictStore } from '@@/store/modules/dict';
   import { useEnumStore } from '@@/store/modules/enum';
@@ -67,25 +67,19 @@
   const modifyRef = ref<AbsViewModal | null>(null);
   const detailDrawerRef = ref<AbsViewModal | null>(null);
 
-  // 编辑或新增成功
-  function handleSuccess() {
-    reload();
-  }
-
-  /**
-   *删除
-   */
-  async function handleDelete(record: Recordable) {
-    await @{@Model.EntityInfo.Entity}Delete(record.id);
-    reload();
-  }
-
   /**
     * 表头
    */
   const columns: BasicColumn[] = [
 @Model.TableColumnsTemplate
   ];
+  
+    /**
+    * 查询
+    */
+  const schemas: FormSchema[] = [
+@Model.TableSchemasTemplate
+   ];
 
   /**
    * 表头配置
@@ -93,13 +87,13 @@
   const [register, { reload }] = useTable({
     api: @{@Model.EntityInfo.Entity}GetList,
     columns,
+    showTableSetting: true,
     tableSetting: {
       redo: true,
       size: true,
       setting: true,
       fullScreen: true,
     },
-    useSearchForm: true,
     actionColumn: {
       width: 160,
       title: '操作',
@@ -107,15 +101,19 @@
       slots: { customRender: 'action' },
       fixed: 'right',
     },
-    showTableSetting: true,
+    useSearchForm: true,
     formConfig: {
-      labelWidth: 120,
-      ...useGrid(),
-      schemas: [
-@Model.TableSchemasTemplate
-      ],
+      ...myComponentSetting.table.formConfig,
+      schemas: schemas,
     },
   });
+  
+  /**
+   * 点击添加
+   */
+  function handleCreate() {
+    addRef.value?.open();
+  }
 
   /**
    * 点击编辑
@@ -125,20 +123,29 @@
       id: record.id,
     });
   }
-  /**
-   * 点击添加
-   */
-  function handleCreate() {
-    addRef.value?.open();
-  }
 
   /**
-   * 点击查看详情
+   * 点击详情
    */
   function handleDetail(record: Recordable) {
     detailDrawerRef.value?.open({
       id: record.id,
     });
+  }
+  
+  /**
+   * 点击删除
+   */
+  async function handleDelete(record: Recordable) {
+    await @{@Model.EntityInfo.Entity}Delete(record.id);
+    reload();
+  }
+
+  /**
+   * 编辑/新增成功 - 刷新table
+   */
+  function handleSuccess() {
+    reload();
   }
 </script>
 

@@ -5,7 +5,7 @@
 <template>
   <!--  详情页面 -->
   <div class="detail" ref="detailContentRef">
-      <a-descriptions bordered :column="props.column" size="small" :labelStyle="width">
+      <a-descriptions bordered :column="props.column" size="small" :labelStyle="labelStyle">
           @Model.DetailTemplate
       </a-descriptions>
   </div>
@@ -14,8 +14,7 @@
 <script setup lang="ts">
 
   import { @{@Model.EntityInfo.Entity}Get } from '../api';
-  import { ref, nextTick } from 'vue';
-  import { useI18n } from '@@/hooks/web/useI18n';
+  import { ref, nextTick, watch } from 'vue';
   import { useLoading } from '@@/components/Loading';
   import { formatToDate } from '@@/utils/dateUtil';
   import { useDictStore } from '@@/store/modules/dict';
@@ -24,7 +23,6 @@
   const dictStore = useDictStore();
   const enumStore = useEnumStore();
   const detailContentRef = ref(null);
-  const { t } = useI18n();
   const [openWrapLoading, closeWrapLoading] = useLoading({
     target: detailContentRef,
     props: {
@@ -32,41 +30,44 @@
     },
   });
   const props = defineProps({
-    id: { type: String, default: '' },
+    id: { type: String, default: null },
     column: { type: Object, default: { xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 } },
   });
-  // 宽度css属性
-  const width = {
+  const labelStyle = {
     width: '120px',
     'justify-content': 'flex-end',
   };
-
   let detailData: any = ref({});
-
+  
+  /**
+   * 监听id
+   */
+  watch(
+    () => props.id,
+    async (newValue) => {
+      await getData(newValue);
+    },
+    {
+      immediate: true,
+    },
+  );
   /**
    * 获取详情
    */
-  function getData(data) {
-      @{@Model.EntityInfo.Entity}Get(data.id).then((res) => {
-        detailData.value = res;
-      })
-      .finally(() => {
-        closeWrapLoading();
+  async function getData(id) {
+      detailData.value = {};
+      if (!id) {
+        return;
+      }
+      nextTick(() => {
+        openWrapLoading();
       });
+      var res = await @{@Model.EntityInfo.Entity}Get(id);
+      detailData.value = res;
+      closeWrapLoading();
   }
 
-  /**
-   * 初始化
-   */
-  function init(data) {
-    nextTick(() => {
-      openWrapLoading();
-    });
-    detailData.value = {};
-    getData(data);
-  }
-  defineExpose({ init });
-
+  defineExpose({});
 </script>
 
 <style lang="less" scoped>
