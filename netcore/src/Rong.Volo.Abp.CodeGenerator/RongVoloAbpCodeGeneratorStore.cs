@@ -14,16 +14,11 @@ namespace Rong.Volo.Abp.CodeGenerator
     /// <summary>
     /// 代码生成器帮助器
     /// </summary>
-    public class RongVoloAbpCodeGeneratorStore : ITransientDependency
+    public class RongVoloAbpCodeGeneratorStore : RongVoloAbpCodeGeneratorStoreBase
     {
-        private readonly ITemplateDefinitionManager _templateDefinitionManager;
-        private readonly ITemplateRenderer _templateRenderer;
-
         public RongVoloAbpCodeGeneratorStore(ITemplateDefinitionManager templateDefinitionManager,
-            ITemplateRenderer templateRenderer)
+            ITemplateRenderer templateRenderer) : base(templateDefinitionManager, templateRenderer)
         {
-            _templateRenderer = templateRenderer;
-            _templateDefinitionManager = templateDefinitionManager;
         }
 
         /// <summary>
@@ -92,17 +87,43 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// <returns></returns>
         private async Task GenerateForEntityAsync(TemplateModel entity)
         {
-            string[] templates = ReflectionHelper.GetPublicConstantsRecursively(typeof(RongVoloAbpCodeGeneratorTemplateNames))
-                .Except(new[]
+            string[] templates = new[]
                 {
-                    RongVoloAbpCodeGeneratorTemplateNames.Domain_DomainServiceBase,
-                    RongVoloAbpCodeGeneratorTemplateNames.HttpApi_ControllerBase
-                }).ToArray();
+                    RongVoloAbpCodeGeneratorTemplateNames.AppService_xxxAppService,
+                    RongVoloAbpCodeGeneratorTemplateNames.AppService_xxxMapper,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContracts_IxxxAppService,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContracts_xxxPermissions,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxBaseOutput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxCreateInput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxCreateOrUpdateInputBase,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxDetailOutput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxDropDownOutput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxDropDownSearchInput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxPageOutput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxPageSearchInput,
+                    RongVoloAbpCodeGeneratorTemplateNames.ApplicationContractsDto_xxxUpdateInput,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.Domain_xxx,
+                    RongVoloAbpCodeGeneratorTemplateNames.Domain_IxxxRepository,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.DomainService_xxxManager,
+                    RongVoloAbpCodeGeneratorTemplateNames.DomainService_xxxMapper,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.DomainShared_xxxConsts,
+                    RongVoloAbpCodeGeneratorTemplateNames.DomainShared_xxxEto,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.EntityFrameworkCore_xxxEntityTypeConfiguration,
+                    RongVoloAbpCodeGeneratorTemplateNames.EntityFrameworkCore_xxxRepository,
+
+                    RongVoloAbpCodeGeneratorTemplateNames.HttpApi_xxxController,
+                };
 
             foreach (var template in templates)
             {
                 //模板不存在
-                var temp = await _templateDefinitionManager.GetAsync(template);
+                var temp = await TemplateDefinitionManager.GetAsync(template);
                 if (temp == null)
                 {
                     continue;
@@ -155,7 +176,7 @@ namespace Rong.Volo.Abp.CodeGenerator
             foreach (var template in templates)
             {
                 //模板不存在
-                var temp = await _templateDefinitionManager.GetAsync(template);
+                var temp = await TemplateDefinitionManager.GetAsync(template);
                 if (temp == null)
                 {
                     continue;
@@ -167,59 +188,6 @@ namespace Rong.Volo.Abp.CodeGenerator
                 //保存
                 await SaveAsync(model, template, name, path);
             }
-
-        }
-
-        /// <summary>
-        /// 保存文件
-        /// </summary>
-        /// <returns></returns>
-        private async Task SaveAsync(TemplateModel model, string template, string name, string path)
-        {
-            //模板不存在
-            var temp = await _templateDefinitionManager.GetAsync(template);
-            if (temp == null)
-            {
-                return;
-            }
-
-            //保存到的文件夹
-            string saveToDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), path);
-            if (!Directory.Exists(saveToDirectoryPath))
-            {
-                Directory.CreateDirectory(saveToDirectoryPath);
-            }
-
-            //保存的文件
-            string saveName = Path.Combine(saveToDirectoryPath, name);
-
-            //已存在文件，则不生成
-            if (File.Exists(saveName))
-            {
-                return;
-            }
-
-            //渲染生成
-            var result = await _templateRenderer.RenderAsync(
-                template,
-                model
-            );
-
-            //保存文件
-            await SaveToFileAsync(result, saveName);
-        }
-
-        /// <summary>
-        /// 保存为文件
-        /// </summary>
-        /// <param name="renderResult">字节</param>
-        /// <param name="fileName">文件名称（含路径）</param>
-        /// <returns></returns>
-        private async Task SaveToFileAsync(string renderResult, string fileName)
-        {
-            byte[] buffer = renderResult.GetBytes(Encoding.UTF8);
-            using FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
-            await fs.WriteAsync(buffer, 0, buffer.Length);
         }
     }
 
