@@ -3,6 +3,7 @@ using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
@@ -267,7 +268,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <returns></returns>
         protected virtual string GetEntityDisplayName(Type entityType)
         {
-            var displayName = entityType.GetCustomAttribute<TableAttribute>()?.Name ?? entityType.Name;
+            var displayName = entityType.GetCustomAttribute<DisplayAttribute>()?.Name ?? entityType.Name;
 
             return displayName;
         }
