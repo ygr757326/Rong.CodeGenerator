@@ -151,7 +151,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     PropertyType = propertyInfo.PropertyType,
                     DisplayName = propertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? propertyInfo.Name,
                     IsRequired = propertyInfo.IsDefined(typeof(RequiredAttribute), true) ||
-                                 !propertyInfo.PropertyType.IsNullableValueType(),
+                                 type != typeof(string) && !propertyInfo.PropertyType.IsNullableValueType(),
                 };
 
                 HandleEditorModel(info, propertyInfo);
