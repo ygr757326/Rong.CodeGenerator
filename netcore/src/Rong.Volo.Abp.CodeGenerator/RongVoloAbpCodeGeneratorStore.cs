@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
-using Volo.Abp.DependencyInjection;
-using Volo.Abp.Reflection;
 using Volo.Abp.TextTemplating;
 
 namespace Rong.Volo.Abp.CodeGenerator

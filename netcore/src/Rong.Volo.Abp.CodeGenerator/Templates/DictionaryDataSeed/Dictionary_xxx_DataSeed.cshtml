@@ -1,0 +1,24 @@
+﻿@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<Rong.Volo.Abp.CodeGenerator.DictionaryTemplateModel>
+using @{@Model.Type.Namespace};
+using System.Threading.Tasks;
+using Volo.Abp.Data;
+
+namespace @{@Model.NameSpace}.@{@Model.SaveFolderPathNormalization}.Dictionarys
+{
+    /// <summary>
+    /// 字典数据种子 - @Model.Name
+    /// </summary>
+    public class Dictionary_@{@Model.Code}_DataSeed : DictionaryDataSeedBase
+    {
+        /// <summary>
+        /// @Model.Name
+        /// </summary>
+        protected override @{@Model.Type.Name} DictionaryType => @{@Model.Type.Name}.@{@Model.Code};
+
+        public override async Task SeedAsync(DataSeedContext context)
+        {
+            await AddAsync("1", "测试值1");
+            await AddAsync("2", "测试值2");
+        }
+    }
+}

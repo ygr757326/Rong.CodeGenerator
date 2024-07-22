@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.TextTemplating;
 using Volo.Abp.TextTemplating.Razor;
 
-namespace Rong.Volo.Abp.CodeGenerator
+namespace Rong.Volo.Abp.CodeGenerator.TemplateDefinitionProviders
 {
     /// <summary>
     /// 模板定义

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Volo.Abp;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Reflection;
 using Volo.Abp.TextTemplating;
 
 namespace Rong.Volo.Abp.CodeGenerator
@@ -14,7 +10,7 @@ namespace Rong.Volo.Abp.CodeGenerator
     /// <summary>
     /// 代码生成器帮助器
     /// </summary>
-    public class RongVoloAbpCodeGeneratorStoreBase : ITransientDependency
+    public abstract class RongVoloAbpCodeGeneratorStoreBase : ITransientDependency
     {
         protected ITemplateDefinitionManager TemplateDefinitionManager;
         protected ITemplateRenderer TemplateRenderer;
@@ -30,7 +26,7 @@ namespace Rong.Volo.Abp.CodeGenerator
         /// 保存文件
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task SaveAsync(TemplateModel model, string template, string name, string path)
+        protected virtual async Task SaveAsync(object model, string template, string name, string path)
         {
             //模板不存在
             var temp = await TemplateDefinitionManager.GetAsync(template);
