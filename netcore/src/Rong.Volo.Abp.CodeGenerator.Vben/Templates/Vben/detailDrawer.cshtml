@@ -4,7 +4,7 @@
 
 }
 <template>
- <a-drawer v-model:visible="visible" title="@Model.EntityInfo.EntityName - 详情" width="800px">
+ <a-drawer v-model:open="visible" title="@Model.EntityInfo.EntityName - 详情" width="40vw">
    <!--  详情页面 -->
    <Detail v-if="visible" :id="id"></Detail>
  </a-drawer>
@@ -16,7 +16,7 @@
  import Detail from './detail.vue';
 
  const visible = ref<boolean>(false);
- const id = ref<string | null>(null);
+ const id = ref<string>('');
  
  /**
   * 打开弹窗

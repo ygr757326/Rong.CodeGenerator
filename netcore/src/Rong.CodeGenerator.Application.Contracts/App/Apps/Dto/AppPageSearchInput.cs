@@ -27,6 +27,12 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         public TestEnum? MyEnum1 { get; set; }
 
         /// <summary>
+        /// 枚举2
+        /// </summary>
+        [Display(Name = "枚举2")]
+        public TestEnum? MyEnum2 { get; set; }
+
+        /// <summary>
         /// 客户端3
         /// </summary>
         [Display(Name = "客户端3")]

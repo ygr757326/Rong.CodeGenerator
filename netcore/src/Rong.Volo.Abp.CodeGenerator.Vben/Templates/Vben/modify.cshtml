@@ -7,10 +7,10 @@
     string? useComponentRegister = hasTinymceEditor ? ", useComponentRegister" : null;
     string? useTinymce = hasTinymceEditor ? "import { Tinymce } from '@/components/Tinymce/index';" : null;
     string? registerTinymce = hasTinymceEditor ? "useComponentRegister('Tinymce', Tinymce);" : null;
-    string? width = hasEditor ? "85%" : "800px";
+    string? width = hasEditor ? "85vw" : "40vw";
 }
 <template>
-  <a-drawer v-model:visible="visible" title="编辑 - @Model.EntityInfo.EntityName" width="@width">
+  <a-drawer v-model:open="visible" title="编辑 - @Model.EntityInfo.EntityName" width="@width">
   <template #extra>
     <a-button @@click="visible = false">取消</a-button>
     <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>

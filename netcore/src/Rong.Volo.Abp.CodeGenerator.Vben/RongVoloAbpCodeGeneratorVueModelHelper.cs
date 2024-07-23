@@ -11,6 +11,7 @@ using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages;
+using Volo.Abp.Reflection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
@@ -148,10 +149,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     PropertyInfo = propertyInfo,
                     Property = propertyInfo.Name,
                     PropertyCase = propertyInfo.Name.ToCamelCase(),
-                    PropertyType = propertyInfo.PropertyType,
+                    PropertyType = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable(),
                     DisplayName = propertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? propertyInfo.Name,
                     IsRequired = propertyInfo.IsDefined(typeof(RequiredAttribute), true) ||
-                                 type != typeof(string) && !propertyInfo.PropertyType.IsNullableValueType(),
+                                 propertyInfo.PropertyType != typeof(string) && !TypeHelper.IsNullable(propertyInfo.PropertyType),
                 };
 
                 HandleEditorModel(info, propertyInfo);
@@ -200,14 +201,18 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         {
             var attr = propertyInfo.GetCustomAttribute<VueEnumAttribute>();
 
-            info.IsEnum = attr != null || propertyInfo.PropertyType.IsEnum;
-            info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Select;
+            info.IsEnum = attr != null || propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable().IsEnum;
+            if (!info.IsEnum)
+            {
+                return;
+            }
 
             if (attr != null)
             {
                 info.PropertyType = attr.EnumType;
             }
 
+            info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Select;
             info.TableSorter = attr?.Sorter ?? true;
             info.IsSlot = attr?.Slot ?? true;
         }
@@ -216,10 +221,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// </summary>
         protected virtual void HandleBoolModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
+            var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
             var attr = propertyInfo.GetCustomAttribute<VueBoolAttribute>();
-            info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Switch;
-            info.TableSorter = attr?.Sorter ?? true;
-            info.IsSlot = attr?.Slot ?? true;
+            if (attr == null || typeCode != TypeCode.Boolean)
+            {
+                return;
+            }
+            info.SelectMode = attr.SelectMode;
+            info.TableSorter = attr.Sorter;
+            info.IsSlot = attr.Slot;
         }
 
         /// <summary>
@@ -273,8 +283,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             {
                 return;
             }
-            info.Property = attr.PointSplicingName;
-            info.PropertyCase = attr.PointSplicingName.Split(".").Select(a => a.ToCamelCase()).JoinAsString(".");
+            info.Property = attr.PointSplicingName ?? propertyInfo.Name;
+            info.PropertyCase = info.Property.Split(".").Select(a => a.ToCamelCase()).JoinAsString(".");
         }
 
         /// <summary>

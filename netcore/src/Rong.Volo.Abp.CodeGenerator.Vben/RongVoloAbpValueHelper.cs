@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Volo.Abp.Reflection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
     internal static class RongVoloAbpValueHelper
     {
-        /// <summary>
-        /// 是否是Nullable
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static bool IsNullableValueType(this Type type)
-        {
-            // 如果类型是Nullable<>，并且不是对Nullable结构体的引用，则是可空值类型
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && !type.IsGenericTypeDefinition;
-        }
 
         public static StringBuilder Space(this StringBuilder b, int length)
         {
@@ -32,12 +22,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <returns></returns>
         public static TypeCode GetMyTypeCode(this Type type)
         {
-            if (type.IsNullableValueType())
-            {
-                type = Nullable.GetUnderlyingType(type);
-            }
-
-            return Type.GetTypeCode(type);
+            var type1 = type.GetFirstGenericArgumentIfNullable();
+            return Type.GetTypeCode(type1);
         }
 
         /// <summary>
