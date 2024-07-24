@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+using System.Linq;
 using System.Text;
 using Volo.Abp.DependencyInjection;
 
@@ -23,7 +26,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
-            b.Space(space + 2).AppendLine($" {{{{ detailData?.{item.PropertyCase}  }}}} ");
+            b.Space(space + 2).AppendLine($" {{{{ detailData?.{FormatPropertyCase(item.PropertyCase)}  }}}} ");
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
             return b.ToString();
@@ -37,7 +40,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
-            b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{item.PropertyCase})  }}}} ");
+            b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)})  }}}} ");
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
             return b.ToString();
@@ -55,12 +58,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             if (item.IsSlot)
             {
                 b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
-                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{item.PropertyCase}) }}}} ");
+                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{FormatPropertyCase(item.PropertyCase)}) }}}} ");
                 b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
-                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{item.PropertyCase})  }}}} ");
+                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{FormatPropertyCase(item.PropertyCase)})  }}}} ");
             }
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
@@ -80,12 +83,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             if (item.IsSlot)
             {
                 b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
-                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{item.PropertyCase}) }}}} ");
+                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{FormatPropertyCase(item.PropertyCase)}) }}}} ");
                 b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
-                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{item.PropertyCase})  }}}} ");
+                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{FormatPropertyCase(item.PropertyCase)})  }}}} ");
             }
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
@@ -102,8 +105,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).AppendLine($"<a-tag :color=\"detailData?.{item.PropertyCase} ? 'green' : 'red'\">");
-            b.Space(space + 2).AppendLine($" {{{{ detailData?.{item.PropertyCase} ? '是' : '否' }}}} ");
+            b.Space(space + 2).AppendLine($"<a-tag :color=\"detailData?.{FormatPropertyCase(item.PropertyCase)} ? 'green' : 'red'\">");
+            b.Space(space + 2).AppendLine($" {{{{ detailData?.{FormatPropertyCase(item.PropertyCase)} ? '是' : '否' }}}} ");
             b.Space(space + 2).AppendLine($"</a-tag>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
@@ -126,11 +129,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.MultipleFile)
             {
-                b.Append($" v-for=\"(item, i) in detailData?.{item.PropertyCase}|| []\" :key=\"i\" :{Options.ImagePreviewComponentProp ?? "v-model"}=\"item\" ");
+                b.Append($" v-for=\"(item, i) in detailData?.{FormatPropertyCase(item.PropertyCase)}|| []\" :key=\"i\" :{Options.ImagePreviewComponentProp ?? "v-model"}=\"item\" ");
             }
             else
             {
-                b.Append($" :{Options.ImagePreviewComponentProp ?? "v-model"}=\"detailData?.{item.PropertyCase}\" ");
+                b.Append($" :{Options.ImagePreviewComponentProp ?? "v-model"}=\"detailData?.{FormatPropertyCase(item.PropertyCase)}\" ");
             }
 
             b.AppendLine($"></{componentName}>");
@@ -153,7 +156,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             b.Space(space + 2).Append($"<{componentName} ");
 
-            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"detailData?.{item.PropertyCase}\" listType=\"text\" :disabled=\"true\" ");
+            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"detailData?.{FormatPropertyCase(item.PropertyCase)}\" listType=\"text\" :disabled=\"true\" ");
 
             b.AppendLine($"></{componentName}>");
 
@@ -172,11 +175,21 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).AppendLine($"<p v-html=\"detailData?.{ item.PropertyCase}\"></p>");
+            b.Space(space + 2).AppendLine($"<p v-html=\"detailData?.{FormatPropertyCase(item.PropertyCase)}\"></p>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
             return b.ToString();
+        }
+
+        /// <summary>
+        /// 格式化属性名称
+        /// </summary>
+        /// <param name="propertyCase"></param>
+        /// <returns></returns>
+        protected virtual string FormatPropertyCase(string propertyCase)
+        {
+            return propertyCase.Replace(".", "?.");
         }
     }
 }
