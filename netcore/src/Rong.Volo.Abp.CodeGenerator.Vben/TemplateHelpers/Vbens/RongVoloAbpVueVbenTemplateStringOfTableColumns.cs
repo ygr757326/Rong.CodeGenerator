@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using System.Text;
 using Volo.Abp.DependencyInjection;
@@ -26,7 +28,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
 
             if (item.TableSorter)
             {
@@ -49,7 +51,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
             b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
             b.Space(space + 4).AppendLine($"return formatToDate(value);");
             b.Space(space + 2).AppendLine($"}},");
@@ -76,11 +78,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
             else
             {
@@ -106,7 +108,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         {
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
             b.Space(space + 2).AppendLine($"<Tag color=\"\">");
             b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', value) }}}}");
             b.Space(space + 2).AppendLine($"</Tag>");
@@ -126,11 +128,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
             else
             {
@@ -157,7 +159,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         {
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
             b.Space(space + 2).AppendLine($"<Tag color=\"\">");
             b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', value) }}}}");
             b.Space(space + 2).AppendLine($"</Tag>");
@@ -177,11 +179,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
             else
             {
@@ -208,7 +210,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         {
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
             b.Space(space + 2).AppendLine($"<Tag :color=\"value ? 'green' : 'red'\">");
             b.Space(space + 2).AppendLine($" {{{{ value ? '是' : '否' }}}}");
             b.Space(space + 2).AppendLine($"</Tag>");
@@ -228,11 +230,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{item.PropertyCase}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
 
             b.Space(space).AppendLine("},");
@@ -250,7 +252,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
 
             b.Space(space + 2).Append($"<{componentName} :width=\"50\" :height=\"50\"");
 
@@ -281,7 +283,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
 
             b.Space(space + 2).Append($"<{componentName}");
 
@@ -303,7 +305,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         {
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{item.PropertyCase}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
 
             b.Space(space + 2).Append($"<p v-html=\"value\" />");
 
@@ -311,6 +313,38 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             return b.ToString();
         }
-        
+
+
+
+        /// <summary>
+        /// 格式化属性名称 - 插槽
+        /// </summary>
+        /// <param name="propertyCase"></param>
+        /// <returns></returns>
+        protected virtual string FormatPropertyCaseForSlot(string propertyCase)
+        {
+            return propertyCase.Replace('.', '_');
+        }
+
+        /// <summary>
+        /// 格式化属性名称 - dataIndex
+        /// </summary>
+        /// <param name="propertyCase"></param>
+        /// <returns></returns>
+        protected virtual string FormatPropertyCaseForDataIndex(string propertyCase)
+        {
+            if (string.IsNullOrEmpty(propertyCase))
+            {
+                return $"'{propertyCase}'";
+            }
+            var p = propertyCase.Split('.');
+            if (p.Length == 1)
+            {
+                return $"'{propertyCase}'";
+            }
+
+            var data = p.Select(a => $"'{a}'").JoinAsString(", ");
+            return $"[{data}]";
+        }
     }
 }

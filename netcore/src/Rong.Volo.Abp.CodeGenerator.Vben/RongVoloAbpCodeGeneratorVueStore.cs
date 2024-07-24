@@ -226,17 +226,25 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         protected virtual TemplateVueDtoType GetTemplateVueDtoType(Type[] dtoTypes, Type entityType)
         {
             var name = entityType.Name;
+
+            var baseOut = dtoTypes.FirstOrDefault(a => a.Name == $"{name}BaseOutput");
             var page = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageOutput");
-            var search = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
+            var detail = dtoTypes.FirstOrDefault(a => a.Name == $"{name}DetailOutput");
+
+            var createOrUpdateBaseType = dtoTypes.FirstOrDefault(a => a.Name == $"{name}CreateOrUpdateInputBase");
             var create = dtoTypes.FirstOrDefault(a => a.Name == $"{name}CreateInput");
             var update = dtoTypes.FirstOrDefault(a => a.Name == $"{name}UpdateInput");
-            var detail = dtoTypes.FirstOrDefault(a => a.Name == $"{name}DetailOutput");
+
+            var search = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
+
 
             var entityTypeModel = new TemplateVueDtoType()
             {
+                BaseOutType = baseOut,
                 SearchType = search,
                 PageType = page,
                 DetailType = detail,
+                CreateOrUpdateBaseType = createOrUpdateBaseType,
                 CreateType = create,
                 UpdateType = update,
             };

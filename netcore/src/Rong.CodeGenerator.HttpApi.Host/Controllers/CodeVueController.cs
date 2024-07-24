@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Namotion.Reflection;
+using Rong.CodeGenerator.App.Dictionarys;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Domain.Entities;
@@ -41,7 +42,7 @@ public class CodeVueController : AbpController
             typeof(CodeGeneratorApplicationContractsModule), 
             CodeGeneratorRemoteServiceConsts.RootPath, 
             "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo"
-            //,new []{typeof(App.Apps.App)}
+            ,new []{typeof(Dictionary)}
             );
 
         
