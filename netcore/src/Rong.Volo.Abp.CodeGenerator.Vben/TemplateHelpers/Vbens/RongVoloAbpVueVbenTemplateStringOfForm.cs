@@ -237,10 +237,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             }
 
             var defaultValue = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-            if (defaultValue?.Value != null)
-            {
-                b.Space(space + 2).AppendLine($"defaultValue: '{defaultValue.Value.ToString()?.ToCamelCase()}',");
-            }
+            b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValue?.Value?.ToString() ?? false.ToString()).ToCamelCase()}',");
 
             if (item.IsRequired)
             {
