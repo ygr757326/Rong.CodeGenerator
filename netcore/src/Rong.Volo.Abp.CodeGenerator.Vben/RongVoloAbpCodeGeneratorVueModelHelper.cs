@@ -227,9 +227,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             {
                 return;
             }
-            info.SelectMode = attr.SelectMode;
-            info.TableSorter = attr.Sorter;
-            info.IsSlot = attr.Slot;
+            info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Switch;
+            info.TableSorter = attr?.Sorter ?? true;
+            info.IsSlot = attr?.Slot ?? true;
         }
 
         /// <summary>
