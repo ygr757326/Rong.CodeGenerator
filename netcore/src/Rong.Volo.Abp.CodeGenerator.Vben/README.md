@@ -36,45 +36,50 @@ VueComponentAttribute: 使用组件
         //vue代码生成器
         Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
         {
-          //Vben 组件替换
+            //Ant 的 Tabled 的 DataIndex 嵌套模式:。默认 Array
+            //2.x 版本 为 a.b.c
+            //3.x,4.x 版本 为 ['a','b','c']
+            options.AntTabledDataIndexMode = AntTabledDataIndexModeEnum.Array;
+
+            //Vben 组件替换
             options.ComponentMapForVben = new();
 
             //枚举Select
-            options.EnumSelectComponent = "EnumSelect";
+            options.EnumSelectComponent = "MyEnumSelect";
             options.EnumSelectComponentProp = "code";
 
             //枚举Radio
-            options.EnumRadioComponent = "EnumRadio";
+            options.EnumRadioComponent = "MyEnumRadio";
             options.EnumRadioComponentProp = "code";
 
             //字典Select
-            options.DictionarySelectComponent = "DictSelect";
+            options.DictionarySelectComponent = "MyDictSelect";
             options.DictionarySelectComponentProp = "code";
 
             //字典Radio
-            options.DictionaryRadioComponent = "DictRadio";
+            options.DictionaryRadioComponent = "MyDictRadio";
             options.DictionaryRadioComponentProp = "code";
 
             //bool
-            options.BoolSelectComponent = "BoolSelect";
-            options.BoolRadioComponent = "BoolRadio";
+            options.BoolSelectComponent = "MyBoolSelect";
+            options.BoolRadioComponent = "MyBoolRadio";
 
             //文件上传
-            options.FileUploadComponent = "GzUploadFile";
+            options.FileUploadComponent = "MyUploadFile";
 
             //图片上传
-            options.ImageUploadComponent = "GzUploadFile";
+            options.ImageUploadComponent = "MyUploadFile";
 
             //文件预览
-            options.FilePreviewComponent = "GzUploadFile";
+            options.FilePreviewComponent = "MyUploadFile";
             options.FilePreviewComponentProp = "v-model";
 
             //图片预览
-            options.ImagePreviewComponent = "GzImagePreview";
+            options.ImagePreviewComponent = "MyImagePreview";
             options.ImagePreviewComponentProp = "fileId";
 
             //编辑器
-            options.EditorComponent = "GzEditor";
+            options.EditorComponent = "MyEditor";
         });
 
 ```

@@ -98,5 +98,12 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         [VueEnum(typeof(TestEnum), VueSelectModeEnum.Radio, slot: true)]
         public TestEnum MyEnum2 { get; set; }
 
+        /// <summary>
+        /// 图片
+        /// </summary>
+        [Display(Name = "图片")]
+        [VueFile(false)]
+        public string Logo { get; set; }
+
     }
 }

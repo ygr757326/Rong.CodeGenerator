@@ -12,6 +12,7 @@ using Volo.Abp.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages;
 using Volo.Abp.Reflection;
+using System.Collections.Concurrent;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
@@ -40,15 +41,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             {
                 case RongVoloAbpVueVbenTemplateNames.Vben_index:
                     {
-                        var isAssignable = model.EntityDtoType.BaseOutType?.IsAssignableFrom(model.EntityDtoType.PageType) == true;
-                        var baseColumns = isAssignable ? GetPropertyInfo(model.EntityDtoType.PageType.ba, ignoreProperties: new[] { "id" }).ToList() : new List<TemplateVueEntityPropertyData>();
 
-                        var pageColumns = GetPropertyInfo(model.EntityDtoType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })
+                        var columns = GetPropertyInfosOfSort(model.EntityDtoType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })
                             .Where(a => !a.Property.Equals("concurrencyStamp", StringComparison.CurrentCultureIgnoreCase)).ToList();
 
-                        var columns = baseColumns.Concat(pageColumns.Where(a => baseColumns.All(b => b.PropertyInfo.Name != a.PropertyInfo.Name))).ToList();
-
-                        var search = GetPropertyInfo(model.EntityDtoType.SearchType, true, new[] { "Sorting", "SkipCount", "MaxResultCount" });
+                        var search = GetPropertyInfosOfSort(model.EntityDtoType.SearchType, true, new[] { "Sorting", "SkipCount", "MaxResultCount", "DefaultMaxResultCount", "MaxMaxResultCount" }).ToList();
 
                         data = new TemplateVuePageIndexModel
                         {
@@ -63,11 +60,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case RongVoloAbpVueVbenTemplateNames.Vben_add:
                     {
-                        var isAssignable = model.EntityDtoType.CreateOrUpdateBaseType?.IsAssignableFrom(model.EntityDtoType.CreateType) == true;
-                        var baseForm = isAssignable ? GetPropertyInfo(model.EntityDtoType.CreateOrUpdateBaseType) : new List<TemplateVueEntityPropertyData>();
-                        var createForm = GetPropertyInfo(model.EntityDtoType.CreateType);
-
-                        var formData = createForm.Concat(baseForm.Where(a => createForm.All(b => b.PropertyInfo.Name != a.PropertyInfo.Name))).ToList();
+                        var formData = GetPropertyInfosOfSort(model.EntityDtoType.CreateType, baseTypeIsMain: false).ToList();
 
                         data = new TemplateVuePageAddModel
                         {
@@ -78,12 +71,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case RongVoloAbpVueVbenTemplateNames.Vben_modify:
                     {
-                        var isAssignable = model.EntityDtoType.CreateOrUpdateBaseType?.IsAssignableFrom(model.EntityDtoType.UpdateType) == true;
-                        var baseForm = isAssignable ? GetPropertyInfo(model.EntityDtoType.CreateOrUpdateBaseType) : new List<TemplateVueEntityPropertyData>();
-                        var updateForm = GetPropertyInfo(model.EntityDtoType.UpdateType);
-
-                        var formData = updateForm.Concat(baseForm.Where(a => updateForm.All(b => b.PropertyInfo.Name != a.PropertyInfo.Name))).ToList();
-
+                        var formData = GetPropertyInfosOfSort(model.EntityDtoType.UpdateType, baseTypeIsMain: false).ToList();
                         data = new TemplateVuePageModifyModel
                         {
                             Form = formData,
@@ -93,25 +81,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     }
                 case RongVoloAbpVueVbenTemplateNames.Vben_detail:
                     {
-                        var isAssignable1 = model.EntityDtoType.PageType?.IsAssignableFrom(model.EntityDtoType.DetailType) == true;
-                        var pageData = isAssignable1 ? GetPropertyInfo(model.EntityDtoType.PageType, ignoreProperties: new[] { "id", "concurrencyStamp" })
-                            .Where(a => !a.Property.Equals("concurrencyStamp", StringComparison.CurrentCultureIgnoreCase)).ToList() : new List<TemplateVueEntityPropertyData>();
-
-
-                        var isAssignable = model.EntityDtoType.BaseOutType?.IsAssignableFrom(model.EntityDtoType.PageType) == true;
-                        var baseData = isAssignable1 && isAssignable ? GetPropertyInfo(model.EntityDtoType.BaseOutType, ignoreProperties: new[] { "id" }).ToList() : new List<TemplateVueEntityPropertyData>();
-
-
-                        var detailData = GetPropertyInfo(model.EntityDtoType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" });
-
-                        var pageData1 = baseData.Concat(pageData.Where(a => baseData.All(b => b.PropertyInfo.Name != a.PropertyInfo.Name))).ToList();
-
-                        var viewData = pageData1.Concat(detailData.Where(a => pageData1.All(b => b.PropertyInfo.Name != a.PropertyInfo.Name))).ToList();
-
+                        var detailData = GetPropertyInfosOfSort(model.EntityDtoType.DetailType, ignoreProperties: new[] { "id", "concurrencyStamp" }).ToList();
                         data = new TemplateVuePageDetailModel
                         {
-                            Detail = viewData,
-                            DetailTemplate = _vueTemplate.GetDetailTemplate(viewData, 8),
+                            Detail = detailData,
+                            DetailTemplate = _vueTemplate.GetDetailTemplate(detailData, 8),
                         };
                         break;
                     }
@@ -149,20 +123,53 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         }
 
         /// <summary>
+        /// 获取排序后的属性值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="isCanWrite"></param>
+        /// <param name="ignoreProperties">忽略的属性</param>
+        /// <returns></returns>
+        protected virtual List<TemplateVueEntityPropertyData> GetPropertyInfosOfSort(Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null, bool baseTypeIsMain = true, List<TemplateVueEntityPropertyData>? data = null)
+        {
+            if (type == null)
+            {
+                return data ?? new List<TemplateVueEntityPropertyData>();
+            }
+
+            var list = GetPropertyInfos(type, isCanWrite, ignoreProperties);
+
+            data ??= list.ToList();
+
+            //基类信息为主
+            if (baseTypeIsMain)
+            {
+                var basePropertyInfo = data.Where(a => list.Any(x => x.PropertyInfo.Name == a.PropertyInfo.Name));
+                var exceptPropertyInfo = data.Except(basePropertyInfo);
+                data = basePropertyInfo.Concat(exceptPropertyInfo).ToList();
+            }
+
+            if (type.BaseType != null)
+            {
+                data = GetPropertyInfosOfSort(type.BaseType, isCanWrite, ignoreProperties, baseTypeIsMain, data);
+            }
+
+            return data;
+        }
+
+
+        /// <summary>
         /// 获取属性值
         /// </summary>
         /// <param name="type"></param>
         /// <param name="isCanWrite"></param>
         /// <param name="ignoreProperties">忽略的属性</param>
         /// <returns></returns>
-        protected virtual void GetPropertyInfo(List<TemplateVueEntityPropertyData> data, Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null, bool baseTypeIsMain = true)
+        protected virtual IEnumerable<TemplateVueEntityPropertyData> GetPropertyInfos(Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null)
         {
             if (type == null)
             {
-                return;
+                yield break;
             }
-
-            List<TemplateVueEntityPropertyData> list = new List<TemplateVueEntityPropertyData>();
 
             var properties = type.GetProperties()
                 .WhereIf(ignoreProperties != null, a => !ignoreProperties.Contains(a.Name, StringComparer.CurrentCultureIgnoreCase))
@@ -198,22 +205,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     info.TableSorter = sorterAttr.Sorter;
                 }
 
-                list.Add(info);
-            }
-
-            if (baseTypeIsMain)
-            {
-                data.Add(list);
-            }
-            else
-            {
-                data.Add(list);
-            }
-
-
-            if (type.BaseType != null)
-            {
-                GetPropertyInfo(data, type.BaseType, isCanWrite, ignoreProperties, baseTypeIsMain);
+                yield return info;
             }
         }
 
@@ -264,7 +256,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         {
             var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
             var attr = propertyInfo.GetCustomAttribute<VueBoolAttribute>();
-            if (attr == null || typeCode != TypeCode.Boolean)
+            if (attr == null && typeCode != TypeCode.Boolean)
             {
                 return;
             }
@@ -286,6 +278,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.IsFile = attr.FileType.Equals(VueFileTypeEnum.File);
             info.IsImage = attr.FileType.Equals(VueFileTypeEnum.Image);
             info.MultipleFile = attr.Multiple;
+            info.IsSlot = true;
         }
 
         /// <summary>
@@ -299,6 +292,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 return;
             }
             info.IsTextarea = true;
+            info.IsSlot = false;
         }
 
         /// <summary>
@@ -312,6 +306,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 return;
             }
             info.IsEditor = true;
+            info.IsSlot = true;
         }
 
         /// <summary>
@@ -326,6 +321,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
             info.Property = attr.PointSplicingName ?? propertyInfo.Name;
             info.PropertyCase = info.Property.Split(".").Select(a => a.ToCamelCase()).JoinAsString(".");
+            info.IsSlot = false;
         }
 
         /// <summary>
@@ -341,6 +337,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             info.IsComponent = true;
             info.Component = string.IsNullOrWhiteSpace(attr.Component) ? "Input" : attr.Component;
+            info.IsSlot = false;
         }
     }
 

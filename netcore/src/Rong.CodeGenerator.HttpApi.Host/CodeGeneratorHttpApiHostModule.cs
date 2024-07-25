@@ -5,6 +5,7 @@ using Rong.CodeGenerator.EntityFrameworkCore;
 using System.Collections.Generic;
 using Rong.Volo.Abp.CodeGenerator;
 using Rong.Volo.Abp.CodeGenerator.Vue;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
@@ -59,6 +60,11 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
         //vue代码生成器
         Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
         {
+            //Ant 的 Tabled 的 DataIndex 嵌套模式:。
+            //2.x 版本 为 a.b.c
+            //3.x,4.x 版本 为 ['a','b','c']
+            options.AntTabledDataIndexMode = AntTabledDataIndexModeEnum.Dotted;
+
             //Vben 组件替换
             options.ComponentMapForVben = new();
 

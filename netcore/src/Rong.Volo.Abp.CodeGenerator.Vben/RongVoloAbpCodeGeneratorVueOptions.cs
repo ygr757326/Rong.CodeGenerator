@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
@@ -10,9 +11,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     public class RongVoloAbpCodeGeneratorVueOptions
     {
         /// <summary>
+        /// Antdv 的 Tabled 的 DataIndex 嵌套模式。默认 Array
+        /// <para>2.x 版本 为 a.b.c</para>
+        /// <para>3.x,4.x 版本 为 ['a','b','c']</para>
+        /// </summary>
+        public AntTabledDataIndexModeEnum? AntTabledDataIndexMode { get; set; }
+
+        /// <summary>
         /// Vben 组件偷替换映射：原组件,新组件
         /// </summary>
-        public Dictionary<string, string> ComponentMapForVben { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> ComponentMapForVben { get; set; }
 
         /// <summary>
         /// 枚举Select组件名称
@@ -90,7 +98,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
         public RongVoloAbpCodeGeneratorVueOptions()
         {
-
+            AntTabledDataIndexMode = AntTabledDataIndexModeEnum.Array;
+            ComponentMapForVben = new Dictionary<string, string>();
         }
     }
 }

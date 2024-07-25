@@ -166,6 +166,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 }
                 else if (item.IsFile)
                 {
+                    b.Append(TableColumnsTemplate.FilePreviewTemplate(item, space));
+                }
+                else if (item.IsImage)
+                {
                     b.Append(TableColumnsTemplate.ImagePreviewTemplate(item, space));
                 }
                 else

@@ -227,24 +227,19 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         {
             var name = entityType.Name;
 
-            var baseOut = dtoTypes.FirstOrDefault(a => a.Name == $"{name}BaseOutput");
             var page = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageOutput");
             var detail = dtoTypes.FirstOrDefault(a => a.Name == $"{name}DetailOutput");
 
-            var createOrUpdateBaseType = dtoTypes.FirstOrDefault(a => a.Name == $"{name}CreateOrUpdateInputBase");
+            var search = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
+
             var create = dtoTypes.FirstOrDefault(a => a.Name == $"{name}CreateInput");
             var update = dtoTypes.FirstOrDefault(a => a.Name == $"{name}UpdateInput");
 
-            var search = dtoTypes.FirstOrDefault(a => a.Name == $"{name}PageSearchInput");
-
-
             var entityTypeModel = new TemplateVueDtoType()
             {
-                BaseOutType = baseOut,
                 SearchType = search,
                 PageType = page,
                 DetailType = detail,
-                CreateOrUpdateBaseType = createOrUpdateBaseType,
                 CreateType = create,
                 UpdateType = update,
             };

@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using System.Text;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp.DependencyInjection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
@@ -273,6 +274,30 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             return b.ToString();
         }
 
+
+        /// <summary>
+        /// 文件预览模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? FilePreviewTemplate(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+
+            if (item.IsSlot)
+            {
+                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
         /// <summary>
         /// 文件预览插槽
         /// </summary>
@@ -323,7 +348,13 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// <returns></returns>
         protected virtual string FormatPropertyCaseForSlot(string propertyCase)
         {
-            return propertyCase.Replace('.', '_');
+            return propertyCase.Replace(".", "_")
+                .Replace("[", "")
+                .Replace("]", "")
+                .Replace(" ", "")
+                .Replace("'", "")
+                .Replace(",", "_");
+
         }
 
         /// <summary>
@@ -333,16 +364,13 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         /// <returns></returns>
         protected virtual string FormatPropertyCaseForDataIndex(string propertyCase)
         {
-            if (string.IsNullOrEmpty(propertyCase))
-            {
-                return $"'{propertyCase}'";
-            }
-            var p = propertyCase.Split('.');
-            if (p.Length == 1)
+            if (Options.AntTabledDataIndexMode.Equals(AntTabledDataIndexModeEnum.Dotted))
             {
                 return $"'{propertyCase}'";
             }
 
+            propertyCase = propertyCase ?? string.Empty;
+            var p = propertyCase.Split('.');
             var data = p.Select(a => $"'{a}'").JoinAsString(", ");
             return $"[{data}]";
         }

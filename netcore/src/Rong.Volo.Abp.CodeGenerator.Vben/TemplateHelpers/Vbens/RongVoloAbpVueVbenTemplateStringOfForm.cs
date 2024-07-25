@@ -47,6 +47,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 b.Space(space + 2).AppendLine($"show: false,");
             }
 
+            var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr != null)
+            {
+                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+            }
+
             b.Space(space).AppendLine("},");
 
             return b.ToString();
@@ -73,6 +79,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             if (item.IsRequired)
             {
                 b.Space(space + 2).AppendLine($"required: true,");
+            }
+
+            var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr != null)
+            {
+                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
             }
 
             b.Space(space).AppendLine("},");
@@ -140,6 +152,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 b.Space(space + 2).AppendLine($"required: true,");
             }
 
+            var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr != null)
+            {
+                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+            }
+
             b.Space(space).AppendLine("},");
 
             return b.ToString();
@@ -205,6 +223,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 b.Space(space + 2).AppendLine($"required: true,");
             }
 
+            var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr != null)
+            {
+                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+            }
+
             b.Space(space).AppendLine("},");
 
             return b.ToString();
@@ -236,8 +260,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                 b.Space(space + 2).AppendLine($"component:'{GetMapComponent("Switch")}',");
             }
 
-            var defaultValue = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-            b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValue?.Value?.ToString() ?? false.ToString()).ToCamelCase()}',");
+            var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr?.Value?.ToString()).ToCamelCase()}',");
 
             if (item.IsRequired)
             {
@@ -289,6 +313,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             if (item.IsRequired)
             {
                 b.Space(space + 2).AppendLine($"required: true,");
+            }
+
+            var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr != null)
+            {
+                b.Space(space + 2).AppendLine($"defaultValue: {defaultValueAttr.Value},");
             }
 
             b.Space(space).AppendLine("},");
