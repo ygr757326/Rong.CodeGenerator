@@ -155,7 +155,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
             if (defaultValueAttr != null)
             {
-                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+                b.Space(space + 2).AppendLine($"defaultValue: {defaultValueAttr.Value},");
             }
 
             b.Space(space).AppendLine("},");
@@ -261,7 +261,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             }
 
             var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-            b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr?.Value?.ToString()).ToCamelCase()}',");
+            if (defaultValueAttr != null)
+            {
+                b.Space(space + 2).AppendLine($"defaultValue: {(defaultValueAttr.Value ?? false).ToString()?.ToCamelCase()},");
+            }
 
             if (item.IsRequired)
             {
