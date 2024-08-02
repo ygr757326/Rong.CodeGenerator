@@ -27,11 +27,17 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public Type EnumType { get; set; }
 
-        public VueEnumAttribute(Type enumType, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool sorter = true) : base(sorter)
+        /// <summary>
+        /// 是否多选
+        /// </summary>
+        public bool Multiple { get; set; }
+
+        public VueEnumAttribute(Type enumType, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool sorter = true, bool multiple = false) : base(sorter)
         {
             EnumType = enumType;
             SelectMode = selectMode;
             Slot = slot;
+            Multiple = multiple;
         }
     }
 }

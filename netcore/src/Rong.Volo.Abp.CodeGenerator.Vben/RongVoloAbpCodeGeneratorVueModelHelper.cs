@@ -225,6 +225,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.SelectMode = attr.SelectMode;
             info.TableSorter = attr.Sorter;
             info.IsSlot = attr.Slot;
+            info.IsDictionaryMultiple = attr.Multiple;
         }
 
         /// <summary>
@@ -248,6 +249,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Select;
             info.TableSorter = attr?.Sorter ?? true;
             info.IsSlot = attr?.Slot ?? true;
+            info.IsEnumMultiple = attr?.Multiple??false;
         }
         /// <summary>
         /// bool模型

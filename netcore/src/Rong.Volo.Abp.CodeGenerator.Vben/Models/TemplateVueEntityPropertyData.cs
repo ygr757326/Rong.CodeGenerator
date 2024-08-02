@@ -46,6 +46,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public bool IsDictionary { get; set; }
 
         /// <summary>
+        /// 是否是字典多选
+        /// </summary>
+        public bool IsDictionaryMultiple { get; set; }
+
+        /// <summary>
         /// 是否是Slot
         /// </summary>
         public bool IsSlot { get; set; }
@@ -59,6 +64,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// 是否是枚举
         /// </summary>
         public bool IsEnum { get; set; }
+
+        /// <summary>
+        /// 是否是枚举多选
+        /// </summary>
+        public bool IsEnumMultiple { get; set; }
 
         /// <summary>
         /// 选择模式

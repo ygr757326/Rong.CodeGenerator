@@ -20,18 +20,24 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// <summary>
         /// 是否插槽
         /// </summary>
-        public bool  Slot { get; set; }
+        public bool Slot { get; set; }
 
         /// <summary>
         /// 字典编码
         /// </summary>
         public string Code { get; set; }
 
-        public VueDictionaryAttribute(string code, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot=false, bool sorter = true) : base(sorter)
+        /// <summary>
+        /// 是否多选
+        /// </summary>
+        public bool Multiple { get; set; }
+
+        public VueDictionaryAttribute(string code, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool sorter = true, bool multiple = false) : base(sorter)
         {
             Code = code;
             SelectMode = selectMode;
             Slot = slot;
+            Multiple = multiple;
         }
     }
 }

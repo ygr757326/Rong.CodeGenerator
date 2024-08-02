@@ -57,13 +57,32 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
-                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{FormatPropertyCase(item.PropertyCase)}) }}}} ");
-                b.Space(space + 2).AppendLine($"</a-tag>");
+                if (item.IsEnumMultiple)
+                {
+                    b.Space(space + 2).AppendLine($"<a-tag color=\"\" v-for=\"(item, i) in detailData?.{FormatPropertyCase(item.PropertyCase)}|| []\" :key=\"i\">");
+                    b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', item) }}}} ");
+                    b.Space(space + 2).AppendLine($"</a-tag>");
+
+                }
+                else
+                {
+                    b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
+                    b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{FormatPropertyCase(item.PropertyCase)}) }}}} ");
+                    b.Space(space + 2).AppendLine($"</a-tag>");
+                }
             }
             else
             {
-                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{FormatPropertyCase(item.PropertyCase)})  }}}} ");
+                if (item.IsEnumMultiple)
+                {
+
+                }
+                else
+                {
+                    b.Space(space + 2)
+                        .AppendLine(
+                            $" {{{{ enumStore?.findName('{item.PropertyType.Name}', detailData?.{FormatPropertyCase(item.PropertyCase)})  }}}} ");
+                }
             }
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
@@ -82,9 +101,20 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
-                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{FormatPropertyCase(item.PropertyCase)}) }}}} ");
-                b.Space(space + 2).AppendLine($"</a-tag>");
+                if (item.IsDictionaryMultiple)
+                {
+                    b.Space(space + 2).AppendLine($"<a-tag color=\"\" v-for=\"(item, i) in detailData?.{FormatPropertyCase(item.PropertyCase)}|| []\" :key=\"i\">");
+                    b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', item) }}}} ");
+                    b.Space(space + 2).AppendLine($"</a-tag>");
+
+                }
+                else
+                {
+                    b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
+                    b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', detailData?.{FormatPropertyCase(item.PropertyCase)}) }}}} ");
+                    b.Space(space + 2).AppendLine($"</a-tag>");
+
+                }
             }
             else
             {
