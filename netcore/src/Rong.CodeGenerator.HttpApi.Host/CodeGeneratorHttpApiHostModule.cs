@@ -69,41 +69,49 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
             options.ComponentMapForVben = new();
 
             //枚举Select
-            options.EnumSelectComponent = "EnumSelect";
+            options.EnumSelectComponent = "MyEnumSelect";
             options.EnumSelectComponentProp = "code";
 
             //枚举Radio
-            options.EnumRadioComponent = "EnumRadio";
+            options.EnumRadioComponent = "MyEnumRadio";
             options.EnumRadioComponentProp = "code";
 
+            //枚举Checkbox
+            options.EnumCheckboxComponent = "MyEnumCheckbox";
+            options.EnumCheckboxComponentProp = "code";
+
             //字典Select
-            options.DictionarySelectComponent = "DictSelect";
+            options.DictionarySelectComponent = "MyDictSelect";
             options.DictionarySelectComponentProp = "code";
 
             //字典Radio
-            options.DictionaryRadioComponent = "DictRadio";
+            options.DictionaryRadioComponent = "MyDictRadio";
             options.DictionaryRadioComponentProp = "code";
 
+            //字典Checkbox
+            options.DictionaryCheckboxComponent = "MyDictCheckbox";
+            options.DictionaryCheckboxComponentProp = "code";
+
             //bool
-            options.BoolSelectComponent = "BoolSelect";
+            options.BoolSelectComponent = "MyBoolSelect";
             options.BoolRadioComponent = "BoolRadio";
 
             //文件上传
-            options.FileUploadComponent = "GzUploadFile";
+            options.FileUploadComponent = "MyUploadFile";
 
             //图片上传
-            options.ImageUploadComponent = "GzUploadFile";
+            options.ImageUploadComponent = "MyUploadFile";
 
             //文件预览
-            options.FilePreviewComponent = "GzUploadFile";
-            options.FilePreviewComponentProp = "v-model";
+            options.FilePreviewComponent = "MyFileViewList";
+            options.FilePreviewComponentProp = "fileList";
 
             //图片预览
-            options.ImagePreviewComponent = "GzImagePreview";
+            options.ImagePreviewComponent = "MyImagePreview";
             options.ImagePreviewComponentProp = "fileId";
 
             ////编辑器
-            //options.EditorComponent = "GzEditor";
+            //options.EditorComponent = "MyEditor";
         });
 
     }

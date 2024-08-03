@@ -14,6 +14,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Enums
         /// <summary>
         /// 仅对boo类型有效
         /// </summary>
-        Switch
+        Switch,
+        Checkbox
     }
 }

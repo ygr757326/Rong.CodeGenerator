@@ -38,6 +38,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// 枚举Radio组件 prop
         /// </summary>
         public string? EnumRadioComponentProp { get; set; }
+        /// <summary>
+        /// 枚举Checkbox组件名称
+        /// </summary>
+        public string? EnumCheckboxComponent { get; set; }
+        /// <summary>
+        /// 枚举Checkbox组件 prop
+        /// </summary>
+        public string? EnumCheckboxComponentProp { get; set; }
 
         /// <summary>
         /// 字典Select组件名称
@@ -55,6 +63,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// 字典Radio组件 prop
         /// </summary>
         public string? DictionaryRadioComponentProp { get; set; }
+        /// <summary>
+        /// 字典Checkbox组件名称
+        /// </summary>
+        public string? DictionaryCheckboxComponent { get; set; }
+        /// <summary>
+        /// 字典Checkbox组件 prop
+        /// </summary>
+        public string? DictionaryCheckboxComponentProp { get; set; }
 
         /// <summary>
         /// bool Select组件

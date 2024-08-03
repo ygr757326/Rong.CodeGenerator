@@ -88,7 +88,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             else
             {
                 b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return enumStore?.findName('{item.PropertyType.Name}', value);");
+
+                if (item.IsEnumMultiple)
+                {
+                    b.Space(space + 4).AppendLine($"return (value || []).map((a) => enumStore?.findName('{item.PropertyType.Name}', a)).join(',');");
+                }
+                else
+                {
+                    b.Space(space + 4).AppendLine($"return enumStore?.findName('{item.PropertyType.Name}', value);");
+                }
+
                 b.Space(space + 2).AppendLine($"}},");
             }
             if (item.TableSorter)
@@ -110,9 +119,20 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
 
             b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
-            b.Space(space + 2).AppendLine($"<Tag color=\"\">");
-            b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', value) }}}}");
-            b.Space(space + 2).AppendLine($"</Tag>");
+
+            if (item.IsDictionaryMultiple)
+            {
+                b.Space(space + 2).AppendLine($"<Tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
+                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', item) }}}}");
+                b.Space(space + 2).AppendLine($"</Tag>");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', value) }}}}");
+                b.Space(space + 2).AppendLine($"</Tag>");
+            }
+
             b.Space(space).AppendLine($"</template>");
 
             return b.ToString();
@@ -138,7 +158,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             else
             {
                 b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return dictStore?.findName('{item.DictionaryCode}', value);");
+
+                if (item.IsDictionaryMultiple)
+                {
+                    b.Space(space + 4).AppendLine($"return (value || []).map((a) => dictStore?.findName('{item.DictionaryCode}', a)).join(',');");
+                }
+                else
+                {
+                    b.Space(space + 4).AppendLine($"return dictStore?.findName('{item.DictionaryCode}', value);");
+                }
+
                 b.Space(space + 2).AppendLine($"}},");
             }
 
@@ -161,9 +190,20 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
 
             b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
-            b.Space(space + 2).AppendLine($"<Tag color=\"\">");
-            b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', value) }}}}");
-            b.Space(space + 2).AppendLine($"</Tag>");
+
+            if (item.IsDictionaryMultiple)
+            {
+                b.Space(space + 2).AppendLine($"<Tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
+                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', item) }}}}");
+                b.Space(space + 2).AppendLine($"</Tag>");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', value) }}}}");
+                b.Space(space + 2).AppendLine($"</Tag>");
+            }
+
             b.Space(space).AppendLine($"</template>");
 
             return b.ToString();

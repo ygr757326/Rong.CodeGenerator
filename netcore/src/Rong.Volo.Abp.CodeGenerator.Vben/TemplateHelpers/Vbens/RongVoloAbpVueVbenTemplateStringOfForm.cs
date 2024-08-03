@@ -121,6 +121,39 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                     b.Space(space + 2).AppendLine($"}},");
                 }
             }
+            else if (item.SelectMode == VueSelectModeEnum.Select)
+            {
+                b.Space(space + 2).AppendLine($"component: '{Options.EnumSelectComponent ?? GetMapComponent("Select")}',");
+
+                if (Options.EnumSelectComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.EnumSelectComponentProp}: '{item.PropertyType.Name}',");
+                    b.Space(space + 4).AppendLine($"showSearch: true,");
+                    b.Space(space + 4).AppendLine($"allowClear: true,");
+                    if (item.IsEnumMultiple)
+                    {
+                        b.Space(space + 4).AppendLine($"mode: 'multiple',");
+                    }
+                    b.Space(space + 2).AppendLine($"}},");
+                }
+            }
+            else if (item.SelectMode == VueSelectModeEnum.Checkbox)
+            {
+                b.Space(space + 2).AppendLine($"component: '{Options.EnumCheckboxComponent ?? GetMapComponent("CheckboxGroup")}',");
+
+                if (Options.EnumCheckboxComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.EnumCheckboxComponentProp}: '{item.PropertyType.Name}',");
+                    b.Space(space + 2).AppendLine($"}},");
+                }
+            }
+
             else
             {
                 b.Space(space + 2).AppendLine($"component: '{Options.EnumSelectComponent ?? GetMapComponent("Select")}',");
@@ -136,6 +169,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                     b.Space(space + 2).AppendLine($"}},");
                 }
             }
+
 
             if (defaultComponentProps)
             {
@@ -192,7 +226,39 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
                     b.Space(space + 2).AppendLine($"}},");
                 }
             }
-            else
+            else if (item.SelectMode == VueSelectModeEnum.Select)
+            {
+                b.Space(space + 2).AppendLine($"component: '{Options.DictionarySelectComponent ?? GetMapComponent("Select")}',");
+
+                if (Options.DictionarySelectComponentProp != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.DictionarySelectComponentProp}: '{item.DictionaryCode}',");
+                    b.Space(space + 4).AppendLine($"showSearch: true,");
+                    b.Space(space + 4).AppendLine($"allowClear: true,");
+                    if (item.IsEnumMultiple)
+                    {
+                        b.Space(space + 4).AppendLine($"mode: 'multiple',");
+                    }
+                    b.Space(space + 2).AppendLine($"}},");
+                }
+            }
+            else if (item.SelectMode == VueSelectModeEnum.Checkbox)
+            {
+                b.Space(space + 2).AppendLine($"component: '{Options.DictionaryCheckboxComponent ?? GetMapComponent("CheckboxGroup")}',");
+
+                if (Options.DictionaryCheckboxComponent != null)
+                {
+                    defaultComponentProps = false;
+
+                    b.Space(space + 2).AppendLine($"componentProps: {{");
+                    b.Space(space + 4).AppendLine($"{Options.DictionaryCheckboxComponentProp}: '{item.DictionaryCode}',");
+                    b.Space(space + 2).AppendLine($"}},");
+                }
+            }
+            else 
             {
                 b.Space(space + 2).AppendLine($"component: '{Options.DictionarySelectComponent ?? GetMapComponent("Select")}',");
 

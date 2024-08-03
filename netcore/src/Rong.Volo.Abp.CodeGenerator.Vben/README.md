@@ -52,6 +52,10 @@ VueComponentAttribute: 使用组件
             options.EnumRadioComponent = "MyEnumRadio";
             options.EnumRadioComponentProp = "code";
 
+             //枚举Checkbox
+            options.EnumCheckboxComponent = "MyEnumCheckbox";
+            options.EnumCheckboxComponentProp = "code";
+
             //字典Select
             options.DictionarySelectComponent = "MyDictSelect";
             options.DictionarySelectComponentProp = "code";
@@ -59,6 +63,10 @@ VueComponentAttribute: 使用组件
             //字典Radio
             options.DictionaryRadioComponent = "MyDictRadio";
             options.DictionaryRadioComponentProp = "code";
+
+            //字典Checkbox
+            options.DictionaryCheckboxComponent = "MyDictCheckbox";
+            options.DictionaryCheckboxComponentProp = "code";
 
             //bool
             options.BoolSelectComponent = "MyBoolSelect";
@@ -71,8 +79,8 @@ VueComponentAttribute: 使用组件
             options.ImageUploadComponent = "MyUploadFile";
 
             //文件预览
-            options.FilePreviewComponent = "MyUploadFile";
-            options.FilePreviewComponentProp = "v-model";
+            options.FilePreviewComponent = "MyFileViewList";
+            options.FilePreviewComponentProp = "fileList";
 
             //图片预览
             options.ImagePreviewComponent = "MyImagePreview";
