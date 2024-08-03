@@ -47,7 +47,7 @@ namespace @{@Model.NameSpace}.@{@Model.SaveFolderName}.@{@Model.Entity}s
         {
             return base.CreateFilteredQueryAsync(input);
             //return (await base.CreateFilteredQueryAsync(input))
-            // .WhereIf(!string.IsNullOrWhiteSpace(input.x), a => a.CorpCode.Contains(input.x));
+            //    .WhereIf(!string.IsNullOrWhiteSpace(input.x), a => a.CorpCode.Contains(input.x));
         }
 
         #endregion
