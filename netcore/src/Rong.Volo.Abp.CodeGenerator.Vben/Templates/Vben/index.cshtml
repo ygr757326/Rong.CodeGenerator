@@ -6,7 +6,7 @@
 <template>
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
-      <template #toolbar>
+      <template #tableTitle>
         <a-button auth="@Model.EntityInfo.Permission.Create" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
        <template #action="{ record }">
