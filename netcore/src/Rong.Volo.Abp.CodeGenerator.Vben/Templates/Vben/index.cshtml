@@ -7,7 +7,7 @@
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
       <template #tableTitle>
-        <a-button auth="@Model.EntityInfo.Permission.Create" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
+        <a-button :icon="h(PlusOutlined)" auth="@Model.EntityInfo.Permission.Create" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
        <template #action="{ record }">
         <TableAction
@@ -48,7 +48,8 @@
 
 <script lang="ts" setup>
   import { Tag } from 'ant-design-vue';
-  import { ref } from 'vue';
+  import { ref, h } from 'vue';
+  import { PlusOutlined } from '@@ant-design/icons-vue';
   import Add from './components/add.vue';
   import Modify from './components/modify.vue';
   import DetailDrawer from './components/detailDrawer.vue';
