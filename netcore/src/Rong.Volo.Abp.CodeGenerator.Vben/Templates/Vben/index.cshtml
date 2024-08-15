@@ -7,7 +7,7 @@
   <PageWrapper contentFullHeight>
       <BasicTable @@register="register">
       <template #tableTitle>
-        <a-button auth="@Model.EntityInfo.Permission.Create" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
+        <a-button v-auth="'@Model.EntityInfo.Permission.Create'" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
        <template #action="{ record }">
         <TableAction
