@@ -5,11 +5,14 @@
 }
 <template>
   <PageWrapper contentFullHeight>
-      <BasicTable @@register="register">
+    <BasicTable @@register="register">
       <template #tableTitle>
+        @Model.EntityInfo.EntityName
+      </template>
+      <template #toolbar>
         <a-button :icon="h(PlusOutlined)" v-auth="'@Model.EntityInfo.Permission.Create'" type="primary" style="margin-right: 20px" @@click="handleCreate">添加</a-button>
       </template>
-       <template #action="{ record }">
+      <template #action="{ record }">
         <TableAction
           :actions="[
             {
@@ -23,7 +26,7 @@
               onClick: handleDetail.bind(null, record),
             },
           ]"
-          :dropDownActions="[
+           :dropDownActions="[
             {
               auth:'@Model.EntityInfo.Permission.Delete',
               label: '删除',
@@ -32,10 +35,9 @@
                 confirm: handleDelete.bind(null, record),
               },
             },
-          ]"
-        />
-       </template>                    
-@Model.TableColumnsSlotsTemplate
+          ]"/>
+       </template>
+       @Model.TableColumnsSlotsTemplate
     </BasicTable>
     <!-- 新增 -->
     <Add ref="addRef" @@success="handleSuccess"></Add>
