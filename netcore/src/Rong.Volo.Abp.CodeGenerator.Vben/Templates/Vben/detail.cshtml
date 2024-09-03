@@ -32,8 +32,8 @@
     width: '120px',
     'justify-content': 'flex-end',
   };
-  let detailData: any = ref({});
-  let loading = ref(true)
+  const detailData: any = ref({});
+  const loading = ref<Boolean>(false)
 
   /**
    * 监听id
@@ -56,7 +56,7 @@
         return;
       }
       loading.value = true;
-      var res = await @{@Model.EntityInfo.Entity}Get(id);
+      const res = await @{@Model.EntityInfo.Entity}Get(id);
       detailData.value = res;
       loading.value = false;
   }

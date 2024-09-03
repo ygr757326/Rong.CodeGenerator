@@ -11,14 +11,14 @@
 }
 <template>
   <a-drawer v-model:open="visible" title="编辑 - @Model.EntityInfo.EntityName" width="@width">
-  <template #extra>
+   <template #extra>
     <a-button @@click="visible = false">取消</a-button>
-    <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
-  </template>
-  <div ref="loadingRef">
+    <a-button :loading="loading" @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
+   </template>
+   <a-spin :spinning="loading">
     <BasicForm @@register="Register" v-if="visible">
     </BasicForm>
-  </div>
+   </a-spin>
 </a-drawer>
 </template>
 
@@ -27,7 +27,6 @@
 import { nextTick, ref } from 'vue';
 import { @{@Model.EntityInfo.Entity}Get, @{@Model.EntityInfo.Entity}Update } from '../api';
 import { BasicForm, FormSchema, useForm @useComponentRegister } from '@@/components/Form/index';
-import { useLoading } from '@@/components/Loading';
 import { useDictStore } from '@@/store/modules/dict';
 import { useEnumStore } from '@@/store/modules/enum';
 @useTinymce
@@ -35,16 +34,8 @@ import { useEnumStore } from '@@/store/modules/enum';
 const dictStore = useDictStore();
 const enumStore = useEnumStore();
 
-const loadingRef = ref(null);
-
-const [openWrapLoading, closeWrapLoading] = useLoading({
-  target: loadingRef,
-  props: {
-    absolute: true,
-  },
-});
-
-const visible = ref<boolean>(false);
+const loading = ref<Boolean>(false);
+const visible = ref<Boolean>(false);
 const $emit = defineEmits(['success']);
 
 /**
@@ -78,7 +69,7 @@ async function handleSubmit() {
   //验证
   await validateFields();
   //加载中
-  openWrapLoading();
+  loading.value = true;
   //获取
   const data: any = getFieldsValue();
   //修改
@@ -86,24 +77,20 @@ async function handleSubmit() {
     .then(res => {
       $emit('success');
       visible.value = false;
-    }).finally(() => {
-      closeWrapLoading();
+    })
+    .finally(() => {
+      loading.value = false;
     });
 }
 
 /*
 * 获取详情
 /*/
- function getData(data) {
-  nextTick(() => {
-    openWrapLoading();
-  });
-  @{@Model.EntityInfo.Entity}Get(data.id).then((res) => {
-      setFieldsValue(res);
-  })
-  .finally(() => {
-      closeWrapLoading();
-    });
+ async function getData(data) {
+  loading.value = true;
+  const res = await @{@Model.EntityInfo.Entity}Get(data.id);
+  setFieldsValue(res);
+  loading.value = false;
 }
 
 /**

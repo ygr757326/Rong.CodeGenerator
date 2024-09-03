@@ -146,7 +146,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             foreach (var template in templates)
             {
                 //模板不存在
-                var temp = await TemplateDefinitionManager.GetAsync(template);
+                var temp =await TemplateDefinitionManager.GetAsync(template);
                 if (temp == null)
                 {
                     continue;

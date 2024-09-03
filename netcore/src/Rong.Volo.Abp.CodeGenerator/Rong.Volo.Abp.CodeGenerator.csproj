@@ -22,21 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Templates\DictionaryDataSeed\DictionaryDataSeedTemplateDefinitionProvider.cs" />
-    <Compile Remove="Templates\DictionaryDataSeed\DictionaryTemplateModel.cs" />
+    <None Remove="README.md" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Templates\Application.Contracts\Permissions\PermissionAttribute.cshtml" />
-    <None Remove="Templates\Application.Contracts\Permissions\PermissionConsts.cshtml" />
-    <None Remove="Templates\Application.Contracts\Permissions\PermissionExtensions.cshtml" />
-    <None Remove="Templates\Application.Contracts\Permissions\PermissionMultiTenancySideAttribute.cshtml" />
-    <None Remove="Templates\DictionaryDataSeed\DictionaryDataSeedBase.cshtml" />
-    <None Remove="Templates\DictionaryDataSeed\Dictionary_xxx_DataSeed.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Models\DictionaryTemplateModel.cs" />
-    <EmbeddedResource Include="TemplateDefinitionProviders\RongVoloAbpCodeGeneratorDictionaryDataSeedTemplateDefinitionProvider.cs" />
+    <EmbeddedResource Include="README.md" />
   </ItemGroup>
 </Project>
