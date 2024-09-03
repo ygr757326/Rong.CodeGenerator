@@ -15,7 +15,7 @@
     <a-button @@click="visible = false">取消</a-button>
     <a-button @@click="handleSubmit" type="primary" style="margin-left: 20px">提交</a-button>
   </template>
-  <div ref="modifyFormRef">
+  <div ref="loadingRef">
     <BasicForm @@register="Register" v-if="visible">
     </BasicForm>
   </div>
@@ -35,10 +35,10 @@ import { useEnumStore } from '@@/store/modules/enum';
 const dictStore = useDictStore();
 const enumStore = useEnumStore();
 
-const modifyFormRef = ref(null);
+const loadingRef = ref(null);
 
 const [openWrapLoading, closeWrapLoading] = useLoading({
-  target: modifyFormRef,
+  target: loadingRef,
   props: {
     absolute: true,
   },
@@ -77,14 +77,18 @@ const [Register, { validateFields, getFieldsValue, setFieldsValue, resetFields }
 async function handleSubmit() {
   //验证
   await validateFields();
+  //加载中
+  openWrapLoading();
   //获取
   const data: any = getFieldsValue();
   //修改
-  await @{@Model.EntityInfo.Entity}Update(data.id, data);
-  //关闭弹窗
-  visible.value = false;
-
-  $emit('success');
+  @{@Model.EntityInfo.Entity}Update(data.id, data)
+    .then(res => {
+      $emit('success');
+      visible.value = false;
+    }).finally(() => {
+      closeWrapLoading();
+    });
 }
 
 /*
