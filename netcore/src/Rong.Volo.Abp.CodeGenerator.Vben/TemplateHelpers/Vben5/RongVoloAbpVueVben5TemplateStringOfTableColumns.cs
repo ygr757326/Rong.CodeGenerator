@@ -118,18 +118,20 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         {
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
+
+            b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
 
             if (item.IsDictionaryMultiple)
             {
-                b.Space(space + 2).AppendLine($"<a-tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\"> v-for=\"(item, i) in row.{filed} || []\" :key=\"i\">");
                 b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', item) }}}}");
                 b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
                 b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
-                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', value) }}}}");
+                b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', row.{filed}) }}}}");
                 b.Space(space + 2).AppendLine($"</a-tag>");
             }
 
@@ -189,18 +191,19 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         {
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
+            b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");//value, record
 
             if (item.IsDictionaryMultiple)
             {
-                b.Space(space + 2).AppendLine($"<a-tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\"> v-for=\"(item, i) in row.{filed} || []\" :key=\"i\">");
                 b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', item) }}}}");
                 b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
                 b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
-                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', value) }}}}");
+                b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', row.{filed}) }}}}");
                 b.Space(space + 2).AppendLine($"</a-tag>");
             }
 
@@ -250,10 +253,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         public virtual string? BoolSlot(TemplateVueEntityPropertyData item, int space = 6)
         {
             StringBuilder b = new StringBuilder();
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
 
-            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
-            b.Space(space + 2).AppendLine($"<a-tag :color=\"value ? 'green' : 'red'\">");
-            b.Space(space + 2).AppendLine($" {{{{ value ? '是' : '否' }}}}");
+            b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
+            b.Space(space + 2).AppendLine($"<a-tag :color=\"row.{filed} ? 'green' : 'red'\">");
+            b.Space(space + 2).AppendLine($" {{{{ row.{filed} ? '是' : '否' }}}}");
             b.Space(space + 2).AppendLine($"</a-tag>");
             b.Space(space).AppendLine($"</template>");
 
@@ -291,19 +295,21 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         {
             var componentName = Options.ImagePreviewComponent ?? GetMapComponent("BaseUpload");
 
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
+
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
 
             b.Space(space + 2).Append($"<{componentName} :width=\"50\" :height=\"50\"");
 
             if (item.MultipleFile)
             {
-                b.Append($" v-for=\"(item, i) in value\" :{Options.ImagePreviewComponentProp ?? "src"}=\"item\" :key=\"i\" ");
+                b.Append($" v-for=\"(item, i) in row.{filed}\" :{Options.ImagePreviewComponentProp ?? "src"}=\"item\" :key=\"i\" ");
             }
             else
             {
-                b.Append($" :{Options.ImagePreviewComponentProp ?? "src"}=\"value\" ");
+                b.Append($" :{Options.ImagePreviewComponentProp ?? "src"}=\"row.{filed}\" ");
             }
 
             b.AppendLine($"></{componentName}>");
@@ -346,13 +352,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         {
             var componentName = Options.FilePreviewComponent ?? GetMapComponent("BaseUpload");
 
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
+
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
 
             b.Space(space + 2).Append($"<{componentName}");
 
-            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"value\"  listType=\"text\" :disabled=\"true\" ");
+            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"row.{filed}\"  listType=\"text\" :disabled=\"true\" ");
 
             b.AppendLine($"></{componentName}>");
 
@@ -368,11 +376,13 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         /// <returns></returns>
         public virtual string? EditorSlot(TemplateVueEntityPropertyData item, int space = 6)
         {
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
+
             StringBuilder b = new StringBuilder();
 
-            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ row }}\">");
 
-            b.Space(space + 2).Append($"<p v-html=\"value\" />");
+            b.Space(space + 2).Append($"<p v-html=\"row.{filed}\" />");
 
             b.Space(space).AppendLine($"</template>");
 

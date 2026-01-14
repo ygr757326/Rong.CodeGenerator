@@ -474,7 +474,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
-            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("InputTextArea")}',");
+            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Textarea")}',");
             //b.Space(space + 2).AppendLine($"componentProps: {{");
             //b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile.ToString().ToCamelCase()},");
             //b.Space(space + 4).AppendLine($"listType: 'picture-card',");

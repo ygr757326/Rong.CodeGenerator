@@ -70,7 +70,7 @@ function schema(): VbenFormSchema[] {
 /**
  * table 配置
  */
-const [Grid, gridApi] = useVbenVxeGrid({
+const [BasicTable, tableApi] = useVbenVxeGrid({
   // 表单配置
   formOptions: {
     // fieldMappingTime: [['queryTime', ['startTime', 'endTime']]],
@@ -156,20 +156,20 @@ const handleEdit = (record: any) => {
 async function handleDelete(record: any) {
   await @{@Model.EntityInfo.Entity}Delete(record.id);
   message.success('删除成功');
-  gridApi.reload();
+  tableApi.reload();
 }
 
 /**
  * 编辑/新增成功 - 刷新table
  */
 function handleSuccess() {
-  gridApi.reload();
+  tableApi.reload();
 }
 </script>
 
 <template>
   <Page auto-content-height>
-    <Grid :table-title="getTitle">
+    <BasicTable :table-title="getTitle">
       <template #toolbar-tools>
         <a-flex wrap="wrap" gap="small">
           <a-button :icon="h(Plus)" type="primary" v-access:code="['@Model.EntityInfo.Permission.Create']" @@click="handleCreate"> 新增 </a-button>
@@ -203,7 +203,7 @@ function handleSuccess() {
       </template>
 
       @Model.TableColumnsSlotsTemplate
-    </Grid>
+    </BasicTable>
     <!-- 新增 -->
     <AddDrawer @@success="handleSuccess" />
     <!-- 编辑 -->
