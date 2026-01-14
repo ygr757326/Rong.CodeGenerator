@@ -11,7 +11,8 @@ const routes: RouteRecordRaw[] = [
       keepAlive: true,
       hideInMenu: false,
       hideChildrenInMenu: false,
-      authority: ['@{@Model.EntityInfo.Permission.Index}'],
+      authority: [],
+      perms: ['@{@Model.EntityInfo.Permission.Index}'],
       order: 1000,
       title: '@{@Model.EntityInfo.EntityName}',
     },
@@ -20,7 +21,8 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         meta: {
-          authority: ['@{@Model.EntityInfo.Permission.Index}'],
+          authority: [],      
+          perms: ['@{@Model.EntityInfo.Permission.Index}'],
           hideInMenu: false,
           title: '@{@Model.EntityInfo.EntityName}',
         },
