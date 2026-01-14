@@ -36,6 +36,9 @@ VueComponentAttribute: 使用组件
         //vue代码生成器
         Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
         {
+            //指定版本
+            options.VbenVersion = VbenVersionEnum.Vben2;
+
             //Ant 的 Tabled 的 DataIndex 嵌套模式:。默认 Array
             //2.x 版本 为 a.b.c
             //3.x,4.x 版本 为 ['a','b','c']

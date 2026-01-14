@@ -47,7 +47,15 @@ const [DetailDrawer, detailRef] = useVbenDrawer({
  */
 const columns: VxeTableGridOptions['columns'] = [
   { type: 'seq', width: 50 },
-@Model.TableColumnsTemplate
+  @Model.TableColumnsTemplate
+  {
+    field: 'action',
+    title: '操作',
+    align: 'center',
+    fixed: 'right',
+    slots: { default: 'action' },
+    width: 180,
+  },
 ];
 
 /**

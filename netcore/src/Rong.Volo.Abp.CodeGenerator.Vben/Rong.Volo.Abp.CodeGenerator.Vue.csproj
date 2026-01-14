@@ -12,6 +12,7 @@
 		<Authors>ygr</Authors>
 		<PackageProjectUrl>https://github.com/ygr757326/Rong.CodeGenerator</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>License.txt</PackageLicenseFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,10 +24,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="License.txt" />
 	  <None Remove="README.md" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="License.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
