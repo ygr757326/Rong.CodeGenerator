@@ -3,14 +3,14 @@
 	<Import Project="..\..\common.props" />
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<RootNamespace>Rong.CodeGenerator</RootNamespace>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.1.4" />
+	  <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

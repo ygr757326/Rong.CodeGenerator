@@ -1,27 +1,31 @@
-﻿using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+﻿using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
+using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Volo.Abp.DependencyInjection;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
+namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 {
     /// <summary>
     /// vben代码生成器帮助器
     /// </summary>
-    public class RongVoloAbpVueVbenTemplate : ISingletonDependency
+    [ExposeServices(typeof(IRongVoloAbpVueVbenTemplate), typeof(RongVoloAbpVueVben5Template))]
+    public class RongVoloAbpVueVben5Template : IRongVoloAbpVueVbenTemplate
     {
-        protected RongVoloAbpVueVbenTemplateStringOfForm FormTemplate;
-        protected RongVoloAbpVueVbenTemplateStringOfTableColumns TableColumnsTemplate;
-        protected RongVoloAbpVueVbenTemplateStringOfTableSchemas TableSchemasTemplate;
-        protected RongVoloAbpVueVbenTemplateStringOfDetail DetailTemplate;
+        public VbenVersionEnum Version => VbenVersionEnum.Vben5;
 
-        public RongVoloAbpVueVbenTemplate(
-            RongVoloAbpVueVbenTemplateStringOfForm form,
-            RongVoloAbpVueVbenTemplateStringOfTableColumns tableColumnsTemplate,
-            RongVoloAbpVueVbenTemplateStringOfTableSchemas tableSchemasTemplate,
-            RongVoloAbpVueVbenTemplateStringOfDetail detailTemplate
+        protected RongVoloAbpVueVben5TemplateStringOfForm FormTemplate;
+        protected RongVoloAbpVueVben5TemplateStringOfTableColumns TableColumnsTemplate;
+        protected RongVoloAbpVueVben5TemplateStringOfTableSchemas TableSchemasTemplate;
+        protected RongVoloAbpVueVben5TemplateStringOfDetail DetailTemplate;
+
+        public RongVoloAbpVueVben5Template(
+            RongVoloAbpVueVben5TemplateStringOfForm form,
+            RongVoloAbpVueVben5TemplateStringOfTableColumns tableColumnsTemplate,
+            RongVoloAbpVueVben5TemplateStringOfTableSchemas tableSchemasTemplate,
+            RongVoloAbpVueVben5TemplateStringOfDetail detailTemplate
         )
         {
             FormTemplate = form;

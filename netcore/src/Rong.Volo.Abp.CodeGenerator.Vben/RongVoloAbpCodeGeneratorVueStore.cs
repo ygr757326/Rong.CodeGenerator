@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
-using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
+using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -145,8 +146,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             foreach (var template in templates)
             {
+                string templateName = string.Format(template, (int)Options.VbenVersion);
+
                 //模板不存在
-                var temp =await TemplateDefinitionManager.GetAsync(template);
+                var temp = await TemplateDefinitionManager.GetOrNullAsync(templateName);
                 if (temp == null)
                 {
                     continue;
@@ -160,7 +163,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 var model = CodeGeneratorModelStore.GetModel(entity, template);
 
                 //保存
-                await SaveAsync(model, template, name, path);
+                await SaveAsync(model, templateName, name, path);
             }
 
         }
@@ -172,7 +175,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         protected virtual async Task SaveAsync(object? model, string template, string name, string path)
         {
             //模板不存在
-            var temp = await TemplateDefinitionManager.GetAsync(template);
+            var temp = await TemplateDefinitionManager.GetOrNullAsync(template);
             if (temp == null)
             {
                 return;

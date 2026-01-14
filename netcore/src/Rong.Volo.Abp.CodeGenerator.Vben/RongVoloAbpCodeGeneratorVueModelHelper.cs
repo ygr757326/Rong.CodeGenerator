@@ -1,6 +1,5 @@
 ﻿using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
-using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +12,8 @@ using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages;
 using Volo.Abp.Reflection;
 using System.Collections.Concurrent;
+using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers;
+using Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
@@ -21,10 +22,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     /// </summary>
     public class RongVoloAbpCodeGeneratorVueModelHelper : ISingletonDependency
     {
-        private readonly RongVoloAbpVueVbenTemplate _vueTemplate;
-        public RongVoloAbpCodeGeneratorVueModelHelper(RongVoloAbpVueVbenTemplate vueTemplate)
+        private readonly RongVoloAbpVueVbenTemplatelResolver _resolver;
+        protected RongVoloAbpCodeGeneratorVueOptions Options;
+        public RongVoloAbpCodeGeneratorVueModelHelper(IOptions<RongVoloAbpCodeGeneratorVueOptions> options,RongVoloAbpVueVbenTemplatelResolver resolver)
         {
-            _vueTemplate = vueTemplate;
+            _resolver = resolver;
+            Options = options.Value;
         }
 
         /// <summary>
@@ -36,6 +39,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <exception cref="UserFriendlyException"></exception>
         public virtual object? GetModel(TemplateVueModel model, string template)
         {
+            var _vueTemplate = _resolver.Resolve(Options.VbenVersion);
+
             object data;
             switch (template)
             {
@@ -186,8 +191,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     PropertyCase = propertyInfo.Name.ToCamelCase(),
                     PropertyType = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable(),
                     DisplayName = propertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? propertyInfo.Name,
-                    IsRequired = propertyInfo.IsDefined(typeof(RequiredAttribute), true) ||
-                                 propertyInfo.PropertyType != typeof(string) && !TypeHelper.IsNullable(propertyInfo.PropertyType),
+                    IsRequired = propertyInfo.IsDefined(typeof(RequiredAttribute), true)
+                                 || propertyInfo.IsNonNullableReferenceType()
                 };
 
                 HandleEditorModel(info, propertyInfo);
@@ -249,7 +254,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Select;
             info.TableSorter = attr?.Sorter ?? true;
             info.IsSlot = attr?.Slot ?? true;
-            info.IsEnumMultiple = attr?.Multiple??false;
+            info.IsEnumMultiple = attr?.Multiple ?? false;
         }
         /// <summary>
         /// bool模型

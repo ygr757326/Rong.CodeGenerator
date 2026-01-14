@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rong.Volo.Abp.CodeGenerator.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -119,7 +120,7 @@ namespace Rong.Volo.Abp.CodeGenerator
             foreach (var template in templates)
             {
                 //模板不存在
-                var temp = await TemplateDefinitionManager.GetAsync(template);
+                var temp = await TemplateDefinitionManager.GetOrNullAsync(template);
                 if (temp == null)
                 {
                     continue;
@@ -172,7 +173,7 @@ namespace Rong.Volo.Abp.CodeGenerator
             foreach (var template in templates)
             {
                 //模板不存在
-                var temp = await TemplateDefinitionManager.GetAsync(template);
+                var temp = await TemplateDefinitionManager.GetOrNullAsync(template);
                 if (temp == null)
                 {
                     continue;

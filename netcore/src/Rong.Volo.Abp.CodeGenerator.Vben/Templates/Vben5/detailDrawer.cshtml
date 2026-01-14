@@ -1,0 +1,60 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageDetailDrawerModel>
+@{
+
+}
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useVbenDrawer } from '@@vben/common-ui';
+
+import Detail from './detail.vue';
+
+const visible = ref<boolean>(false);
+const id = ref<null | string>(null);
+
+/**
+ * 标题
+ */
+const getTitle = computed(() => {
+  return '详情 - @Model.EntityInfo.EntityName';
+});
+
+/**
+ * 抽屉
+ */
+const [Drawer, drawerApi] = useVbenDrawer({
+  showCancelButton: true,
+  showConfirmButton: false,
+  cancelText: '关闭',
+
+  /**
+   * 确定按钮的回调
+   */
+  async onConfirm() {
+    drawerApi.close();
+  },
+  /**
+   * 弹窗状态变化回调
+   * @@param isOpen 是否打开
+   */
+  async onOpenChange(isOpen) {
+    if (isOpen) {
+      // 获取传参
+      const payload = drawerApi.getData();
+      id.value = payload.id;
+    }
+
+    visible.value = isOpen;
+  },
+});
+defineExpose({ open });
+</script>
+
+<template>
+    <Drawer :title="getTitle" class="w-[40%]">
+        <!--  详情页面 -->
+        <Detail v-if="visible" :id="id" />
+    </Drawer>
+</template>
+
+<style lang="less" scoped></style>

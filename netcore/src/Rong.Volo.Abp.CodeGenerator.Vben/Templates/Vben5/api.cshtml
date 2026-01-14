@@ -1,0 +1,85 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageApiModel>
+@{
+
+}
+import { requestClient } from '#/api/request';
+
+/**
+ * @{@Model.EntityInfo.EntityName} api
+ */
+export enum @{@Model.EntityInfo.Entity}Api {
+  /**
+   * 创建 @{@Model.EntityInfo.EntityName} -
+   */
+  Create = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/create',
+
+  /**
+   * 删除 @{@Model.EntityInfo.EntityName} -
+   */
+  Delete = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/delete?id=',
+
+  /**
+   * 获取 @{@Model.EntityInfo.EntityName} 详情 - 通过id
+   */
+  Get = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/get?id=',
+
+  /**
+   * 获取 @{@Model.EntityInfo.EntityName} 列表 - 分页
+   */
+  GetList = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/getList',
+
+  /**
+   * 修改 @{@Model.EntityInfo.EntityName} -
+   */
+  Update = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/update?id=',
+}
+
+/**
+ * 获取 @{@Model.EntityInfo.EntityName} 列表 - 分页
+ * @@param params
+ * @@returns
+ */
+export const @{@Model.EntityInfo.Entity}GetList = (params: any) => {
+  return requestClient.get(@{@Model.EntityInfo.Entity}Api.GetList, {
+    params,
+  });
+};
+
+/**
+ * 获取 @{@Model.EntityInfo.EntityName} 详情 - 通过id
+ * @@param id
+ * @@returns
+ */
+export const @{@Model.EntityInfo.Entity}Get = (id: any) => {
+  return requestClient.get(@{@Model.EntityInfo.Entity}Api.Get + id);
+};
+
+/**
+ * 修改 @{@Model.EntityInfo.EntityName} -
+ * @@param id
+ * @@param data
+ * @@returns
+ */
+export const @{@Model.EntityInfo.Entity}Update = (id: any, data: any) => {
+  return requestClient.put(@{@Model.EntityInfo.Entity}Api.Update + id, data);
+};
+
+/**
+ * 删除 @{@Model.EntityInfo.EntityName} -
+ * @@param id
+ * @@returns
+ */
+export const @{@Model.EntityInfo.Entity}Delete = (id: any) => {
+  return requestClient.delete(@{@Model.EntityInfo.Entity}Api.Delete + id);
+};
+
+/**
+ * 创建 App -
+ * @@param data
+ * @@returns
+ */
+export const @{@Model.EntityInfo.Entity}Create = (data: any) => {
+  return requestClient.post(@{@Model.EntityInfo.Entity}Api.Create, data);
+};
+

@@ -1,0 +1,67 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageDetailModel>
+@{
+}
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useDictStore } from '#/store/dict';
+import { useEnumStore } from '#/store/enum';
+import { formatToDate } from '#/utils/dateUtil';
+
+import { @{@Model.EntityInfo.Entity}Get } from '../api';
+
+const props = defineProps({
+  id: { type: [String, null], default: null },
+  column: {
+    type: Object,
+    default: { xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 },
+  },
+});
+const dictStore = useDictStore();
+const enumStore = useEnumStore();
+const labelStyle = {
+  width: '120px',
+  'justify-content': 'flex-end',
+};
+const detailData: any = ref({});
+const loading = ref<Boolean>(false);
+/**
+ * 监听id
+ */
+watch(
+  () => props.id,
+  async (newValue) => {
+    await getData(newValue);
+  },
+  {
+    immediate: true,
+  }
+);
+
+/**
+ * 获取详情
+ */
+async function getData(id: any) {
+  detailData.value = {};
+  if (!id) {
+    return;
+  }
+  loading.value = true;
+  const res = await @{@Model.EntityInfo.Entity}Get(id);
+  detailData.value = res;
+  loading.value = false;
+}
+
+defineExpose({});
+</script>
+
+<template>
+  <!--  详情页面 -->
+  <a-spin :spinning="loading">
+    <a-descriptions bordered :column="props.column" size="small" :label-style="labelStyle">
+        @Model.DetailTemplate
+    </a-descriptions>
+  </a-spin>
+</template>
+
+<style lang="less" scoped></style>

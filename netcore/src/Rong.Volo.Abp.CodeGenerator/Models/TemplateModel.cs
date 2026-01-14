@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rong.Volo.Abp.CodeGenerator
+namespace Rong.Volo.Abp.CodeGenerator.Models
 {
     /// <summary>
     /// 模板模型

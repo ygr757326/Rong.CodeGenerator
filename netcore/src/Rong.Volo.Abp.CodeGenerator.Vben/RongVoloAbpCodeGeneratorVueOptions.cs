@@ -11,6 +11,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     public class RongVoloAbpCodeGeneratorVueOptions
     {
         /// <summary>
+        /// Vben 版本
+        /// </summary>
+        public VbenVersionEnum VbenVersion { get; set; } = VbenVersionEnum.Vben2;
+
+        /// <summary>
         /// Antdv 的 Tabled 的 DataIndex 嵌套模式。默认 Array
         /// <para>2.x 版本 为 a.b.c</para>
         /// <para>3.x,4.x 版本 为 ['a','b','c']</para>

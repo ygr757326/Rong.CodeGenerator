@@ -6,15 +6,15 @@ using System.Text;
 using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp.DependencyInjection;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
+namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 {
     /// <summary>
     /// vben模板 -  表头 columns
     /// </summary>
-    public class RongVoloAbpVueVbenTemplateStringOfTableColumns : RongVoloAbpVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVben5TemplateStringOfTableColumns : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public RongVoloAbpVueVbenTemplateStringOfTableColumns(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVben5TemplateStringOfTableColumns(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 
@@ -29,11 +29,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
 
             if (item.TableSorter)
             {
-                b.Space(space + 2).AppendLine($"sorter: true,");
+                b.Space(space + 2).AppendLine($"sortable: true,");
             }
 
             b.Space(space).AppendLine("},");
@@ -52,14 +52,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
-            b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-            b.Space(space + 4).AppendLine($"return formatToDate(value);");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
+            b.Space(space + 4).AppendLine($"return formatToDate(cellValue);");
             b.Space(space + 2).AppendLine($"}},");
 
             if (item.TableSorter)
             {
-                b.Space(space + 2).AppendLine($"sorter: true,");
+                b.Space(space + 2).AppendLine($"sortable: true,");
             }
 
             b.Space(space).AppendLine("},");
@@ -79,30 +79,30 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ default: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
             else
             {
-                b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
+                b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
 
                 if (item.IsEnumMultiple)
                 {
-                    b.Space(space + 4).AppendLine($"return (value || []).map((a) => enumStore?.findName('{item.PropertyType.Name}', a)).join(',');");
+                    b.Space(space + 4).AppendLine($"return (cellValue || []).map((a) => enumStore?.findName('{item.PropertyType.Name}', a)).join(',');");
                 }
                 else
                 {
-                    b.Space(space + 4).AppendLine($"return enumStore?.findName('{item.PropertyType.Name}', value);");
+                    b.Space(space + 4).AppendLine($"return enumStore?.findName('{item.PropertyType.Name}', cellValue);");
                 }
 
                 b.Space(space + 2).AppendLine($"}},");
             }
             if (item.TableSorter)
             {
-                b.Space(space + 2).AppendLine($"sorter: true,");
+                b.Space(space + 2).AppendLine($"sortable: true,");
             }
 
             b.Space(space).AppendLine("},");
@@ -122,15 +122,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsDictionaryMultiple)
             {
-                b.Space(space + 2).AppendLine($"<Tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
                 b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', item) }}}}");
-                b.Space(space + 2).AppendLine($"</Tag>");
+                b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
-                b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
                 b.Space(space + 2).AppendLine($" {{{{ enumStore?.findName('{item.PropertyType.Name}', value) }}}}");
-                b.Space(space + 2).AppendLine($"</Tag>");
+                b.Space(space + 2).AppendLine($"</a-tag>");
             }
 
             b.Space(space).AppendLine($"</template>");
@@ -149,23 +149,23 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ default: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
             else
             {
-                b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
+                b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
 
                 if (item.IsDictionaryMultiple)
                 {
-                    b.Space(space + 4).AppendLine($"return (value || []).map((a) => dictStore?.findName('{item.DictionaryCode}', a)).join(',');");
+                    b.Space(space + 4).AppendLine($"return (cellValue || []).map((a) => dictStore?.findName('{item.DictionaryCode}', a)).join(',');");
                 }
                 else
                 {
-                    b.Space(space + 4).AppendLine($"return dictStore?.findName('{item.DictionaryCode}', value);");
+                    b.Space(space + 4).AppendLine($"return dictStore?.findName('{item.DictionaryCode}', cellValue);");
                 }
 
                 b.Space(space + 2).AppendLine($"}},");
@@ -173,7 +173,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.TableSorter)
             {
-                b.Space(space + 2).AppendLine($"sorter: true,");
+                b.Space(space + 2).AppendLine($"sortable: true,");
             }
 
             b.Space(space).AppendLine("},");
@@ -193,15 +193,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsDictionaryMultiple)
             {
-                b.Space(space + 2).AppendLine($"<Tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\"> v-for=\"(item, i) in value || []\" :key=\"i\">");
                 b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', item) }}}}");
-                b.Space(space + 2).AppendLine($"</Tag>");
+                b.Space(space + 2).AppendLine($"</a-tag>");
             }
             else
             {
-                b.Space(space + 2).AppendLine($"<Tag color=\"\">");
+                b.Space(space + 2).AppendLine($"<a-tag color=\"\">");
                 b.Space(space + 2).AppendLine($" {{{{ dictStore?.findName('{item.DictionaryCode}', value) }}}}");
-                b.Space(space + 2).AppendLine($"</Tag>");
+                b.Space(space + 2).AppendLine($"</a-tag>");
             }
 
             b.Space(space).AppendLine($"</template>");
@@ -220,22 +220,22 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ default: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
             else
             {
-                b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return value ? '是' : '否';");
+                b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
+                b.Space(space + 4).AppendLine($"return cellValue ? '是' : '否';");
                 b.Space(space + 2).AppendLine($"}},");
             }
 
             if (item.TableSorter)
             {
-                b.Space(space + 2).AppendLine($"sorter: true,");
+                b.Space(space + 2).AppendLine($"sortable: true,");
             }
 
             b.Space(space).AppendLine("},");
@@ -252,9 +252,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             StringBuilder b = new StringBuilder();
 
             b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
-            b.Space(space + 2).AppendLine($"<Tag :color=\"value ? 'green' : 'red'\">");
+            b.Space(space + 2).AppendLine($"<a-tag :color=\"value ? 'green' : 'red'\">");
             b.Space(space + 2).AppendLine($" {{{{ value ? '是' : '否' }}}}");
-            b.Space(space + 2).AppendLine($"</Tag>");
+            b.Space(space + 2).AppendLine($"</a-tag>");
             b.Space(space).AppendLine($"</template>");
 
             return b.ToString();
@@ -271,11 +271,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ default: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
 
             b.Space(space).AppendLine("},");
@@ -326,11 +326,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
-                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+                b.Space(space + 2).AppendLine($"slots: {{ default: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
             }
 
             b.Space(space).AppendLine("},");
@@ -398,11 +398,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
         }
 
         /// <summary>
-        /// 格式化属性名称 - dataIndex
+        /// 格式化属性名称 - field
         /// </summary>
         /// <param name="propertyCase"></param>
         /// <returns></returns>
-        protected virtual string FormatPropertyCaseForDataIndex(string propertyCase)
+        protected virtual string FormatPropertyCaseForfield(string propertyCase)
         {
             if (Options.AntTabledDataIndexMode.Equals(AntTabledDataIndexModeEnum.Dotted))
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rong.Volo.Abp.CodeGenerator;
+using Rong.Volo.Abp.CodeGenerator.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.Mvc;

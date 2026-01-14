@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using Volo.Abp.DependencyInjection;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
+namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 {
     /// <summary>
     /// vben模板 - 详情页
     /// </summary>
-    public class RongVoloAbpVueVbenTemplateStringOfDetail : RongVoloAbpVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVben2TemplateStringOfDetail : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public RongVoloAbpVueVbenTemplateStringOfDetail(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVben2TemplateStringOfDetail(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 

@@ -29,7 +29,7 @@ namespace Rong.Volo.Abp.CodeGenerator
         protected virtual async Task SaveAsync(object model, string template, string name, string path)
         {
             //模板不存在
-            var temp = await TemplateDefinitionManager.GetAsync(template);
+            var temp = await TemplateDefinitionManager.GetOrNullAsync(template);
             if (temp == null)
             {
                 return;

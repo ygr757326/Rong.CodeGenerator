@@ -1,0 +1,98 @@
+@using System.Linq
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageAddModel>
+
+@{
+    var hasEditor = Model.Form.Any(a => a.IsEditor);
+    // var hasTinymceEditor = hasEditor && (Model.EntityInfo.Options.EditorComponent == null || Model.EntityInfo.Options.EditorComponent == "Tinymce");
+    // string? useComponentRegister = hasTinymceEditor ? ", useComponentRegister" : null;
+    // string? useTinymce = hasTinymceEditor ? "import { Tinymce } from '@/components/Tinymce/index';" : null;
+    // string? registerTinymce = hasTinymceEditor ? "useComponentRegister('Tinymce', Tinymce);" : null;
+    string? width = hasEditor ? "85%" : "40%";
+   
+}
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { useVbenForm } from '#/adapter/form';
+import type { VbenFormSchema } from '#/adapter/form';
+import { useVbenDrawer } from '@@vben/common-ui';
+import { message } from 'ant-design-vue';
+
+import { @{@Model.EntityInfo.Entity}Create } from '../api';
+
+const emits = defineEmits(['success']);
+
+/**
+ * 标题
+ */
+const getTitle = computed(() => {
+  return '新增 - @Model.EntityInfo.EntityName';
+});
+
+/**
+ * 表单
+ */
+function useFormSchema(): VbenFormSchema[] {
+  return [
+@Model.FormTemplate
+  ];
+}
+
+/**
+ * 表单配置
+ */
+const [Form, formApi] = useVbenForm({
+  schema: useFormSchema(),
+  showDefaultActions: false,
+  scrollToFirstError: true,
+  // wrapperClass
+});
+
+/**
+ * 抽屉
+ */
+const [Drawer, drawerApi] = useVbenDrawer({
+  /**
+   * 确定按钮的回调
+   */
+  async onConfirm() {
+    // 验证
+    const { valid } = await formApi.validate();
+    if (!valid) return;
+    // 加载中
+    drawerApi.lock();
+    // 获取
+    const values = await formApi.getValues();
+    console.log(111, values);
+
+    // 保存
+        @{@Model.EntityInfo.Entity}Create(values)
+      .then(() => {
+        message.success('新增成功');
+        emits('success');
+        drawerApi.close();
+      })
+      .catch(() => {
+        drawerApi.unlock();
+      });
+  },
+  /**
+   * 弹窗状态变化回调
+   * @@param isOpen 是否打开
+   */
+  async onOpenChange(isOpen) {
+    if (isOpen) {
+      // 重置表单
+      await formApi.resetForm();
+    }
+  },
+});
+</script>
+
+<template>
+  <Drawer :title="getTitle" class="w-[@width]">
+    <Form />
+  </Drawer>
+</template>
+
+<style lang="css" scoped></style>

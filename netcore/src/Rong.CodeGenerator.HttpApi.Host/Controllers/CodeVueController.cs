@@ -40,9 +40,10 @@ public class CodeVueController : AbpController
         await _codeGeneratorStore.StartAsync(typeof(IEntity), 
             typeof(CodeGeneratorDomainModule), 
             typeof(CodeGeneratorApplicationContractsModule), 
-            CodeGeneratorRemoteServiceConsts.RootPath, 
-            "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo"
-            ,new []{typeof(Dictionary)}
+            CodeGeneratorRemoteServiceConsts.RootPath,
+                        // "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo"
+            "E:\\PKSK\\ZhenFuTongAdminFront1"
+            , new []{typeof(Dictionary)}
             );
 
         

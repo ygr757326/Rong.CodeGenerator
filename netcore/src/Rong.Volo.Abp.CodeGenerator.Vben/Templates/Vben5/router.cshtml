@@ -1,0 +1,35 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageRouterModel>
+@{
+}
+import type { RouteRecordRaw } from 'vue-router';
+
+const routes: RouteRecordRaw[] = [
+  {
+    meta: {
+      icon: '',
+      keepAlive: true,
+      hideInMenu: false,
+      hideChildrenInMenu: false,
+      authority: ['@{@Model.EntityInfo.Permission.Index}'],
+      order: 1000,
+      title: '@{@Model.EntityInfo.EntityName}',
+    },
+    name: '@{@Model.EntityInfo.Entity}',
+    path: '/@{@Model.EntityInfo.EntityCase}',
+    children: [
+      {
+        meta: {
+          authority: ['@{@Model.EntityInfo.Permission.Index}'],
+          hideInMenu: false,
+          title: '@{@Model.EntityInfo.EntityName}',
+        },
+        name: '@{@Model.EntityInfo.Entity}Index',
+        path: '/@{@Model.EntityInfo.EntityCase}/index',
+        component: () => import('#/views/@{@Model.EntityInfo.EntityCase}/index.vue'),
+      },
+    ],
+  },
+];
+
+export default routes;

@@ -1,4 +1,5 @@
-﻿using Rong.Volo.Abp.CodeGenerator.TemplateDefinitionProviders;
+﻿using Rong.Volo.Abp.CodeGenerator.Models;
+using Rong.Volo.Abp.CodeGenerator.TemplateDefinitionProviders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -80,7 +81,7 @@ namespace Rong.Volo.Abp.CodeGenerator
             string template = RongVoloAbpCodeGeneratorDictionaryDataSeedTemplateDefinitionProvider.TemplateName;
 
             //模板不存在
-            var temp = await TemplateDefinitionManager.GetAsync(template);
+            var temp = await TemplateDefinitionManager.GetOrNullAsync(template);
             if (temp == null)
             {
                 return;
@@ -105,7 +106,7 @@ namespace Rong.Volo.Abp.CodeGenerator
             string template = RongVoloAbpCodeGeneratorDictionaryDataSeedTemplateDefinitionProvider.DictionaryDataSeedBase;
 
             //模板不存在
-            var temp = await TemplateDefinitionManager.GetAsync(template);
+            var temp = await TemplateDefinitionManager.GetOrNullAsync(template);
             if (temp == null)
             {
                 return;

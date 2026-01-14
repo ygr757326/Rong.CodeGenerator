@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -6,7 +7,8 @@ namespace Rong.CodeGenerator.App.Apps
     /// <summary>
     /// App应用
     /// </summary>
-    [Table("App应用")]
+    [Table("App")]
+    [Display(Name = "App应用")]
     public class App : FullAuditedAggregateRoot<int>
     {
         /// <summary>

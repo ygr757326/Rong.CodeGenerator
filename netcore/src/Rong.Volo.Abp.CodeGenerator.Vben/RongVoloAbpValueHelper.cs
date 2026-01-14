@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -50,6 +52,93 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
 
             return length;
+        }
+
+
+        /// <summary>
+        /// 是否是不可为null的引用类型
+        /// </summary>
+        /// <param name="memberInfo"></param>
+        /// <returns></returns>
+        public static bool IsNonNullableReferenceType(this MemberInfo memberInfo)
+        {
+            var memberType = memberInfo.MemberType == MemberTypes.Field
+                ? ((FieldInfo)memberInfo).FieldType
+                : ((PropertyInfo)memberInfo).PropertyType;
+
+            if (memberType.IsValueType) return false;
+
+            var nullableAttribute = GetNullableAttribute(memberInfo);
+
+            if (nullableAttribute == null)
+            {
+                return GetNullableFallbackValue(memberInfo);
+            }
+
+            if (nullableAttribute.GetType().GetField(NullableFlagsFieldName) is FieldInfo field &&
+                field.GetValue(nullableAttribute) is byte[] flags &&
+                flags.Length >= 1 && flags[0] == NotAnnotated)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        private const string NullableAttributeFullTypeName = "System.Runtime.CompilerServices.NullableAttribute";
+        private const string NullableFlagsFieldName = "NullableFlags";
+        private const string NullableContextAttributeFullTypeName = "System.Runtime.CompilerServices.NullableContextAttribute";
+        private const string FlagFieldName = "Flag";
+        private const int NotAnnotated = 1; // See https://github.com/dotnet/roslyn/blob/af7b0ebe2b0ed5c335a928626c25620566372dd1/docs/features/nullable-metadata.md?plain=1#L40
+        private static object GetNullableAttribute(MemberInfo memberInfo)
+        {
+            var nullableAttribute = memberInfo
+                .GetCustomAttributes()
+                .FirstOrDefault(attr => string.Equals(attr.GetType().FullName, NullableAttributeFullTypeName));
+
+            return nullableAttribute;
+        }
+
+        private static bool GetNullableFallbackValue(MemberInfo memberInfo)
+        {
+            var declaringTypes = memberInfo.DeclaringType.IsNested
+                ? GetDeclaringTypeChain(memberInfo)
+                : new List<Type>(1) { memberInfo.DeclaringType };
+
+            foreach (var declaringType in declaringTypes)
+            {
+                var attributes = (IEnumerable<object>)declaringType.GetCustomAttributes(false);
+
+                var nullableContext = attributes
+                    .FirstOrDefault(attr => string.Equals(attr.GetType().FullName, NullableContextAttributeFullTypeName));
+
+                if (nullableContext != null)
+                {
+                    if (nullableContext.GetType().GetField(FlagFieldName) is FieldInfo field &&
+                        field.GetValue(nullableContext) is byte flag && flag == NotAnnotated)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return false;
+        }
+        private static List<Type> GetDeclaringTypeChain(MemberInfo memberInfo)
+        {
+            var chain = new List<Type>();
+            var currentType = memberInfo.DeclaringType;
+
+            while (currentType != null)
+            {
+                chain.Add(currentType);
+                currentType = currentType.DeclaringType;
+            }
+
+            return chain;
         }
     }
 }

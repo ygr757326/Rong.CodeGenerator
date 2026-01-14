@@ -11,15 +11,15 @@ using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using Volo.Abp.DependencyInjection;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
+namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 {
     /// <summary>
     /// vben模板 -  新增编辑表单
     /// </summary>
-    public class RongVoloAbpVueVbenTemplateStringOfForm : RongVoloAbpVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVben2TemplateStringOfForm : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public RongVoloAbpVueVbenTemplateStringOfForm(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVben2TemplateStringOfForm(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 
@@ -50,7 +50,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
             if (defaultValueAttr != null)
             {
-                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+                b.Space(space + 2).AppendLine($"defaultValue: '{defaultValueAttr.Value}',");
             }
 
             b.Space(space).AppendLine("},");
@@ -84,7 +84,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
             if (defaultValueAttr != null)
             {
-                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+                b.Space(space + 2).AppendLine($"defaultValue: '{defaultValueAttr.Value}',");
             }
 
             b.Space(space).AppendLine("},");
@@ -292,7 +292,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
             if (defaultValueAttr != null)
             {
-                b.Space(space + 2).AppendLine($"defaultValue: '{(defaultValueAttr.Value)}',");
+                b.Space(space + 2).AppendLine($"defaultValue: '{defaultValueAttr.Value}',");
             }
 
             b.Space(space).AppendLine("},");

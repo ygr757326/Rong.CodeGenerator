@@ -7,15 +7,15 @@ using System.Reflection;
 using System.Text;
 using Volo.Abp.DependencyInjection;
 
-namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
+namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 {
     /// <summary>
     /// vben模板 -  table查询表单
     /// </summary>
-    public class RongVoloAbpVueVbenTemplateStringOfTableSchemas : RongVoloAbpVueTemplateBase, ISingletonDependency
+    public class RongVoloAbpVueVben5TemplateStringOfTableSchemas : RongVoloAbpVueTemplateBase, ISingletonDependency
     {
 
-        public RongVoloAbpVueVbenTemplateStringOfTableSchemas(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
+        public RongVoloAbpVueVben5TemplateStringOfTableSchemas(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
 
@@ -30,12 +30,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Input")}',");
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");
@@ -54,7 +54,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("DatePicker")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
             b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD',");//YYYY-MM-DD HH:mm:ss
@@ -63,7 +63,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");
@@ -82,7 +82,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
 
             b.Space(space + 2).AppendLine($"component: '{Options.EnumSelectComponent ?? GetMapComponent("Select")}',");
 
@@ -107,7 +107,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");
@@ -126,7 +126,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{Options.DictionarySelectComponent ?? GetMapComponent("Select")}',");
 
             if (Options.DictionarySelectComponentProp != null)
@@ -149,7 +149,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");
@@ -168,7 +168,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Select")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
             b.Space(space + 4).AppendLine($"options: [");
@@ -180,7 +180,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");
@@ -201,7 +201,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
 
             if (new[] { TypeCode.Double }.Contains(typeCode))
             {
@@ -227,7 +227,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");
@@ -246,12 +246,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vbens
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent(item.Component)}',");
 
             if (item.IsRequired)
             {
-                b.Space(space + 2).AppendLine($"required: true,");
+                b.Space(space + 2).AppendLine($"rules: 'required',");
             }
 
             b.Space(space).AppendLine("},");

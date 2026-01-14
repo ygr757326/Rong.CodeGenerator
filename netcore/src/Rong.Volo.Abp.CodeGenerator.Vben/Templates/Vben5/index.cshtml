@@ -1,0 +1,208 @@
+@using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
+@inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageIndexModel>
+@{
+
+}<script lang="ts" setup>
+import { computed, h } from 'vue';
+import type { VbenFormSchema } from '#/adapter/form';
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import { Page, useVbenDrawer } from '@@vben/common-ui';
+import { Plus } from '@@vben/icons';
+import { message } from 'ant-design-vue';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { TableAction } from '#/components/table-action';
+import { formatToDate } from '#/utils/dateUtil';
+import { useDictStore } from '#/store/dict';
+import { useEnumStore } from '#/store/enum';
+import { @{@Model.EntityInfo.Entity}Delete, @{@Model.EntityInfo.Entity}GetList } from './api';
+import Add from './components/add.vue';
+import Detail from './components/detailDrawer.vue';
+import Modify from './components/modify.vue';
+
+const dictStore = useDictStore();
+const enumStore = useEnumStore();
+
+/**
+ * 标题
+ */
+const getTitle = computed(() => {
+  return '@Model.EntityInfo.EntityName';
+});
+
+const [AddDrawer, addRef] = useVbenDrawer({
+  connectedComponent: Add,
+  destroyOnClose: true,
+});
+const [ModifyDrawer, modifyRef] = useVbenDrawer({
+  connectedComponent: Modify,
+  destroyOnClose: true,
+});
+const [DetailDrawer, detailRef] = useVbenDrawer({
+  connectedComponent: Detail,
+  destroyOnClose: true,
+});
+
+/**
+ * 表头
+ */
+const columns: VxeTableGridOptions['columns'] = [
+  { type: 'seq', width: 50 },
+@Model.TableColumnsTemplate
+];
+
+/**
+ * 查询
+ */
+function schema(): VbenFormSchema[] {
+  return [
+@Model.TableSchemasTemplate
+  ];
+}
+
+/**
+ * table 配置
+ */
+const [Grid, gridApi] = useVbenVxeGrid({
+  // 表单配置
+  formOptions: {
+    // fieldMappingTime: [['queryTime', ['startTime', 'endTime']]],
+    schema: schema(),
+    submitOnChange: false,
+  },
+  // table配置
+  gridOptions: {
+    // checkboxConfig: {
+    //   highlight: true,
+    //   labelField: 'name',
+    // },
+    columns,
+    height: 'auto',
+    keepSource: true,
+    proxyConfig: {
+      ajax: {
+        query: async ({ page, sorts }: any, formValues: any) => {
+          return await @{@Model.EntityInfo.Entity}GetList({
+            SkipCount: (page.currentPage - 1) * page.pageSize,
+            MaxResultCount: page.pageSize,
+            sorting: sorts.map((a: any) => `${a.field} ${a.order}`).join(','),
+            ...formValues,
+          });
+        },
+      },
+      sort: true,
+    },
+    rowConfig: {
+      isHover: true,
+      keyField: 'id',
+      isCurrent: true,
+    },
+    sortConfig: {
+      multiple: true,
+      chronological: true,
+      defaultSort: [{ field: 'id', order: 'desc' }],
+      remote: true,
+    },
+    exportConfig: {},
+    toolbarConfig: {
+      custom: true,
+      export: false,
+      refresh: true,
+      search: true,
+      zoom: true,
+    },
+    resizableConfig: {
+      isDblclickAutoWidth: true,
+      showDragTip: false,
+    },
+    columnConfig: {
+      minWidth: 150,
+      maxWidth: 300,
+    },
+  },
+});
+
+/**
+ * 点击详情
+ */
+function handleDetail(record: any) {
+  detailRef.setData({ id: record.id }).open();
+}
+
+/**
+ * 点击添加
+ */
+function handleCreate() {
+  addRef.setData({}).open();
+}
+
+/**
+ * 点击编辑
+ */
+const handleEdit = (record: any) => {
+  modifyRef.setData({ id: record.id }).open();
+};
+
+/**
+ * 点击删除
+ */
+async function handleDelete(record: any) {
+  await @{@Model.EntityInfo.Entity}Delete(record.id);
+  message.success('删除成功');
+  gridApi.reload();
+}
+
+/**
+ * 编辑/新增成功 - 刷新table
+ */
+function handleSuccess() {
+  gridApi.reload();
+}
+</script>
+
+<template>
+  <Page auto-content-height>
+    <Grid :table-title="getTitle">
+      <template #toolbar-tools>
+        <a-flex wrap="wrap" gap="small">
+          <a-button :icon="h(Plus)" type="primary" v-access:code="['@Model.EntityInfo.Permission.Create']" @@click="handleCreate"> 新增 </a-button>
+        </a-flex>
+      </template>
+      <template #action="{ row }">
+        <TableAction
+          :actions="[
+            {
+              auth: ['@Model.EntityInfo.Permission.Index'],
+              label: '查看',
+              onClick: handleDetail.bind(null, row),
+            },
+            {
+              auth: ['@Model.EntityInfo.Permission.Update'],
+              label: '编辑',
+              onClick: handleEdit.bind(null, row),
+            },
+          ]"
+          :drop-down-actions="[
+            {
+              auth: ['@Model.EntityInfo.Permission.Delete'],
+              label: '删除',
+              popConfirm: {
+                title: '是否删除？',
+                confirm: handleDelete.bind(null, row),
+              },
+            },
+          ]"
+        />
+      </template>
+
+      @Model.TableColumnsSlotsTemplate
+    </Grid>
+    <!-- 新增 -->
+    <AddDrawer @@success="handleSuccess" />
+    <!-- 编辑 -->
+    <ModifyDrawer @@success="handleSuccess" />
+    <!-- 查看 -->
+    <DetailDrawer @@success="handleSuccess" />
+  </Page>
+</template>
+
+<style lang="css" scoped></style>

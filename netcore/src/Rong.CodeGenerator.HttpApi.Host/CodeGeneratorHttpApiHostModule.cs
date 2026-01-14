@@ -60,6 +60,8 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
         //vue代码生成器
         Configure<RongVoloAbpCodeGeneratorVueOptions>(options =>
         {
+            options.VbenVersion = VbenVersionEnum.Vben5;
+
             //Ant 的 Tabled 的 DataIndex 嵌套模式:。
             //2.x 版本 为 a.b.c
             //3.x,4.x 版本 为 ['a','b','c']
@@ -111,7 +113,7 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
             options.ImagePreviewComponentProp = "fileId";
 
             ////编辑器
-            //options.EditorComponent = "MyEditor";
+            options.EditorComponent = "MyEditor";
         });
 
     }
