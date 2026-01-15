@@ -54,7 +54,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
             b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
-            b.Space(space + 4).AppendLine($"return formatToDate(cellValue);");
+            b.Space(space + 4).AppendLine($"return formatToDate(cellValue, '{item.DateFormat}');");
             b.Space(space + 2).AppendLine($"}},");
 
             if (item.TableSorter)
@@ -359,8 +359,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
 
             b.Space(space + 2).Append($"<{componentName}");
-
-            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"row.{filed}\"  listType=\"text\" :disabled=\"true\" ");
+            if (item.MultipleFile)
+            {
+                b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"row.{filed}\"  listType=\"text\" :disabled=\"true\" ");
+            }
+            else
+            {
+                b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"[ row.{filed} ]\"  listType=\"text\" :disabled=\"true\" ");
+            }
 
             b.AppendLine($"></{componentName}>");
 

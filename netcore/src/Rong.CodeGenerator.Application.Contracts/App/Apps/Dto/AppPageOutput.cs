@@ -55,13 +55,28 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         /// 开始日期
         /// </summary>
         [Display(Name = "开始日期")]
+        [VueDate(VueDateTypeEnum.DateTime)]
         public DateTime StartDate { get; set; }
 
         /// <summary>
         /// 结束日期
         /// </summary>
         [Display(Name = "结束日期")]
+        [VueDate(VueDateTypeEnum.Date)]
         public DateTime? EffectTime { get; set; }
+
+        /// <summary>
+        /// 结束日期1
+        /// </summary>
+        [Display(Name = "结束日期1")]
+        [VueDate(VueDateTypeEnum.TimeSpan)]
+        public TimeSpan? EffectTime1 { get; set; }
+
+        /// <summary>
+        /// 结束日期11
+        /// </summary>
+        [Display(Name = "结束日期11")]
+        public TimeSpan? EffectTime11 { get; set; }
 
         /// <summary>
         /// 是否强制性更新

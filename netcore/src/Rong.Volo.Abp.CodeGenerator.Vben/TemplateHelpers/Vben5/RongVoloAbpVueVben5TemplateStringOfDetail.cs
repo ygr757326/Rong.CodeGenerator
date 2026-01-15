@@ -40,7 +40,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
-            b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)})  }}}} ");
+            b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat}')  }}}} ");
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
             return b.ToString();
@@ -183,8 +183,17 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
             b.Space(space + 2).Append($"<{componentName} ");
+            if (item.MultipleFile)
+            {
+                b.Append(
+                    $" :{Options.FilePreviewComponentProp ?? "v-model"}=\"detailData?.{FormatPropertyCase(item.PropertyCase)}\" listType=\"text\" :disabled=\"true\" ");
+            }
+            else
+            {
+                b.Append(
+                    $" :{Options.FilePreviewComponentProp ?? "v-model"}=\"[ detailData?.{FormatPropertyCase(item.PropertyCase)} ]\" listType=\"text\" :disabled=\"true\" ");
 
-            b.Append($" :{Options.FilePreviewComponentProp ?? "v-model"}=\"detailData?.{FormatPropertyCase(item.PropertyCase)}\" listType=\"text\" :disabled=\"true\" ");
+            }
 
             b.AppendLine($"></{componentName}>");
 

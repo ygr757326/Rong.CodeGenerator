@@ -24,7 +24,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
     {
         private readonly RongVoloAbpVueVbenTemplatelResolver _resolver;
         protected RongVoloAbpCodeGeneratorVueOptions Options;
-        public RongVoloAbpCodeGeneratorVueModelHelper(IOptions<RongVoloAbpCodeGeneratorVueOptions> options,RongVoloAbpVueVbenTemplatelResolver resolver)
+        public RongVoloAbpCodeGeneratorVueModelHelper(IOptions<RongVoloAbpCodeGeneratorVueOptions> options, RongVoloAbpVueVbenTemplatelResolver resolver)
         {
             _resolver = resolver;
             Options = options.Value;
@@ -195,6 +195,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                                  || propertyInfo.IsNonNullableReferenceType()
                 };
 
+                HandleDateModel(info, propertyInfo);
                 HandleEditorModel(info, propertyInfo);
                 HandleTextareaModel(info, propertyInfo);
                 HandleDictionaryModel(info, propertyInfo);
@@ -270,6 +271,49 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Switch;
             info.TableSorter = attr?.Sorter ?? true;
             info.IsSlot = attr?.Slot ?? true;
+        }
+
+        /// <summary>
+        /// 日期模型
+        /// </summary>
+        protected virtual void HandleDateModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
+        {
+            var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
+
+            var timeSpan = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable().Name == nameof(TimeSpan);
+
+            var attr = propertyInfo.GetCustomAttribute<VueDateAttribute>();
+
+            info.IsDate = attr != null || typeCode == TypeCode.DateTime || timeSpan;
+
+            if (!info.IsDate)
+            {
+                return;
+            }
+
+            info.DateType = attr != null ? attr.DateType : (timeSpan ? VueDateTypeEnum.TimeSpan : VueDateTypeEnum.Date);
+
+            switch (info.DateType)
+            {
+                case VueDateTypeEnum.Year:
+                    info.DateFormat = "YYYY";
+                    break;
+                case VueDateTypeEnum.Month:
+                    info.DateFormat = "YYYY-MM";
+                    break;
+                case VueDateTypeEnum.Date:
+                    info.DateFormat = "YYYY-MM-DD";
+                    break;
+                case VueDateTypeEnum.DateTime:
+                    info.DateFormat = "YYYY-MM-DD HH:mm:ss";
+                    break;
+                case VueDateTypeEnum.TimeSpan:
+                    info.DateFormat = "HH:mm:ss";
+                    break;
+                default:
+                    info.DateFormat = "YYYY-MM-DD";
+                    break;
+            }
         }
 
         /// <summary>

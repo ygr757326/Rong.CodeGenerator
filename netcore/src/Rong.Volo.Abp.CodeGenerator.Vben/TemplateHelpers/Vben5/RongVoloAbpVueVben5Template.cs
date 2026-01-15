@@ -100,7 +100,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             {
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
-                if (typeCode == TypeCode.DateTime)
+                if (item.IsDate)
                 {
                     b.Append(DetailTemplate.DateTimeTemplate(item, space));
                 }
@@ -152,7 +152,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             {
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
-                if (typeCode == TypeCode.DateTime)
+                if (item.IsDate)
                 {
                     b.Append(TableColumnsTemplate.DateTimeTemplate(item, space));
                 }
@@ -201,7 +201,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             {
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
-                if (typeCode == TypeCode.DateTime)
+                if (item.IsDate)
                 {
                     b.Append(TableSchemasTemplate.DateTimeTemplate(item, space));
                 }
@@ -255,7 +255,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             {
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
-                if (typeCode == TypeCode.DateTime)
+                if (item.IsDate)
                 {
                     b.Append(FormTemplate.DateTimeTemplate(item, space));
                 }

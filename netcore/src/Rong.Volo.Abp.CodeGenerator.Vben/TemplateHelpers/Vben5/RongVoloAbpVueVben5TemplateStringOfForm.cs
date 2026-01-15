@@ -81,9 +81,22 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
-            b.Space(space + 2).AppendLine($"component: '{GetMapComponent("DatePicker")}',");
+
+            if (item.DateType.Equals(VueDateTypeEnum.TimeSpan))
+            {
+                b.Space(space + 2).AppendLine($"component: '{GetMapComponent("TimePicker")}',");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($"component: '{GetMapComponent("DatePicker")}',");
+            }
+
             b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"valueFormat: 'YYYY-MM-DD',");//YYYY-MM-DD HH:mm:ss
+            b.Space(space + 4).AppendLine($"valueFormat: '{item.DateFormat}',");//YYYY-MM-DD HH:mm:ss
+            if (!item.DateType.Equals(VueDateTypeEnum.TimeSpan))
+            {
+                b.Space(space + 4).AppendLine($"showTime: {(item.DateType.Equals(VueDateTypeEnum.DateTime) ? "true" : "false")},");
+            }
             b.Space(space + 4).AppendLine($"allowClear: true,");
             b.Space(space + 2).AppendLine($"}},");
 
@@ -269,7 +282,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
                     b.Space(space + 2).AppendLine($"}},");
                 }
             }
-            else 
+            else
             {
                 b.Space(space + 2).AppendLine($"component: '{Options.DictionarySelectComponent ?? GetMapComponent("Select")}',");
 
@@ -338,10 +351,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             }
 
             var defaultValueAttr = item.PropertyInfo.GetCustomAttribute<DefaultValueAttribute>();
-            if (defaultValueAttr != null)
-            {
-                b.Space(space + 2).AppendLine($"defaultValue: {(defaultValueAttr.Value ?? false).ToString()?.ToCamelCase()},");
-            }
+            b.Space(space + 2).AppendLine($"defaultValue: {(defaultValueAttr?.Value ?? false).ToString()?.ToCamelCase()},");
 
             if (item.IsRequired)
             {

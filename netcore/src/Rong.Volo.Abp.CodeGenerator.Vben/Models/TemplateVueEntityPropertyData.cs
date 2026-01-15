@@ -114,5 +114,21 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// <see cref="IsComponent"/> 对应的 组件名称
         /// </summary>
         public string? Component { get; set; }
+
+        /// <summary>
+        /// 是否是时间
+        /// </summary>
+        public bool IsDate { get; set; }
+
+        /// <summary>
+        /// 时间类型
+        /// </summary>
+        public VueDateTypeEnum? DateType { get; set; }
+
+        /// <summary>
+        /// 时间格式化
+        /// </summary>
+        public string? DateFormat { get; set; }
+
     }
 }
