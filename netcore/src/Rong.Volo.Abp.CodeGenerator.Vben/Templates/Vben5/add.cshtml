@@ -1,4 +1,7 @@
+@using System
+@using System.Collections.Generic
 @using System.Linq
+@using System.Text
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageAddModel>
 
@@ -9,7 +12,24 @@
     // string? useTinymce = hasTinymceEditor ? "import { Tinymce } from '@/components/Tinymce/index';" : null;
     // string? registerTinymce = hasTinymceEditor ? "useComponentRegister('Tinymce', Tinymce);" : null;
     string? width = hasEditor ? "85%" : "40%";
-   
+
+
+    List<string> distinct = new List<string>();
+    StringBuilder builder = new StringBuilder();
+    if (Model.Form != null)
+    {
+        foreach (var item in Model.Form.Where(a => a.IsApiSelect).Distinct())
+        {
+            string d = $"import {{ {item.ApiSelectEntity}{item.ApiSelectApiName} }} from '#/views/{item.ApiSelectEntityCase}/api';";
+            if (distinct.All(a => a != d))
+            {
+                builder.AppendLine(d);
+            }
+            distinct.Add(d);
+        }
+    }
+
+    string apis = builder.ToString();
 }
 <script lang="ts" setup>
 import { computed } from 'vue';
@@ -19,6 +39,7 @@ import { useVbenDrawer } from '@@vben/common-ui';
 import { message } from 'ant-design-vue';
 
 import { @{@Model.EntityInfo.Entity}Create } from '../api';
+@apis
 
 const emits = defineEmits(['success']);
 

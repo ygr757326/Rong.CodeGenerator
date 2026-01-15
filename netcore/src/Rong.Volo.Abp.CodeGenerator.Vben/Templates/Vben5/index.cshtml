@@ -1,8 +1,29 @@
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Text
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageIndexModel>
 @{
+    List<string> distinct = new List<string>();
+    StringBuilder builder = new StringBuilder();
+    if (Model.TableSchemas != null)
+    {
+        foreach (var item in Model.TableSchemas.Where(a => a.IsApiSelect).Distinct())
+        {
+            string d = $"import {{ {item.ApiSelectEntity}{item.ApiSelectApiName} }} from '#/views/{item.ApiSelectEntityCase}/api';";
+            if (distinct.All(a => a != d))
+            {
+                builder.AppendLine(d);
+            }
+           distinct.Add(d);
+        }
+    }
 
-}<script lang="ts" setup>
+    string apis = builder.ToString();
+
+}
+<script lang="ts" setup>
 import { computed, h } from 'vue';
 import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
@@ -18,6 +39,7 @@ import { @{@Model.EntityInfo.Entity}Delete, @{@Model.EntityInfo.Entity}GetList }
 import Add from './components/add.vue';
 import Detail from './components/detailDrawer.vue';
 import Modify from './components/modify.vue';
+@apis
 
 const dictStore = useDictStore();
 const enumStore = useEnumStore();

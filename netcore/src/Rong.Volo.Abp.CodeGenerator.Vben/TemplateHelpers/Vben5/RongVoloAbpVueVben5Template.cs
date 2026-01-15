@@ -230,6 +230,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
                 {
                     b.Append(TableSchemasTemplate.ComponentTemplate(item, space));
                 }
+                else if (item.IsApiSelect)
+                {
+                    b.Append(TableSchemasTemplate.ApiSelectTemplate(item, space));
+                }
                 else
                 {
                     b.Append(TableSchemasTemplate.DefaultTemplate(item, space));
@@ -299,6 +303,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
                 else if (item.IsComponent)
                 {
                     b.Append(FormTemplate.ComponentTemplate(item, space));
+                }
+                else if (item.IsApiSelect)
+                {
+                    b.Append(FormTemplate.ApiSelectTemplate(item, space));
                 }
                 else
                 {

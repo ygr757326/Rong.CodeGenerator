@@ -42,7 +42,7 @@ public class CodeVueController : AbpController
             typeof(CodeGeneratorApplicationContractsModule), 
             CodeGeneratorRemoteServiceConsts.RootPath,
                         // "E:\\MY\\Rong.CodeGenerator\\vue\\vben_demo"
-            "E:\\PKSK\\ZhenFuTongAdminFront1"
+            "E:\\PKSK\\mldong-vben5"
             , new []{typeof(Dictionary)}
             );
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Options;
+using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
 using Volo.Abp.DependencyInjection;
@@ -486,10 +487,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Textarea")}',");
-            //b.Space(space + 2).AppendLine($"componentProps: {{");
-            //b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile.ToString().ToCamelCase()},");
-            //b.Space(space + 4).AppendLine($"listType: 'picture-card',");
-            //b.Space(space + 2).AppendLine($"}},");
             if (item.IsRequired)
             {
                 b.Space(space + 2).AppendLine($"rules: 'required',");
@@ -537,6 +534,58 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent(item.Component)}',");
+
+            if (item.IsRequired)
+            {
+                b.Space(space + 2).AppendLine($"rules: 'required',");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 使用ApiSelect组件模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ApiSelectTemplate(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
+            b.Space(space + 2).AppendLine($"component: '{GetMapComponent(item.Component)}',");
+            b.Space(space + 2).AppendLine($"componentProps: (formValues) => {{");
+            b.Space(space + 3).AppendLine($"return {{");
+
+            b.Space(space + 4).AppendLine($"placeholder: '请选择',");
+            b.Space(space + 4).AppendLine($"showSearch: true,");
+            b.Space(space + 4).AppendLine($"allowClear: true,");
+
+            if (!string.IsNullOrWhiteSpace(item.ApiSelectLabelField))
+            {
+                b.Space(space + 4).AppendLine($"labelField: '{item.ApiSelectLabelField}',");
+            }
+
+            if (item.IsApiSelectMultiple)
+            {
+                b.Space(space + 4).AppendLine($"mode: 'multiple',");
+            }
+            else
+            {
+                b.Space(space + 4).AppendLine($"//mode: 'multiple',");
+            }
+            b.Space(space + 4).AppendLine($"api: {item.ApiSelectEntity}{item.ApiSelectApiName},");
+            b.Space(space + 4).AppendLine($"params: {{");
+            b.Space(space + 6).AppendLine($"//a: formValues.xxx,//使用 formValues.xxx可进行ApiSelect组件关联查询");
+            b.Space(space + 4).AppendLine($"}},");
+            b.Space(space + 4).AppendLine($"onChange: (value: any) => {{ }}");
+
+            b.Space(space + 3).AppendLine($"}};");
+            b.Space(space + 2).AppendLine($"}},");
 
             if (item.IsRequired)
             {

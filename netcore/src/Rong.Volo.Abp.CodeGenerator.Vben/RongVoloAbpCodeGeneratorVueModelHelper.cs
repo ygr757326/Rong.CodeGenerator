@@ -204,6 +204,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 HandleFileModel(info, propertyInfo);
                 HandleValueNameModel(info, propertyInfo);
                 HandleComponentModel(info, propertyInfo);
+                HandleApiSelectModel(info, propertyInfo);
 
                 var sorterAttr = propertyInfo.GetCustomAttribute<VueTableSorterAttribute>();
                 if (sorterAttr != null)
@@ -314,6 +315,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     info.DateFormat = "YYYY-MM-DD";
                     break;
             }
+            info.IsSlot = false;
         }
 
         /// <summary>
@@ -388,6 +390,27 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             info.IsComponent = true;
             info.Component = string.IsNullOrWhiteSpace(attr.Component) ? "Input" : attr.Component;
+            info.IsSlot = false;
+        }
+
+        /// <summary>
+        /// ApiSelect组件模型
+        /// </summary>
+        protected virtual void HandleApiSelectModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
+        {
+            var attr = propertyInfo.GetCustomAttribute<VueApiSelectAttribute>();
+            if (attr == null)
+            {
+                return;
+            }
+
+            info.IsApiSelect = true;
+            info.ApiSelectApiName = attr.ApiName;
+            info.ApiSelectEntity = attr.Entity;
+            info.ApiSelectEntityCase = attr.Entity.ToCamelCase();
+            info.ApiSelectLabelField = attr.LabelField;
+            info.IsApiSelectMultiple = attr.Multiple;
+            info.Component = string.IsNullOrWhiteSpace(attr.Component) ? VueApiSelectAttribute._component : attr.Component;
             info.IsSlot = false;
         }
     }

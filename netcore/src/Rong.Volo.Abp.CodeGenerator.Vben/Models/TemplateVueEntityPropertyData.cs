@@ -130,5 +130,34 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// </summary>
         public string? DateFormat { get; set; }
 
+        /// <summary>
+        /// 是否是ApiSelect组件
+        /// </summary>
+        public bool IsApiSelect { get; set; }
+
+        /// <summary>
+        /// ApiSelect组件 实体名称
+        /// </summary>
+        public string ApiSelectEntity { get; set; }
+
+        /// <summary>
+        /// ApiSelect组件 实体名称小写
+        /// </summary>
+        public string ApiSelectEntityCase { get; set; }
+
+        /// <summary>
+        /// ApiSelect组件 api名称
+        /// </summary>
+        public string ApiSelectApiName { get; set; }
+
+        /// <summary>
+        /// ApiSelect组件 展示字段
+        /// </summary>
+        public string ApiSelectLabelField { get; set; }
+
+        /// <summary>
+        /// 是否是ApiSelect组件多选
+        /// </summary>
+        public bool IsApiSelectMultiple { get; set; }
     }
 }

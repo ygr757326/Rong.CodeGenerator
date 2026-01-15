@@ -73,6 +73,20 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         public DateTime? EffectTimeStart { get; set; }
 
         /// <summary>
+        /// ApiSelect
+        /// </summary>
+        [Display(Name = "ApiSelect")]
+        [VueApiSelect("App")]
+        public string? ApiSelect { get; set; }
+
+        /// <summary>
+        /// ApiSelect2
+        /// </summary>
+        [Display(Name = "ApiSelect2")]
+        [VueApiSelect("App1", true, "aaa", "GetDpD", "MyApiSelect")]
+        public string ApiSelect2 { get; set; }
+
+        /// <summary>
         /// 验证、归一化输入值
         /// </summary>
         /// <returns></returns>

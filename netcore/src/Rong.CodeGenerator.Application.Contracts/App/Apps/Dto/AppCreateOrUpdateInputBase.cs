@@ -130,6 +130,19 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         [VueEnum(typeof(TestEnum), VueSelectModeEnum.Radio, slot: true)]
         public TestEnum MyEnum2 { get; set; }
 
+        /// <summary>
+        /// ApiSelect
+        /// </summary>
+        [Display(Name = "ApiSelect")]
+        [VueApiSelect("App")]
+        public string ApiSelect { get; set; }
+
+        /// <summary>
+        /// ApiSelect2
+        /// </summary>
+        [Display(Name = "ApiSelect2")]
+        [VueApiSelect("App")]
+        public string ApiSelect2 { get; set; }
 
         /// <summary>
         /// 验证、归一化输入值
