@@ -32,5 +32,13 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         [Required(ErrorMessage = "{0}不能为空")]
         [VueEditor()]
         public string Edit { get; set; }
+
+        /// <summary>
+        /// 文章 1
+        /// </summary>
+        [Display(Name = "文章1")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueEditor()]
+        public string Edit1 { get; set; }
     }
 }

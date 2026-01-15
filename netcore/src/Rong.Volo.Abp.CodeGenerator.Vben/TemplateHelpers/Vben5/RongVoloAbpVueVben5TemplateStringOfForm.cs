@@ -459,6 +459,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space + 2).AppendLine($"component: '{Options.ImageUploadComponent ?? GetMapComponent("ImageUpload")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
             b.Space(space + 4).AppendLine($"multiple: {item.MultipleFile.ToString().ToCamelCase()},");
+            b.Space(space + 4).AppendLine($"accept: 'image/*',");
             b.Space(space + 4).AppendLine($"listType: 'picture-card',");
             b.Space(space + 2).AppendLine($"}},");
 

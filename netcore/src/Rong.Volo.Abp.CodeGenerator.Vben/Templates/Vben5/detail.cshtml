@@ -1,12 +1,27 @@
+@using System.Linq
+@using System.Text
 @using Rong.Volo.Abp.CodeGenerator.Vue.Models.Pages
 @inherits Volo.Abp.TextTemplating.Razor.RazorTemplatePageBase<TemplateVuePageDetailModel>
 @{
+    var hasEditor = Model.Detail.Any(a => a.IsEditor);
+    string? dompurify = hasEditor ? "import DOMPurify from 'dompurify';" : null;
+    StringBuilder builder = new StringBuilder();
+    if (Model.Detail != null)
+    {
+        foreach (var item in Model.Detail.Where(a=>a.IsEditor))
+        {
+            builder.AppendLine($"const {item.PropertyCase}SafeHtml = computed(() => DOMPurify.sanitize(detailData.value?.{item.PropertyCase}));");
+        }
+    }
+
+    string safeHtml = builder.ToString();
 }
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useDictStore } from '#/store/dict';
 import { useEnumStore } from '#/store/enum';
 import { formatToDate } from '#/utils/dateUtil';
+@dompurify
 
 import { @{@Model.EntityInfo.Entity}Get } from '../api';
 
@@ -25,6 +40,8 @@ const labelStyle = {
 };
 const detailData: any = ref({});
 const loading = ref<Boolean>(false);
+@safeHtml
+
 /**
  * 监听id
  */

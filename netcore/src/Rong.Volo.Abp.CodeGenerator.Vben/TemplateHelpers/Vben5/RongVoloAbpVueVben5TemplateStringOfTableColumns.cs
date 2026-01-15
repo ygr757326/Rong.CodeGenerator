@@ -301,7 +301,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 
             b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
 
-            b.Space(space + 2).Append($"<{componentName} :width=\"50\" :height=\"50\"");
+            b.Space(space + 2).Append($"<{componentName} :width=\"36\" :height=\"36\"");
 
             if (item.MultipleFile)
             {

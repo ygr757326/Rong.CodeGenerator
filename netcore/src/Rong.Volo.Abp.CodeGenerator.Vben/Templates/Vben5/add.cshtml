@@ -63,8 +63,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
     drawerApi.lock();
     // 获取
     const values = await formApi.getValues();
-    console.log(111, values);
-
     // 保存
         @{@Model.EntityInfo.Entity}Create(values)
       .then(() => {
