@@ -32,7 +32,12 @@ export enum @{@Model.EntityInfo.Entity}Api {
   /**
    * 修改 @{@Model.EntityInfo.EntityName} -
    */
-  Update = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/update?id=',
+   Update = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/update?id=',
+
+   /**
+   * 获取 @{@Model.EntityInfo.EntityName} 下拉列表
+   */
+   GetDropDownList = '/api/@{@Model.EntityInfo.ApiRootPath}/@{@Model.EntityInfo.EntityCase}/getDropDownList',
 }
 
 /**
@@ -75,11 +80,22 @@ export const @{@Model.EntityInfo.Entity}Delete = (id: any) => {
 };
 
 /**
- * 创建 App -
+ * 创建 @{@Model.EntityInfo.EntityName} -
  * @@param data
  * @@returns
  */
 export const @{@Model.EntityInfo.Entity}Create = (data: any) => {
   return requestClient.post(@{@Model.EntityInfo.Entity}Api.Create, data);
+};
+  
+/**
+ * 获取 @{@Model.EntityInfo.EntityName} 下拉列表
+ * @@param params
+ * @@returns
+ */
+export const @{@Model.EntityInfo.Entity}GetDropDownList = (params: any) => {
+  return requestClient.get(@{@Model.EntityInfo.Entity}Api.GetDropDownList, {
+    params,
+  });
 };
 
