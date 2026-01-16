@@ -241,8 +241,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         protected virtual void HandleEnumModel(TemplateVueEntityPropertyData info, PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetCustomAttribute<VueEnumAttribute>();
+            var enumDataType = propertyInfo.GetCustomAttribute<EnumDataTypeAttribute>();
 
-            info.IsEnum = attr != null || propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable().IsEnum;
+            info.IsEnum = attr != null || propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable().IsEnum || enumDataType != null;
             if (!info.IsEnum)
             {
                 return;
@@ -251,6 +252,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             if (attr != null)
             {
                 info.PropertyType = attr.EnumType;
+            }
+            else if (enumDataType != null)
+            {
+                info.PropertyType = enumDataType.EnumType;
             }
 
             info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Select;
