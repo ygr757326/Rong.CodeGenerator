@@ -297,7 +297,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             {
                 b.Space(space + 4).AppendLine($"labelField: '{item.ApiSelectLabelField}',");
             }
-
+            if (!string.IsNullOrWhiteSpace(item.ApiSelectValueField))
+            {
+                b.Space(space + 4).AppendLine($"valueField: '{item.ApiSelectValueField}',");
+            }
             if (item.IsApiSelectMultiple)
             {
                 b.Space(space + 4).AppendLine($"mode: 'multiple',");

@@ -151,10 +151,15 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         public string ApiSelectApiName { get; set; }
 
         /// <summary>
-        /// ApiSelect组件 展示字段
+        /// ApiSelect组件 文本字段
         /// </summary>
         public string ApiSelectLabelField { get; set; }
 
+        /// <summary>
+        /// ApiSelect组件 值字段
+        /// </summary>
+        public string ApiSelectValueField { get; set; }
+        
         /// <summary>
         /// 是否是ApiSelect组件多选
         /// </summary>

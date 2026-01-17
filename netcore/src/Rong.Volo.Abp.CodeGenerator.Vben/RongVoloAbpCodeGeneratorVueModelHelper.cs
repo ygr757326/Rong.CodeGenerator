@@ -414,6 +414,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.ApiSelectEntity = attr.Entity;
             info.ApiSelectEntityCase = attr.Entity.ToCamelCase();
             info.ApiSelectLabelField = attr.LabelField;
+            info.ApiSelectValueField = attr.ValueField;
             info.IsApiSelectMultiple = attr.Multiple;
             info.Component = string.IsNullOrWhiteSpace(attr.Component) ? VueApiSelectAttribute._component : attr.Component;
             info.IsSlot = false;
