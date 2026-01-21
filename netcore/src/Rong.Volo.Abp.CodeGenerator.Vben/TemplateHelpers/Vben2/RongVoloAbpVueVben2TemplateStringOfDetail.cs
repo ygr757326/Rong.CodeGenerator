@@ -19,11 +19,30 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
         }
 
         /// <summary>
+        /// 忽略默认模板属性
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool IsIgnoreDefaultTemplateProperty(TemplateVueEntityPropertyData item)
+        {
+            //忽略其他id
+            if (!item.PropertyCase.Equals("fileId", StringComparison.OrdinalIgnoreCase) && item.PropertyCase.EndsWith("id", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        /// <summary>
         /// 默认模板
         /// </summary>
         /// <returns></returns>
         public virtual string? DefaultTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
+            if (IsIgnoreDefaultTemplateProperty(item))
+            {
+                return null;
+            }
+
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
             b.Space(space + 2).AppendLine($" {{{{ detailData?.{FormatPropertyCase(item.PropertyCase)}  }}}} ");

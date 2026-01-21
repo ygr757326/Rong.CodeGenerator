@@ -11,6 +11,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
     public class TemplateVueEntityPropertyData
     {
         /// <summary>
+        /// 是否忽略，不生成
+        /// </summary>
+        public bool IsIgnore { get; set; }
+
+        /// <summary>
         /// 显示名称
         /// </summary>
         public string DisplayName { get; set; }
@@ -164,5 +169,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// 是否是ApiSelect组件多选
         /// </summary>
         public bool IsApiSelectMultiple { get; set; }
+
     }
 }

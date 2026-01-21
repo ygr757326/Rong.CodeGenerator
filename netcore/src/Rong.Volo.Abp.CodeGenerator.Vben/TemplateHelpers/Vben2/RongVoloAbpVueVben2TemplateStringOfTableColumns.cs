@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
-using Rong.Volo.Abp.CodeGenerator.Vue.Models;
-using System.Text;
+﻿using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
+using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Volo.Abp.DependencyInjection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
@@ -17,6 +18,21 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
         public RongVoloAbpVueVben2TemplateStringOfTableColumns(IOptions<RongVoloAbpCodeGeneratorVueOptions> options) : base(options)
         {
         }
+        /// <summary>
+        /// 忽略默认模板属性
+        /// <para>若逻辑不符，请重写该方法</para>
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool IsIgnoreDefaultTemplateProperty(TemplateVueEntityPropertyData item)
+        {
+            //忽略其他id
+            if (!item.PropertyCase.Equals("id", StringComparison.OrdinalIgnoreCase) && !item.PropertyCase.Equals("fileId", StringComparison.OrdinalIgnoreCase) && item.PropertyCase.EndsWith("id", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// 默认模板
@@ -24,6 +40,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
         /// <returns></returns>
         public virtual string? DefaultTemplate(TemplateVueEntityPropertyData item, int space = 6)
         {
+            if (IsIgnoreDefaultTemplateProperty(item))
+            {
+                return null;
+            }
+
             StringBuilder b = new StringBuilder();
 
             b.Space(space).AppendLine("{");

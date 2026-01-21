@@ -7,19 +7,19 @@ using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
 {
     /// <summary>
-    /// vue table 排序特性
+    /// vue 忽略特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueTableSorterAttribute : Attribute
+    public class VueIgnoreAttribute : Attribute
     {
         /// <summary>
-        /// 是否排序
+        /// 是否忽略,true 则不生成
         /// </summary>
-        public bool Sorter { get; set; }
+        public bool IsIgnore { get; set; }
 
-        public VueTableSorterAttribute(bool sorter = false)
+        public VueIgnoreAttribute(bool isIgnore = true)
         {
-            Sorter = sorter;
+            IsIgnore = isIgnore;
         }
     }
 }

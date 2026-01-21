@@ -47,7 +47,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     visible.value = isOpen;
   },
 });
-defineExpose({ open });
+defineExpose(drawerApi);
 </script>
 
 <template>
