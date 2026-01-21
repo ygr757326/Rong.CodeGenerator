@@ -29,7 +29,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
 
             if (item.TableSorter)
             {
@@ -52,7 +52,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
             b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
             b.Space(space + 4).AppendLine($"return formatToDate(cellValue, '{item.DateFormat}');");
             b.Space(space + 2).AppendLine($"}},");
@@ -79,7 +79,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
@@ -151,7 +151,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
@@ -223,7 +223,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
@@ -275,7 +275,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
@@ -332,7 +332,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space).AppendLine("{");
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
-            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForfield(item.PropertyCase)},");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
 
             if (item.IsSlot)
             {
@@ -398,6 +398,49 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 
 
         /// <summary>
+        /// 组件预览模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ComponentTemplate(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"field: {FormatPropertyCaseForField(item.PropertyCase)},");
+
+            if (item.IsSlot)
+            {
+                b.Space(space + 2).AppendLine($"slots: {{ default: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 组件预览插槽
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ComponentSlot(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+            string filed = FormatPropertyCaseForSlot(item.PropertyCase);
+
+            b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
+
+            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"row.{item.PropertyCase}\">");
+            b.Append($"</{GetMapComponent(item.Component)}>");
+
+            b.Space(space).AppendLine($"</template>");
+
+            return b.ToString();
+        }
+
+
+        /// <summary>
         /// 格式化属性名称 - 插槽
         /// </summary>
         /// <param name="propertyCase"></param>
@@ -418,7 +461,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         /// </summary>
         /// <param name="propertyCase"></param>
         /// <returns></returns>
-        protected virtual string FormatPropertyCaseForfield(string propertyCase)
+        protected virtual string FormatPropertyCaseForField(string propertyCase)
         {
             if (Options.AntTabledDataIndexMode.Equals(AntTabledDataIndexModeEnum.Dotted))
             {

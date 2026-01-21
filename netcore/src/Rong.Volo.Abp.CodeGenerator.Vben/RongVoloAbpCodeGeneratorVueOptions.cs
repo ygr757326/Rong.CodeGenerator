@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Rong.Volo.Abp.CodeGenerator.Vue.Attributes;
 using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
@@ -116,6 +117,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// 编辑器组件
         /// </summary>
         public string? EditorComponent { get; set; }
+
+        /// <summary>
+        /// <see cref="VueComponentAttribute"/>组件展示时的 prop，默认统一 value
+        /// </summary>
+        public string? VueComponentViewProp { get; set; }
 
         public RongVoloAbpCodeGeneratorVueOptions()
         {

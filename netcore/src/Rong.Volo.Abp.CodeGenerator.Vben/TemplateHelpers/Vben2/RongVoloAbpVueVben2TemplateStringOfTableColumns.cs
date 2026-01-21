@@ -387,6 +387,47 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             return b.ToString();
         }
 
+        /// <summary>
+        /// 组件预览模板
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ComponentTemplate(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine("{");
+
+            b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
+            b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
+
+            if (item.IsSlot)
+            {
+                b.Space(space + 2).AppendLine($"slots: {{ customRender: '{FormatPropertyCaseForSlot(item.PropertyCase)}' }},");
+            }
+
+            b.Space(space).AppendLine("},");
+
+            return b.ToString();
+        }
+
+        /// <summary>
+        /// 组件预览插槽
+        /// </summary>
+        /// <returns></returns>
+        public virtual string? ComponentSlot(TemplateVueEntityPropertyData item, int space = 6)
+        {
+            StringBuilder b = new StringBuilder();
+
+            b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");
+
+            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"value\">");
+            b.Append($"</{GetMapComponent(item.Component)}>");
+
+            b.Space(space).AppendLine($"</template>");
+
+            return b.ToString();
+        }
+
 
 
         /// <summary>

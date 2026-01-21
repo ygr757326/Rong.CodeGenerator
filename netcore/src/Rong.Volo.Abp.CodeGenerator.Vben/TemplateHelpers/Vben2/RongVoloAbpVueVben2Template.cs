@@ -77,6 +77,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
                 {
                     b.Append(TableColumnsTemplate.EditorSlot(item, space));
                 }
+                else if (item.IsComponent)
+                {
+                    b.Append(TableColumnsTemplate.ComponentSlot(item, space));
+                }
             }
 
             return b.ToString();
@@ -128,6 +132,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
                 {
                     b.Append(DetailTemplate.EditorTemplate(item, space));
                 }
+                else if (item.IsComponent)
+                {
+                    b.Append(DetailTemplate.ComponentTemplate(item, space));
+                }
                 else
                 {
                     b.Append(DetailTemplate.DefaultTemplate(item, space));
@@ -175,6 +183,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
                 else if (item.IsImage)
                 {
                     b.Append(TableColumnsTemplate.ImagePreviewTemplate(item, space));
+                }
+                else if (item.IsComponent)
+                {
+                    b.Append(TableColumnsTemplate.ComponentTemplate(item, space));
                 }
                 else
                 {
