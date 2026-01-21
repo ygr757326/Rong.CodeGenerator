@@ -98,14 +98,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             switch (item.DateType)
             {
                 case VueDateTypeEnum.Year:
-                    b.Space(space + 4).AppendLine($"picker: \"year\",");
+                    b.Space(space + 4).AppendLine($"picker: 'year',");
                     break;
                 case VueDateTypeEnum.Month:
-                    b.Space(space + 4).AppendLine($"picker: \"month\",");
+                    b.Space(space + 4).AppendLine($"picker: 'month',");
                     break;
                 case VueDateTypeEnum.Date:
                 case VueDateTypeEnum.DateTime:
-                    b.Space(space + 4).AppendLine($"picker: \"date\",");
+                    b.Space(space + 4).AppendLine($"picker: 'date',");
                     break;
             }
             if (!item.DateType.Equals(VueDateTypeEnum.TimeSpan))

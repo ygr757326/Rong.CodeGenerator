@@ -212,6 +212,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     info.TableSorter = sorterAttr.Sorter;
                 }
 
+                var ignoreAttr = propertyInfo.GetCustomAttribute<VueIgnoreAttribute>();
+                if (ignoreAttr != null)
+                {
+                    info.IsIgnore = ignoreAttr.IsIgnore;
+                }
+
                 yield return info;
             }
         }
