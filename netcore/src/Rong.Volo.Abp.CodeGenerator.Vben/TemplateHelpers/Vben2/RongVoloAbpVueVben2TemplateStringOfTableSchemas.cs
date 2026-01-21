@@ -66,10 +66,26 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             }
             b.Space(space + 2).AppendLine($"componentProps: {{");
             b.Space(space + 4).AppendLine($"valueFormat: '{item.DateFormat}',");
+
+            switch (item.DateType)
+            {
+                case VueDateTypeEnum.Year:
+                    b.Space(space + 4).AppendLine($"picker: \"year\",");
+                    break;
+                case VueDateTypeEnum.Month:
+                    b.Space(space + 4).AppendLine($"picker: \"month\",");
+                    break;
+                case VueDateTypeEnum.Date:
+                case VueDateTypeEnum.DateTime:
+                    b.Space(space + 4).AppendLine($"picker: \"date\",");
+                    break;
+            }
+
             if (!item.DateType.Equals(VueDateTypeEnum.TimeSpan))
             {
                 b.Space(space + 4).AppendLine($"showTime: {(item.DateType.Equals(VueDateTypeEnum.DateTime) ? "true" : "false")},");
             }
+
             b.Space(space + 4).AppendLine($"allowClear: true,");
             b.Space(space + 2).AppendLine($"}},");
 
