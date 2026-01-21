@@ -229,8 +229,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"detailData?.{item.PropertyCase}\">");
-            b.Append($"</{GetMapComponent(item.Component)}>");
+            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"detailData?.{item.PropertyCase}\"></{GetMapComponent(item.Component)}>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 

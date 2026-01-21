@@ -395,7 +395,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             info.IsComponent = true;
             info.Component = string.IsNullOrWhiteSpace(attr.Component) ? "Input" : attr.Component;
-            info.IsSlot = false;
+            info.IsSlot = true;
         }
 
         /// <summary>

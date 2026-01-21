@@ -112,8 +112,11 @@ public class CodeGeneratorHttpApiHostModule : AbpModule
             options.ImagePreviewComponent = "MyImagePreview";
             options.ImagePreviewComponentProp = "fileId";
 
-            ////编辑器
+            //编辑器
             options.EditorComponent = "MyEditor";
+
+            //使用组件进行展示 prop
+            options.VueComponentViewProp = "value";
         });
 
     }

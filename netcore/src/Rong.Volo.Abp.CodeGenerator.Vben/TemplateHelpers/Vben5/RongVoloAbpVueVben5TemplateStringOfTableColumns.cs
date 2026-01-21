@@ -431,8 +431,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
 
             b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
 
-            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"row.{item.PropertyCase}\">");
-            b.Append($"</{GetMapComponent(item.Component)}>");
+            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"row.{item.PropertyCase}\"></{GetMapComponent(item.Component)}>");
 
             b.Space(space).AppendLine($"</template>");
 

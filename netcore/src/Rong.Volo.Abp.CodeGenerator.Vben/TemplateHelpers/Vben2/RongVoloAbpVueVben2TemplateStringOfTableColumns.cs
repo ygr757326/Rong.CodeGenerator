@@ -420,8 +420,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 
             b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");
 
-            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"value\">");
-            b.Append($"</{GetMapComponent(item.Component)}>");
+            b.Space(space + 2).AppendLine($"<{GetMapComponent(item.Component)} :{Options.VueComponentViewProp ?? "value"}=\"value\"></{GetMapComponent(item.Component)}>");
 
             b.Space(space).AppendLine($"</template>");
 

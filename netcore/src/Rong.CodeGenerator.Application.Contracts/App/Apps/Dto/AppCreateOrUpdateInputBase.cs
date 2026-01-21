@@ -145,6 +145,13 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         public string ApiSelect2 { get; set; }
 
         /// <summary>
+        /// 展示
+        /// </summary>
+        [Display(Name = "展示")]
+        [VueComponent("MyViewSelect")]
+        public string View { get; set; }
+
+        /// <summary>
         /// 验证、归一化输入值
         /// </summary>
         /// <returns></returns>

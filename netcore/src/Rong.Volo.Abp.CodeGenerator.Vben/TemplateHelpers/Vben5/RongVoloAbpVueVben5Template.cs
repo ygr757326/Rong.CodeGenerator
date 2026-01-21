@@ -53,6 +53,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
                 {
                     continue;
                 }
+
                 if (item.IsEnum)
                 {
                     b.Append(TableColumnsTemplate.EnumSlots(item, space));

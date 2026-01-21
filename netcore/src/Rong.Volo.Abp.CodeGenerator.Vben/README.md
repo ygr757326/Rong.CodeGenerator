@@ -91,6 +91,9 @@ VueComponentAttribute: 使用组件
 
             //编辑器
             options.EditorComponent = "MyEditor";
+
+            //使用组件进行展示 prop,默认 value
+            options.VueComponentViewProp = "value";
         });
 
 ```

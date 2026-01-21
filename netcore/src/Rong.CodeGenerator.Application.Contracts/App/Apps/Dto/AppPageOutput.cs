@@ -120,5 +120,11 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         [VueFile(false)]
         public string Logo { get; set; }
 
+        /// <summary>
+        /// 展示
+        /// </summary>
+        [Display(Name = "展示")]
+        [VueComponent("MyView")]
+        public string View { get; set; }
     }
 }
