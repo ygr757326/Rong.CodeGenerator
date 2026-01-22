@@ -20,6 +20,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         public VueTableSorterAttribute(bool sorter = false, short fieldSeq = short.MaxValue) : base(fieldSeq)
         {
             Sorter = sorter;
+            FieldSeq = fieldSeq;
         }
     }
 }

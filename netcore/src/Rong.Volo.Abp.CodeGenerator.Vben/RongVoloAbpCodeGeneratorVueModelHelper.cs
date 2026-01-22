@@ -245,6 +245,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.TableSorter = attr.Sorter;
             info.IsSlot = attr.Slot;
             info.IsDictionaryMultiple = attr.Multiple;
+            info.FieldSeq = attr.FieldSeq;
         }
 
         /// <summary>
@@ -274,6 +275,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.TableSorter = attr?.Sorter ?? true;
             info.IsSlot = attr?.Slot ?? true;
             info.IsEnumMultiple = attr?.Multiple ?? false;
+            info.FieldSeq = attr?.FieldSeq;
         }
         /// <summary>
         /// bool模型
@@ -289,6 +291,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.SelectMode = attr?.SelectMode ?? VueSelectModeEnum.Switch;
             info.TableSorter = attr?.Sorter ?? true;
             info.IsSlot = attr?.Slot ?? true;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -333,6 +336,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     break;
             }
             info.IsSlot = false;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -349,6 +353,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.IsImage = attr.FileType.Equals(VueFileTypeEnum.Image);
             info.MultipleFile = attr.Multiple;
             info.IsSlot = true;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -363,6 +368,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
             info.IsTextarea = true;
             info.IsSlot = false;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -377,6 +383,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             }
             info.IsEditor = true;
             info.IsSlot = true;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -392,6 +399,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.Property = attr.PointSplicingName ?? propertyInfo.Name;
             info.PropertyCase = info.Property.Split(".").Select(a => a.ToCamelCase()).JoinAsString(".");
             info.IsSlot = false;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -408,6 +416,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.IsComponent = true;
             info.Component = string.IsNullOrWhiteSpace(attr.Component) ? "Input" : attr.Component;
             info.IsSlot = true;
+            info.FieldSeq = attr?.FieldSeq;
         }
 
         /// <summary>
@@ -430,6 +439,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
             info.IsApiSelectMultiple = attr.Multiple;
             info.Component = string.IsNullOrWhiteSpace(attr.Component) ? VueApiSelectAttribute._component : attr.Component;
             info.IsSlot = false;
+            info.FieldSeq = attr?.FieldSeq;
         }
     }
 
