@@ -10,14 +10,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue table 排序特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueTableSorterAttribute : Attribute
+    public class VueTableSorterAttribute : VueFieldSeqAttribute
     {
         /// <summary>
         /// 是否排序
         /// </summary>
         public bool Sorter { get; set; }
 
-        public VueTableSorterAttribute(bool sorter = false)
+        public VueTableSorterAttribute(bool sorter = false, short fieldSeq = short.MaxValue) : base(fieldSeq)
         {
             Sorter = sorter;
         }

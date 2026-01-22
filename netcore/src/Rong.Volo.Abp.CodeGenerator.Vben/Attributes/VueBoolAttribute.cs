@@ -19,7 +19,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public bool Slot { get; set; }
 
-        public VueBoolAttribute(VueSelectModeEnum selectMode = VueSelectModeEnum.Switch, bool slot = true, bool sorter = true) : base(sorter)
+        public VueBoolAttribute(VueSelectModeEnum selectMode = VueSelectModeEnum.Switch, bool slot = true, bool sorter = true, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
             SelectMode = selectMode;
             Slot = slot;

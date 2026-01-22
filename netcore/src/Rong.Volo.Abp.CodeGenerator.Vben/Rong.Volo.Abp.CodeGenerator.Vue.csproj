@@ -8,7 +8,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Rong.Volo.Abp.CodeGenerator.Vue</RootNamespace>
 		<Description>abp vnext 5.0.0 以上的代码生成器。本人为了快速开发而写的前端 vue + vben2/vben5 代码生成器。</Description>
-		<Version>9.0.24</Version>
+		<Version>9.0.26</Version>
 		<Authors>ygr</Authors>
 		<PackageProjectUrl>https://github.com/ygr757326/Rong.CodeGenerator</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>

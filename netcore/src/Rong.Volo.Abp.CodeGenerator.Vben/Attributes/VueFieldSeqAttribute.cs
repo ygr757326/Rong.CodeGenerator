@@ -7,19 +7,20 @@ using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
 {
     /// <summary>
-    /// vue 日期枚举特性
+    /// vue table 字段顺序特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueDateAttribute : VueTableSorterAttribute
+    public class VueFieldSeqAttribute : Attribute
     {
         /// <summary>
-        /// 日期类型
+        /// 字段在table中的左右顺序
+        /// <para>越小越在左</para>
         /// </summary>
-        public VueDateTypeEnum DateType { get; set; }
+        public short FieldSeq { get; set; }
 
-        public VueDateAttribute(VueDateTypeEnum dateType = VueDateTypeEnum.Date, bool sorter = true, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
+        public VueFieldSeqAttribute(short fieldSeq)
         {
-            DateType = dateType;
+            FieldSeq = fieldSeq;
         }
     }
 }

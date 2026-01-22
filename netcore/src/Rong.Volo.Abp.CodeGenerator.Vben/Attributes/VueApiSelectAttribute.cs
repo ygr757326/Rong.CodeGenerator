@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text;
-using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
 {
@@ -10,7 +11,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue api下拉数据特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueApiSelectAttribute : Attribute
+    public class VueApiSelectAttribute : VueTableSorterAttribute
     {
         public const string _component = "ApiSelect";
 
@@ -51,9 +52,11 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// <param name="multiple"></param>
         /// <param name="labelField">文本示字段，默认 label</param>
         /// <param name="valueField">值字段，默认 value</param>
+        /// <param name="sorter"></param>
+        /// <param name="fieldSeq"></param>
         /// <param name="apiName">api名称</param>
         /// <param name="component"></param>
-        public VueApiSelectAttribute(string entity, bool multiple = false, string? labelField = null, string apiName = "GetDropDownList", string component = _component, string? valueField = null)
+        public VueApiSelectAttribute(string entity, bool multiple = false, string? labelField = null, string apiName = "GetDropDownList", string component = _component, string? valueField = null, bool sorter = true, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
             Entity = entity;
             ApiName = apiName;

@@ -11,9 +11,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
     public class TemplateVueEntityPropertyData
     {
         /// <summary>
-        /// 是否忽略，不生成
+        /// 字段在table中的左右顺序
+        /// <para>越小越在左</para>
         /// </summary>
-        public bool IsIgnore { get; set; }
+        public short FieldSeq { get; set; } = short.MaxValue;
 
         /// <summary>
         /// 显示名称
@@ -164,7 +165,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Models
         /// ApiSelect组件 值字段
         /// </summary>
         public string ApiSelectValueField { get; set; }
-        
+
         /// <summary>
         /// 是否是ApiSelect组件多选
         /// </summary>

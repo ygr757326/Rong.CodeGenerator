@@ -82,6 +82,7 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         /// 是否强制性更新
         /// </summary>
         [Display(Name = "是否强制性更新")]
+        [VueTableSorter(false, 2)]
         public bool IsForceUpdate { get; set; }
 
         /// <summary>
@@ -125,6 +126,7 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         /// </summary>
         [Display(Name = "展示")]
         [VueComponent("MyView")]
+        [VueTableSorter(false, 3)]
         public string View { get; set; }
     }
 }

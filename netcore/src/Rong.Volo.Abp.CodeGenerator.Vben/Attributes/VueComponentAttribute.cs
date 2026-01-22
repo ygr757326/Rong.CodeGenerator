@@ -10,14 +10,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 组件数据特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueComponentAttribute : Attribute
+    public class VueComponentAttribute : Attribute//VueFieldSeqAttribute
     {
         /// <summary>
         /// 组件
         /// </summary>
         public string Component { get; set; }
 
-        public VueComponentAttribute(string component)
+        public VueComponentAttribute(string component)// : base(fieldSeq)
         {
             Component = component;
         }

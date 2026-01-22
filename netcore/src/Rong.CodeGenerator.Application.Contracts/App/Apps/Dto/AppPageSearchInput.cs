@@ -64,6 +64,7 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         /// 是否马上生效
         /// </summary>
         [Display(Name = "是否马上生效")]
+        [VueTableSorter(false, 1)]
         public bool? IsNowEffect { get; set; }
 
         /// <summary>

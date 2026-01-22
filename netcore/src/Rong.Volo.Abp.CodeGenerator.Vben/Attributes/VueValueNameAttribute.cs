@@ -17,7 +17,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public string PointSplicingName { get; set; }
 
-        public VueValueNameAttribute(string pointSplicingName, bool sorter = false) : base(sorter)
+        public VueValueNameAttribute(string pointSplicingName, bool sorter = false, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
             PointSplicingName = pointSplicingName;
         }

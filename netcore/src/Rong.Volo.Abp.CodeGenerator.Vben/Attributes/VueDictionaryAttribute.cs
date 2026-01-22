@@ -32,7 +32,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public bool Multiple { get; set; }
 
-        public VueDictionaryAttribute(string code, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool sorter = true, bool multiple = false) : base(sorter)
+        public VueDictionaryAttribute(string code, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool multiple = false, bool sorter = true, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
             Code = code;
             SelectMode = selectMode;

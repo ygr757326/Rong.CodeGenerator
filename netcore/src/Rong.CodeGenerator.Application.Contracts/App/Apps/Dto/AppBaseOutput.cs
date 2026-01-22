@@ -18,12 +18,19 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         [Display(Name = "客户端")]
         [Required(ErrorMessage = "{0}不能为空")]
         public string Client { get; set; }
-
+        /// <summary>
+        /// 客户端忽略
+        /// </summary>
+        [Display(Name = "客户端忽略")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [VueIgnore]
+        public string Client1 { get; set; }
         /// <summary>
         /// 是否马上生效
         /// </summary>
         [Display(Name = "是否马上生效")]
         [Required(ErrorMessage = "{0}不能为空")]
+        [VueTableSorter(false,1)]
         public bool IsNowEffect { get; set; }
 
     }

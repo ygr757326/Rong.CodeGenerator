@@ -66,6 +66,7 @@ namespace Rong.CodeGenerator.App.Apps.Dto
         /// </summary>
         [Display(Name = "是否马上生效")]
         [Required(ErrorMessage = "{0}不能为空")]
+        [VueTableSorter(false, 1)]
         public bool IsNowEffect { get; set; }
 
         /// <summary>

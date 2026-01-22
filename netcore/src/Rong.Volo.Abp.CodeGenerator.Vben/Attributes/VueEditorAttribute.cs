@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
 {
@@ -6,9 +7,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 编辑器特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueEditorAttribute : Attribute
+    public class VueEditorAttribute : VueFieldSeqAttribute
     {
-        public VueEditorAttribute()
+        public VueEditorAttribute(short fieldSeq = short.MaxValue) : base(fieldSeq)
         {
         }
     }

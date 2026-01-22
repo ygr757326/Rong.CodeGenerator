@@ -158,7 +158,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 data = GetPropertyInfosOfSort(type.BaseType, isCanWrite, ignoreProperties, baseTypeIsMain, data);
             }
 
-            return data;
+            return data.OrderBy(a => a.FieldSeq).ToList();
         }
 
 
@@ -182,6 +182,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             foreach (PropertyInfo propertyInfo in properties)
             {
+                var ignoreAttr = propertyInfo.GetCustomAttribute<VueIgnoreAttribute>();
+                if (ignoreAttr != null && ignoreAttr.IsIgnore)
+                {
+                    yield break;
+                }
+
                 var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
 
                 var info = new TemplateVueEntityPropertyData()
@@ -206,16 +212,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 HandleComponentModel(info, propertyInfo);
                 HandleApiSelectModel(info, propertyInfo);
 
-                var sorterAttr = propertyInfo.GetCustomAttribute<VueTableSorterAttribute>();
-                if (sorterAttr != null)
+                var tableSorterAttr = propertyInfo.GetCustomAttribute<VueTableSorterAttribute>();
+                if (tableSorterAttr != null)
                 {
-                    info.TableSorter = sorterAttr.Sorter;
+                    info.TableSorter = tableSorterAttr.Sorter;
                 }
 
-                var ignoreAttr = propertyInfo.GetCustomAttribute<VueIgnoreAttribute>();
-                if (ignoreAttr != null)
+                var fieldSeqAttr = propertyInfo.GetCustomAttribute<VueFieldSeqAttribute>();
+                if (fieldSeqAttr != null)
                 {
-                    info.IsIgnore = ignoreAttr.IsIgnore;
+                    info.FieldSeq = fieldSeqAttr.FieldSeq;
                 }
 
                 yield return info;

@@ -10,7 +10,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 文件枚举特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueFileAttribute : Attribute
+    public class VueFileAttribute : VueFieldSeqAttribute
     {
         /// <summary>
         /// 是否多文件
@@ -22,7 +22,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public VueFileTypeEnum FileType { get; set; }
 
-        public VueFileAttribute(bool multiple = false, VueFileTypeEnum fileType = VueFileTypeEnum.Image)
+        public VueFileAttribute(bool multiple = false, VueFileTypeEnum fileType = VueFileTypeEnum.Image, short fieldSeq = short.MaxValue) : base(fieldSeq)
         {
             Multiple = multiple;
             FileType = fileType;
