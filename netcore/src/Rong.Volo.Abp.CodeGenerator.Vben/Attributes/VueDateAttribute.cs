@@ -10,14 +10,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 日期枚举特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueDateAttribute : Attribute
+    public class VueDateAttribute : VueTableSorterAttribute
     {
         /// <summary>
         /// 日期类型
         /// </summary>
         public VueDateTypeEnum DateType { get; set; }
 
-        public VueDateAttribute(VueDateTypeEnum dateType = VueDateTypeEnum.Date)
+        public VueDateAttribute(VueDateTypeEnum dateType = VueDateTypeEnum.Date, bool sorter = true, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
             DateType = dateType;
         }

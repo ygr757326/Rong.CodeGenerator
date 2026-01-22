@@ -6,9 +6,9 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
     /// vue 内容文本特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class VueTextareaAttribute : Attribute
+    public class VueTextareaAttribute : VueTableSorterAttribute
     {
-        public VueTextareaAttribute()
+        public VueTextareaAttribute(bool sorter = false, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
         }
     }

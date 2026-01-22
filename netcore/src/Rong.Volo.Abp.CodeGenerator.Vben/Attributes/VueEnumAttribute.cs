@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text;
-using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
 {
@@ -32,7 +33,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.Attributes
         /// </summary>
         public bool Multiple { get; set; }
 
-        public VueEnumAttribute(Type enumType, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool sorter = true, bool multiple = false) : base(sorter)
+        public VueEnumAttribute(Type enumType, VueSelectModeEnum selectMode = VueSelectModeEnum.Select, bool slot = false, bool multiple = false, bool sorter = true, short fieldSeq = short.MaxValue) : base(sorter, fieldSeq)
         {
             EnumType = enumType;
             SelectMode = selectMode;

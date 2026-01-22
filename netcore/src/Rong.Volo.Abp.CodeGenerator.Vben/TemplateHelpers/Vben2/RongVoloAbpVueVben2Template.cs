@@ -47,10 +47,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 
             foreach (var item in models)
             {
-                if (item.IsIgnore)
-                {
-                    continue;
-                }
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
                 if (!item.IsSlot)
@@ -106,10 +102,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 
             foreach (var item in models)
             {
-                if (item.IsIgnore)
-                {
-                    continue;
-                }
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
                 if (item.IsDate)
@@ -166,10 +158,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             StringBuilder b = new StringBuilder();
             foreach (var item in models)
             {
-                if (item.IsIgnore)
-                {
-                    continue;
-                }
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
                 if (item.IsDate)
@@ -223,10 +211,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 
             foreach (var item in models)
             {
-                if (item.IsIgnore)
-                {
-                    continue;
-                }
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
                 if (item.IsDate)
@@ -285,10 +269,6 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 
             foreach (var item in models)
             {
-                if (item.IsIgnore)
-                {
-                    continue;
-                }
                 var typeCode = item.PropertyType.GetMyTypeCode();
 
                 if (item.IsDate)
