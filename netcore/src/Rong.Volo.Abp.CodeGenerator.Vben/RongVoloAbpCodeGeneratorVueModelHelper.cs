@@ -141,7 +141,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
 
             var list = GetPropertyInfos(type, isCanWrite, ignoreProperties);
 
-            data ??= list.ToList();
+            data ??= list;
 
             //基类信息为主
             if (baseTypeIsMain)
@@ -167,11 +167,12 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// <param name="isCanWrite"></param>
         /// <param name="ignoreProperties">忽略的属性</param>
         /// <returns></returns>
-        protected virtual IEnumerable<TemplateVueEntityPropertyData> GetPropertyInfos(Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null)
+        protected virtual List<TemplateVueEntityPropertyData> GetPropertyInfos(Type? type, bool? isCanWrite = null, string[]? ignoreProperties = null)
         {
+            var list = new List<TemplateVueEntityPropertyData>();
             if (type == null)
             {
-                yield break;
+                return list;
             }
 
             var properties = type.GetProperties()
@@ -183,7 +184,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 var ignoreAttr = propertyInfo.GetCustomAttribute<VueIgnoreAttribute>();
                 if (ignoreAttr != null && ignoreAttr.IsIgnore)
                 {
-                    yield break;
+                    continue;
                 }
 
                 var typeCode = propertyInfo.PropertyType.GetMyTypeCode();
@@ -222,8 +223,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                     info.FieldSeq = fieldSeqAttr.FieldSeq;
                 }
 
-                yield return info;
+                list.Add(info);
             }
+
+            return list;
         }
 
         /// <summary>
