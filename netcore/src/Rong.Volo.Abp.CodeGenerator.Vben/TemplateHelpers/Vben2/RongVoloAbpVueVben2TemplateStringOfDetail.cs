@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Rong.Volo.Abp.CodeGenerator.Vue.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Reflection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 {
@@ -59,7 +60,18 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
         {
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
-            b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat}')  }}}} ");
+
+            var timeSpan = item.PropertyType.GetFirstGenericArgumentIfNullable().Name == nameof(TimeSpan);
+
+            if (timeSpan)
+            {
+                b.Space(space + 2).AppendLine($" {{{{ detailData?.{FormatPropertyCase(item.PropertyCase)}  }}}} ");
+            }
+            else
+            {
+                b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat}')  }}}} ");
+            }
+
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");
 
             return b.ToString();

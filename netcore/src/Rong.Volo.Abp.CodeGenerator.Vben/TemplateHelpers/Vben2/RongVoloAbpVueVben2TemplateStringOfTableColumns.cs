@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Reflection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 {
@@ -74,9 +75,14 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
 
             b.Space(space + 2).AppendLine($"title: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"dataIndex: {FormatPropertyCaseForDataIndex(item.PropertyCase)},");
-            b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-            b.Space(space + 4).AppendLine($"return formatToDate(value, '{item.DateFormat}');");
-            b.Space(space + 2).AppendLine($"}},");
+
+            var timeSpan = item.PropertyType.GetFirstGenericArgumentIfNullable().Name == nameof(TimeSpan);
+            if (!timeSpan)
+            {
+                b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
+                b.Space(space + 4).AppendLine($"return formatToDate(value, '{item.DateFormat}');");
+                b.Space(space + 2).AppendLine($"}},");
+            }
 
             if (item.TableSorter)
             {
