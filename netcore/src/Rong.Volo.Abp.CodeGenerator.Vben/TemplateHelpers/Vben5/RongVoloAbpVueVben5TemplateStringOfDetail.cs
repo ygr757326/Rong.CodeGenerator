@@ -27,7 +27,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         protected virtual bool IsIgnoreDefaultTemplateProperty(TemplateVueEntityPropertyData item)
         {
             //忽略其他id
-            if (!item.PropertyCase.Equals("fileId", StringComparison.OrdinalIgnoreCase)&&item.PropertyCase.EndsWith("id", StringComparison.OrdinalIgnoreCase))
+            if (!item.PropertyCase.Equals("fileId", StringComparison.OrdinalIgnoreCase) && item.PropertyCase.EndsWith("id", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -60,7 +60,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
         /// <returns></returns>
         public virtual string? DateTimeTemplate(TemplateVueEntityPropertyData item, int space = 8)
         {
-            
+
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
@@ -72,7 +72,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             }
             else
             {
-                b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat}')  }}}} ");
+                b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat ?? Options.DetailViewDefaultDateType.GetDateFormat()}')  }}}} ");
             }
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");

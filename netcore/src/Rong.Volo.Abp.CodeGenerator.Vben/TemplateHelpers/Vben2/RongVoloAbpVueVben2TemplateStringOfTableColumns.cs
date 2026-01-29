@@ -80,7 +80,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             if (!timeSpan)
             {
                 b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return formatToDate(value, '{item.DateFormat}');");
+                b.Space(space + 4).AppendLine($"return formatToDate(value, '{item.DateFormat ?? Options.DetailViewDefaultDateType.GetDateFormat()}');");
                 b.Space(space + 2).AppendLine($"}},");
             }
 

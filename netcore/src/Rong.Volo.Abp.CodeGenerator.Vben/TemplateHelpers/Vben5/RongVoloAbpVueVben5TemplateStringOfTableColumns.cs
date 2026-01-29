@@ -80,7 +80,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             if (!timeSpan)
             {
                 b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return formatToDate(cellValue, '{item.DateFormat}');");
+                b.Space(space + 4).AppendLine($"return formatToDate(cellValue, '{item.DateFormat ?? Options.DetailViewDefaultDateType.GetDateFormat()}');");
                 b.Space(space + 2).AppendLine($"}},");
             }
 

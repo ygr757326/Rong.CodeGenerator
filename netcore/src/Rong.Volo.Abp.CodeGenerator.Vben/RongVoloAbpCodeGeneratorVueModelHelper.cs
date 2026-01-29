@@ -311,29 +311,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
                 return;
             }
 
-            info.DateType = attr != null ? attr.DateType : (timeSpan ? VueDateTypeEnum.TimeSpan : VueDateTypeEnum.Date);
+            info.DateType = attr != null ? attr.DateType : (timeSpan ? VueDateTypeEnum.TimeSpan : null);
 
-            switch (info.DateType)
-            {
-                case VueDateTypeEnum.Year:
-                    info.DateFormat = "YYYY";
-                    break;
-                case VueDateTypeEnum.Month:
-                    info.DateFormat = "YYYY-MM";
-                    break;
-                case VueDateTypeEnum.Date:
-                    info.DateFormat = "YYYY-MM-DD";
-                    break;
-                case VueDateTypeEnum.DateTime:
-                    info.DateFormat = "YYYY-MM-DD HH:mm:ss";
-                    break;
-                case VueDateTypeEnum.TimeSpan:
-                    info.DateFormat = "HH:mm:ss";
-                    break;
-                default:
-                    info.DateFormat = "YYYY-MM-DD";
-                    break;
-            }
+            info.DateFormat = info.DateType?.GetDateFormat();
+
             info.IsSlot = false;
         }
 

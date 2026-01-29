@@ -5,12 +5,36 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rong.Volo.Abp.CodeGenerator.Vue.Enums;
 using Volo.Abp.Reflection;
 
 namespace Rong.Volo.Abp.CodeGenerator.Vue
 {
     internal static class RongVoloAbpValueHelper
     {
+        /// <summary>
+        /// 获取时间格式化
+        /// </summary>
+        /// <param name="dateType"></param>
+        /// <returns></returns>
+        public static string? GetDateFormat(this VueDateTypeEnum dateType)
+        {
+            switch (dateType)
+            {
+                case VueDateTypeEnum.Year:
+                    return "YYYY";
+                case VueDateTypeEnum.Month:
+                    return "YYYY-MM";
+                case VueDateTypeEnum.Date:
+                    return "YYYY-MM-DD";
+                case VueDateTypeEnum.DateTime:
+                    return "YYYY-MM-DD HH:mm:ss";
+                case VueDateTypeEnum.TimeSpan:
+                    return "HH:mm:ss";
+                default:
+                    return null;
+            }
+        }
 
         public static StringBuilder Space(this StringBuilder b, int length)
         {

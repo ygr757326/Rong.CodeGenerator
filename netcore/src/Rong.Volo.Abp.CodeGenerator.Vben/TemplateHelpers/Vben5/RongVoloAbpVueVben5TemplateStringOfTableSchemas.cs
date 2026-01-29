@@ -66,7 +66,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             }
 
             b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"valueFormat: '{item.DateFormat}',");
+            b.Space(space + 4).AppendLine($"valueFormat: '{item.DateFormat ?? VueDateTypeEnum.Date.GetDateFormat()}',");
 
             switch (item.DateType)
             {

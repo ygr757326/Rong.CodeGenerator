@@ -69,7 +69,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             }
             else
             {
-                b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat}')  }}}} ");
+                b.Space(space + 2).AppendLine($" {{{{ formatToDate(detailData?.{FormatPropertyCase(item.PropertyCase)}, '{item.DateFormat ?? Options.DetailViewDefaultDateType.GetDateFormat()}')  }}}} ");
             }
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");

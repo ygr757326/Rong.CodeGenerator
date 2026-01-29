@@ -123,10 +123,16 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue
         /// </summary>
         public string? VueComponentViewProp { get; set; }
 
+        /// <summary>
+        /// 详情展示默认日期格式，默认 <see cref="VueDateTypeEnum.Date"/>
+        /// </summary>
+        public VueDateTypeEnum DetailViewDefaultDateType { get; set; }
+
         public RongVoloAbpCodeGeneratorVueOptions()
         {
             AntTabledDataIndexMode = AntTabledDataIndexModeEnum.Array;
             ComponentMapForVben = new Dictionary<string, string>();
+            DetailViewDefaultDateType = VueDateTypeEnum.Date;
         }
     }
 }

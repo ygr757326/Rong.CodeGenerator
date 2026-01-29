@@ -93,8 +93,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             }
 
             b.Space(space + 2).AppendLine($"componentProps: {{");
-            b.Space(space + 4).AppendLine($"valueFormat: '{item.DateFormat}',");//YYYY-MM-DD HH:mm:ss
-           
+            b.Space(space + 4).AppendLine($"valueFormat: '{item.DateFormat ?? VueDateTypeEnum.Date.GetDateFormat()}',");//YYYY-MM-DD HH:mm:ss
+
             switch (item.DateType)
             {
                 case VueDateTypeEnum.Year:
