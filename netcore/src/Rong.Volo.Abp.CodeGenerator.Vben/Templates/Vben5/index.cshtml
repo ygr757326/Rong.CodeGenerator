@@ -28,7 +28,7 @@ import { computed, h } from 'vue';
 import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import { Page, useVbenDrawer } from '@@vben/common-ui';
-import { Plus } from '@@vben/icons';
+import { PlusOutlined } from '@@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { TableAction } from '#/components/table-action';
@@ -194,7 +194,7 @@ function handleSuccess() {
     <BasicTable :table-title="getTitle">
       <template #toolbar-tools>
         <a-flex wrap="wrap" gap="small">
-          <a-button :icon="h(Plus)" type="primary" v-access:code="['@Model.EntityInfo.Permission.Create']" @@click="handleCreate"> 新增 </a-button>
+          <a-button :icon="h(PlusOutlined)" type="primary" v-access:code="['@Model.EntityInfo.Permission.Create']" @@click="handleCreate"> 新增 </a-button>
         </a-flex>
       </template>
       <template #action="{ row }">
