@@ -259,7 +259,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             else
             {
                 b.Space(space + 2).AppendLine($"formatter: ({{ cellValue }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return cellValue ? '是' : '否';");
+                b.Space(space + 4).AppendLine($"return cellValue === true ? '是' : cellValue === false ? '否' : '';");
                 b.Space(space + 2).AppendLine($"}},");
             }
 
@@ -283,8 +283,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             string filed = FormatPropertyCaseForSlot(item.PropertyCase);
 
             b.Space(space).AppendLine($"<template #{filed}=\"{{ row }}\">");
-            b.Space(space + 2).AppendLine($"<a-tag :color=\"row.{filed} ? 'green' : 'red'\">");
-            b.Space(space + 2).AppendLine($" {{{{ row.{filed} ? '是' : '否' }}}}");
+            b.Space(space + 2).AppendLine($"<a-tag :color=\"row.{filed} === true ? 'green' : row.{filed} === false ? 'red' : '' \">");
+            b.Space(space + 2).AppendLine($" {{{{ row.{filed} === true ? '是' : row.{filed} === false ? '否' : '' }}}}");
             b.Space(space + 2).AppendLine($"</a-tag>");
             b.Space(space).AppendLine($"</template>");
 

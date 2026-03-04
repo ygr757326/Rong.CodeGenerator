@@ -164,8 +164,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             StringBuilder b = new StringBuilder();
             b.Space(space).AppendLine($"<{GetMapComponent("a-descriptions-item")} label=\"{item.DisplayName}\">");
 
-            b.Space(space + 2).AppendLine($"<a-tag :color=\"detailData?.{FormatPropertyCase(item.PropertyCase)} ? 'green' : 'red'\">");
-            b.Space(space + 2).AppendLine($" {{{{ detailData?.{FormatPropertyCase(item.PropertyCase)} ? '是' : '否' }}}} ");
+            b.Space(space + 2).AppendLine($"<a-tag :color=\"detailData?.{FormatPropertyCase(item.PropertyCase)} === true ? 'green' : detailData?.{FormatPropertyCase(item.PropertyCase)} === false ?  'red' : '' \">");
+            b.Space(space + 2).AppendLine($" {{{{ detailData?.{FormatPropertyCase(item.PropertyCase)} === true ? '是' : detailData?.{FormatPropertyCase(item.PropertyCase)} === false ?  '否' : '' }}}} ");
             b.Space(space + 2).AppendLine($"</a-tag>");
 
             b.Space(space).AppendLine($"</{GetMapComponent("a-descriptions-item")}>");

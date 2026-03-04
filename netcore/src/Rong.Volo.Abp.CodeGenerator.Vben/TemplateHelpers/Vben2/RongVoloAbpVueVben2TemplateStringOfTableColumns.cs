@@ -256,7 +256,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             else
             {
                 b.Space(space + 2).AppendLine($"customRender: ({{ value }}) => {{ ");
-                b.Space(space + 4).AppendLine($"return value ? '是' : '否';");
+                b.Space(space + 4).AppendLine($"return value === true ? '是' : value === true ? '否' : '';");
                 b.Space(space + 2).AppendLine($"}},");
             }
 
@@ -279,8 +279,8 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             StringBuilder b = new StringBuilder();
 
             b.Space(space).AppendLine($"<template #{FormatPropertyCaseForSlot(item.PropertyCase)}=\"{{ value }}\">");//value, record
-            b.Space(space + 2).AppendLine($"<Tag :color=\"value ? 'green' : 'red'\">");
-            b.Space(space + 2).AppendLine($" {{{{ value ? '是' : '否' }}}}");
+            b.Space(space + 2).AppendLine($"<Tag :color=\"value === true ? 'green' : value === false ? 'red' : '' \">");
+            b.Space(space + 2).AppendLine($" {{{{ value === true ? '是' : value === false ?  '否' : '' }}}}");
             b.Space(space + 2).AppendLine($"</Tag>");
             b.Space(space).AppendLine($"</template>");
 
