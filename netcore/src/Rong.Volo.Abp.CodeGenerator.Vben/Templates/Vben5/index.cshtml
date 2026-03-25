@@ -178,15 +178,9 @@ const handleEdit = (record: any) => {
 async function handleDelete(record: any) {
   await @{@Model.EntityInfo.Entity}Delete(record.id);
   message.success('删除成功');
-  tableApi.reload();
+  tableApi.query();
 }
 
-/**
- * 编辑/新增成功 - 刷新table
- */
-function handleSuccess() {
-  tableApi.reload();
-}
 </script>
 
 <template>
@@ -227,11 +221,11 @@ function handleSuccess() {
       @Model.TableColumnsSlotsTemplate
     </BasicTable>
     <!-- 新增 -->
-    <AddDrawer @@success="handleSuccess" />
+    <AddDrawer @@success="tableApi.reload()" />
     <!-- 编辑 -->
-    <ModifyDrawer @@success="handleSuccess" />
+    <ModifyDrawer @@success="tableApi.query()" />
     <!-- 查看 -->
-    <DetailDrawer @@success="handleSuccess" />
+    <DetailDrawer />
   </Page>
 </template>
 
