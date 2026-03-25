@@ -199,6 +199,7 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben2
             b.Space(space + 2).AppendLine($"field: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Select")}',");
             b.Space(space + 2).AppendLine($"componentProps: {{");
+            b.Space(space + 4).AppendLine($"allowClear: true,");
             b.Space(space + 4).AppendLine($"options: [");
             b.Space(space + 6).AppendLine($"{{label: '是', value: true }},");
             b.Space(space + 6).AppendLine($"{{label: '否', value: false }},");
