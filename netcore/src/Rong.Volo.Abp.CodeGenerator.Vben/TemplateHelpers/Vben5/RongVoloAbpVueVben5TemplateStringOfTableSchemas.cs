@@ -34,6 +34,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent("Input")}',");
 
+            b.Space(space + 2).AppendLine($"componentProps: {{");
+            b.Space(space + 4).AppendLine($"allowClear: true,");
+            b.Space(space + 2).AppendLine($"}},");
+
             if (item.IsRequired)
             {
                 b.Space(space + 2).AppendLine($"rules: 'required',");
@@ -277,6 +281,10 @@ namespace Rong.Volo.Abp.CodeGenerator.Vue.TemplateHelpers.Vben5
             b.Space(space + 2).AppendLine($"label: '{item.DisplayName}',");
             b.Space(space + 2).AppendLine($"fieldName: '{item.PropertyCase}',");
             b.Space(space + 2).AppendLine($"component: '{GetMapComponent(item.Component)}',");
+
+            b.Space(space + 2).AppendLine($"componentProps: {{");
+            b.Space(space + 4).AppendLine($"allowClear: true,");
+            b.Space(space + 2).AppendLine($"}},");
 
             if (item.IsRequired)
             {
