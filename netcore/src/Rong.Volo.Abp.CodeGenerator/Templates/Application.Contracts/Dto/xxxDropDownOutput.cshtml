@@ -10,6 +10,9 @@ namespace @{@Model.NameSpace}.@{@Model.SaveFolderName}.@{@Model.Entity}s.Dto
     /// </summary>
     public class @{@Model.Entity}DropDownOutput : NameValue<Guid>
     {
+        public Guid Id { get; set; }
+        public new Guid Value => Id;
+
         /// <summary>
         /// 构造
         /// </summary>
